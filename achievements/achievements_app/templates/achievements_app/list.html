@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Achievements</title>
+</head>
+<body>
+    <h1>My Achievements</h1>
+    <ul>
+        {% for achievement in achievements %}
+        <li>{{ achievement.title }} ({{ achievement.date }})</li>
+        {% endfor %}
+    </ul>
+</body>
+</html>
