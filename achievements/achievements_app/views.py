@@ -1,9 +1,9 @@
 from django.shortcuts import render
 from .models import Achievement
 
-def achievement_list(request):
+def achievement_autorization(request):
     achievements = Achievement.objects.all()
-    return render(request, 'achievements_app/list.html',
+    return render(request, 'achievements_app/autorization.html',
                  {'achievements': achievements})
 
 from django.http import HttpResponse
