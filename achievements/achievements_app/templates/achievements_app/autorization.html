@@ -20,7 +20,7 @@
         <input type="text" class="input-field" placeholder="Логин">
     </div>
     <div class="containerPassword container-toggle">
-        <input type="password" class="input-field" placeholder="Пароль">
+        <input type="password" class="input-field" placeholder="Пароль" >
     </div>
     <script>
         document.addEventListener('DOMContentLoaded', function() {
@@ -31,8 +31,6 @@
             const error2 = document.querySelector('.eror2');
 
             button.addEventListener('click', function() {
-                // Проверяем поле логина
-                if (!loginInput.value.trim()) {
                     error1.textContent = '*обязательно';
                     error1.classList.add('show-error');
                 } else {
