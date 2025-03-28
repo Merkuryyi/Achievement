@@ -1,8 +1,9 @@
 from django.contrib import admin
-from django.urls import path, include
+from django.urls import path
 from achievements_app import views
+
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', views.achievement_autorization, name='achievement_list'),
+    path('autorization/', views.achievement_autorization, name='achievement'),
+    path('recovery/', views.recovery, name='recovery'),
 ]
-

@@ -3,26 +3,32 @@
 <head>
     <title>Achievements</title>
     {% load static %}
-    <link rel="stylesheet" href="{% static 'achievements_app/css/styles.css' %}">
+    <link rel="stylesheet" href="{% static 'achievements_app/css/recovery.css' %}">
     <link href="https://fonts.googleapis.com/css2?family=Inter&display=swap" rel="stylesheet">
 </head>
 <body>
-    <div class="header"></div>
-    <div class="title">Вход</div>
-    <div class="minititle">Введите логин</div>
-    <div class="minititle2">Введите пароль</div>
-    <div class="eror">*ошибка</div>
-    <div class="eror2">*ошибка</div>
-    <a href="{% url 'recovery' %}" class="forgotPassword">забыли пароль?</a>
-    <div class="button"></div>
-    <div class="buttonText">Вход</div>
-    <div class="containerLogin container-toggle">
-        <input type="text" class="input-field" placeholder="Логин">
-    </div>
+
     <div class="containerPassword container-toggle">
         <input type="password" class="input-field" placeholder="Пароль">
     </div>
-    <script>
+<div class="containerRepeatPassword container-toggle">
+        <input type="password" class="input-field" placeholder="Повторите пароль">
+    </div>
+<div class="containerNumberPhone container-toggle">
+        <input type="text" class="input-field" placeholder="Номер телефона">
+    </div>
+<div class="title">Восстановление</div>
+<div class="miniTitle">Введите код с номера телефона</div>
+<div class="miniTitle2">Введите новый пароль</div>
+<div class="miniTitle3">Повторите пароль</div>
+<div class="button"></div>
+    <div class="buttonSmall"></div>
+    <div class="buttonSmallText">код</div>
+    <div class="buttonText">Восстановление</div>
+    <div class="eror">*ошибка</div>
+    <div class="eror2">*ошибка</div>
+    <div class="eror3">*ошибка</div>
+ <script>
         document.addEventListener('DOMContentLoaded', function() {
             const button = document.querySelector('.button');
             const loginInput = document.querySelector('.containerLogin input');
@@ -46,6 +52,6 @@
                 }
             });
         });
-    </script>
+         </script>
 </body>
 </html>
