@@ -86,14 +86,14 @@ color: #878CCD;
     height: 19px;
     left: 826px;
     top: 676px;
-    font-family: 'Inter', sans-serif; /* Добавлен fallback шрифт */
+    font-family: 'Inter', sans-serif;
     font-style: normal;
     font-weight: 400;
     font-size: 20px;
     line-height: 24px;
     color: #878CCD;
     cursor: pointer;
-    transition: text-decoration 0.2s ease; /* Плавное подчеркивание */
+    transition: text-decoration 0.2s ease;
 }
 
 .forgotPassword:hover {
