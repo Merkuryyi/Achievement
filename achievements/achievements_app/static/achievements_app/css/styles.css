@@ -59,8 +59,8 @@ color: #878CCD;
     font-size: 20px;
     line-height: 24px;
     color: #CD8987;
-    opacity: 0; /* Скрываем по умолчанию */
-    transition: opacity 0.3s ease; /* Плавное появление */
+    opacity: 0;
+    transition: opacity 0.3s ease;
 }
 
 .eror {
@@ -141,9 +141,10 @@ color: #878CCD;
 }
 .container-toggle {
     position: absolute;
-    background: #ECF2F8;
+    background: #ECF2F8 !important;;
     border-radius: 5px;
     box-sizing: border-box;
+
 }
 .toggle-password {
     position: absolute;
@@ -165,6 +166,7 @@ color: #878CCD;
     border: 2px solid #D2BAFF;
     background: #ECF2F8;
     box-shadow: 0 0 0 0px rgba(138, 106, 255, 0.2);
+
 }
 
 .input-field {
@@ -199,7 +201,24 @@ color: #878CCD;
 
 }
 
+/* Отключаем автостили для всех состояний */
+.input-field:-webkit-autofill,
+.input-field:-webkit-autofill:hover,
+.input-field:-webkit-autofill:focus,
+.input-field:-webkit-autofill:active {
+  -webkit-box-shadow: 0 0 0 1000px #ECF2F8 inset !important;
+  -webkit-text-fill-color: #878CCD !important;
+  background-color: #ECF2F8 !important;
+  transition: background-color 5000s ease-in-out 0s;
 
+}
+
+/* Для современных браузеров */
+@supports (-webkit-touch-callout: none) {
+    .input-field {
+        background-color: #ECF2F8 !important;
+    }
+}
 @media (max-width: 768px) {
     .header {
         width: 100%;

@@ -215,8 +215,8 @@ color: #878CCD;
     font-size: 20px;
     line-height: 24px;
     color: #CD8987;
-    opacity: 0;
     transition: opacity 0.3s ease;
+    opacity: 0;
 }
 
 .eror {
@@ -237,6 +237,9 @@ color: #878CCD;
     height: 19px;
     left: 800px;
     top: 729px;
+}
+.show-error {
+    opacity: 1;
 }
 .backText {
     position: absolute;

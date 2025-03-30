@@ -4,6 +4,6 @@ from achievements_app import views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('autorization/', views.achievement_autorization, name='achievement'),
+    path('autorization/', views.autorization, name='autorization'),
     path('recovery/', views.recovery, name='recovery'),
 ]

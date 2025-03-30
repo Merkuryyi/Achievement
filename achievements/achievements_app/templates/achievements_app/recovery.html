@@ -9,46 +9,55 @@
 <body>
 
     <div class="containerPassword container-toggle">
-        <input type="password" class="input-field" placeholder="Пароль" style="color: #ECF2F8 !important;">
+    <input type="password" class="input-field" placeholder="Пароль">
     </div>
-<div class="containerRepeatPassword container-toggle">
-        <input type="password" class="input-field" placeholder="Повторите пароль">
+    <div class="containerRepeatPassword container-toggle">
+    <input type="password" class="input-field" placeholder="Повторите пароль">
     </div>
-<div class="containerNumberPhone container-toggle">
-        <input type="text" class="input-field" placeholder="Номер телефона">
-    </div>
-    <div class="backText"><</div>
+    <div class="containerNumberPhone container-toggle">
+    <input type="text" class="input-field" placeholder="Номер телефона"></div>
+    <a href="{% url 'autorization' %}" class="backText" ><</a>
+
     <div class="emailUse">использовать почту</div>
+
+    <div class="title">Восстановление</div>
+    <div class="miniTitle">Введите код с номера телефона</div>
+    <div class="miniTitle2">Введите новый пароль</div>
+    <div class="miniTitle3">Повторите пароль</div>
     <div class="eror">*ошибка</div>
     <div class="eror2">*ошибка</div>
-
     <div class="eror3">*ошибка</div>
-<div class="title">Восстановление</div>
-<div class="miniTitle">Введите код с номера телефона</div>
-<div class="miniTitle2">Введите новый пароль</div>
-<div class="miniTitle3">Повторите пароль</div>
-<div class="button"></div>
+
+    <div class="button"></div>
     <div class="buttonSmall"></div>
     <div class="buttonSmallText">код</div>
     <div class="buttonText">Восстановление</div>
 
-
  <script>
         document.addEventListener('DOMContentLoaded', function() {
             const button = document.querySelector('.button');
-            const loginInput = document.querySelector('.containerLogin input');
-            const passwordInput = document.querySelector('.containerPassword input');
+            const numerPhoneInput = document.querySelector('.containerNumberPhone');
+            const repeatPasswordInput = document.querySelector('.containerRepeatPassword');
+            const passwordInput = document.querySelector('.containerPassword');
             const error1 = document.querySelector('.eror');
             const error2 = document.querySelector('.eror2');
+            const error3 = document.querySelector('.eror3');
 
             button.addEventListener('click', function() {
-                if (!loginInput.value.trim()) {
+                 if (!numerPhoneInput.value.trim()) {
                     error1.textContent = '*обязательно';
                     error1.classList.add('show-error');
-                } else {
+                }
+                else {
                     error1.classList.remove('show-error');
                 }
-
+                if (!repeatPasswordInput.value.trim()) {
+                    error3.textContent = '*обязательно';
+                    error3.classList.add('show-error');
+                }
+                else {
+                    error3.classList.remove('show-error');
+                }
                 if (!passwordInput.value.trim()) {
                     error2.textContent = '*обязательно';
                     error2.classList.add('show-error');
