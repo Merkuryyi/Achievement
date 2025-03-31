@@ -3,36 +3,36 @@
 <head>
     <title>Achievements</title>
     {% load static %}
-    <link rel="stylesheet" href="{% static 'achievements_app/css/recovery.css' %}">
+    <link rel="stylesheet" href="{% static 'achievements_app/css/registration.css' %}">
     <link href="https://fonts.googleapis.com/css2?family=Inter&display=swap" rel="stylesheet">
 </head>
 <body>
     <div class="containerPassword container-toggle">
     <input type="password" class="input-field" placeholder="Пароль">
     </div>
-    <div class="containerRepeatPassword container-toggle">
-    <input type="password" class="input-field" placeholder="Повторите пароль">
+    <div class="containerEmail container-toggle">
+    <input type="password" class="input-field" placeholder="Почта">
     </div>
     <div class="containerNumberPhone container-toggle">
     <input type="text" class="input-field" placeholder="Номер телефона"></div>
     <a href="{% url 'autorization' %}" class="backText" ><</a>
-    <div class="title">Восстановление</div>
-    <div class="miniTitle">Введите код с номера телефона</div>
-    <div class="miniTitle2">Введите новый пароль</div>
-    <div class="miniTitle3">Повторите пароль</div>
+    <div class="emailUse">использовать почту</div>
+    <div class="title">Регистрация</div>
+    <div class="miniTitle">Введите номер телефона</div>
+    <div class="miniTitle2">Введите почту</div>
+    <div class="miniTitle3">Введите пароль</div>
     <div class="eror" style="display: none;">*ошибка</div>
     <div class="eror2" style="display: none;">*ошибка</div>
     <div class="eror3" style="display: none;">*ошибка</div>
     <div class="button"></div>
-    <div class="buttonSmall"></div>
-    <div class="buttonSmallText">код</div>
-    <div class="buttonText">Восстановление</div>
+    <div class="buttonText">Далее</div>
 
-     <script>document.addEventListener('DOMContentLoaded', function() {
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
         const button = document.querySelector('.button');
         const phoneInput = document.querySelector('.containerNumberPhone input');
         const passwordInput = document.querySelector('.containerPassword input');
-        const repeatPasswordInput = document.querySelector('.containerRepeatPassword input');
+        const emailInput = document.querySelector('.containerEmail input');
         const error1 = document.querySelector('.eror');
         const error2 = document.querySelector('.eror2');
         const error3 = document.querySelector('.eror3');
@@ -47,14 +47,6 @@
                 error1.style.opacity = '0';
             }
             if (!passwordInput.value.trim()) {
-                error2.textContent = '*обязательно';
-                error2.style.display = 'block';
-                error2.style.opacity = '1';
-            } else {
-                error2.style.display = 'none';
-                error2.style.opacity = '0';
-            }
-            if (!repeatPasswordInput.value.trim()) {
                 error3.textContent = '*обязательно';
                 error3.style.display = 'block';
                 error3.style.opacity = '1';
@@ -62,9 +54,16 @@
                 error3.style.display = 'none';
                 error3.style.opacity = '0';
             }
+            if (!emailInput.value.trim()) {
+                error2.textContent = '*обязательно';
+                error2.style.display = 'block';
+                error2.style.opacity = '1';
+            } else {
+                error2.style.display = 'none';
+                error2.style.opacity = '0';
+            }
         });
         document.addEventListener("DOMContentLoaded", function() {
-
           phoneInput.forEach(input => {
             input.addEventListener('input', function(event) {
               let value = this.value.replace(/\D/g, '');
@@ -81,6 +80,7 @@
 
         const email = document.querySelector('.emailUse');
         const miniTitle = document.querySelector('.miniTitle');
+
         email.addEventListener('click', function() {
             if (miniTitle.textContent === 'Введите код с номера телефона') {
                 miniTitle.textContent = 'Введите код с почты';
@@ -95,6 +95,6 @@
         });
 
     });
-     </script>
+    </script>
 </body>
 </html>

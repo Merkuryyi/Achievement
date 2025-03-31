@@ -9,3 +9,7 @@ def recovery(request):
     achievements = Achievement.objects.all()
     return render(request, 'achievements_app/recovery.html',
                  {'achievements': achievements})
+def registration(request):
+    achievements = Achievement.objects.all()
+    return render(request, 'achievements_app/registration.html',
+                 {'achievements': achievements})
