@@ -216,13 +216,6 @@
     text-decoration-thickness: 2px;
     text-decoration-color: #D2BAFF;
 }
-
-.emailUse:hover{
-    text-decoration: underline;
-    text-underline-offset: 3px;
-    text-decoration-thickness: 2px;
-    text-decoration-color: #878CCD;
-}
 .input-field:-webkit-autofill,
 .input-field:-webkit-autofill:hover,
 .input-field:-webkit-autofill:focus,
