@@ -70,7 +70,7 @@ body {
 }
 
 .eror2 {
-    width: 88px;
+    width: 286px;
     height: 19px;
     left: 826px;
     top: 550px;
@@ -120,6 +120,9 @@ body {
     background-color: #B896F7;
     transform: translateY(1px); /* Эффект "нажатия" */
     box-shadow: 0 2px 4px rgba(0,0,0,0.1); /* Тень при нажатии */
+}
+.input-field.invalid {
+    border: 1px solid red;
 }
 .buttonText
 {

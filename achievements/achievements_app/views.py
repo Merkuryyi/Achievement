@@ -1,4 +1,8 @@
-from django.shortcuts import render
+
+
+from django.contrib.auth import login, authenticate
+from django.shortcuts import render, redirect
+from .forms import LoginForm
 from .models import Achievement
 
 def autorization(request):
@@ -15,29 +19,24 @@ def registration(request):
                  {'achievements': achievements})
 
 
-# views.py
-from django.contrib.auth import authenticate, login
-from django.shortcuts import render, redirect
-from .forms import LoginForm
+from django.http import JsonResponse
+from django.db import connection
 
 
-def login_view(request):
+def check_user(request):
     if request.method == 'POST':
-        form = LoginForm(request.POST)
-        if form.is_valid():
-            username = form.cleaned_data['username']
-            password = form.cleaned_data['password']
+        import json
+        data = json.loads(request.body)
+        login = data.get('login')
+        password = data.get('password')
 
-            # Проверяем существование пользователя
-            user = authenticate(request, username=username, password=password)
+        with connection.cursor() as cursor:
+            cursor.execute(
+                "SELECT COUNT(*) FROM users WHERE login = %s AND password = %s",
+                [login, password]
+            )
+            count = cursor.fetchone()[0]
 
-            if user is not None:
-                login(request, user)
-                return redirect('home')  # Перенаправление после успешного входа
-            else:
-                # Пользователь не найден или пароль неверный
-                form.add_error(None, "Неверный логин или пароль")
-    else:
-        form = LoginForm()
+        return JsonResponse({'exists': count > 0})
 
-    return render(request, 'achievements_app/login.html', {'form': form})
+    return JsonResponse({'exists': False})

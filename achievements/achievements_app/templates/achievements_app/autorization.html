@@ -9,51 +9,77 @@
 <body>
     <div class="header"></div>
     <div class="title">Вход</div>
+    <div class="minititle">Введите логин</div>
+    <div class="minititle2">Введите пароль</div>
+    <div class="eror">*ошибка</div>
+    <div class="eror2">*ошибка</div>
+    <a href="{% url 'recovery' %}" class="forgotPassword">забыли пароль?</a>
 
-
-    <form method="post" action="{% url 'login' %}" id="login-form">
-        {% csrf_token %}
-
-        <div class="minititle">Введите логин</div>
-        <div class="minititle2">Введите пароль</div>
-
-        <div class="eror">{% if form.errors %}*неверный логин или пароль{% endif %}</div>
-
-        <div class="containerLogin container-toggle">
-            <input type="text" name="username" class="input-field" placeholder="Логин" value="{{ form.username.value|default:'' }}">
-        </div>
-
-        <div class="containerPassword container-toggle">
-            <input type="password" name="password" class="input-field" placeholder="Пароль">
-        </div>
-
-        <a href="{% url 'recovery' %}" class="forgotPassword">забыли пароль?</a>
-        <div class="button"></div>
-        <div class="buttonText">Вход</div>
-
-    </form>
-
+    <div class="button"></div>
+    <div class="buttonText">Вход</div>
+    <div class="containerLogin container-toggle">
+        <input type="text" class="input-field" placeholder="Логин">
+    </div>
+    <div class="containerPassword container-toggle">
+        <input type="password" class="input-field" placeholder="Пароль">
+    </div>
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            const form = document.getElementById('login-form');
-            const loginInput = document.querySelector('input[name="username"]');
-            const passwordInput = document.querySelector('input[name="password"]');
+            const button = document.querySelector('.button');
+            const loginInput = document.querySelector('.containerLogin input');
+            const passwordInput = document.querySelector('.containerPassword input');
             const error1 = document.querySelector('.eror');
+            const error2 = document.querySelector('.eror2');
 
-            form.addEventListener('submit', function(e) {
+            button.addEventListener('click', function() {
+                // Сброс ошибок
+                error1.classList.remove('show-error');
+                error2.classList.remove('show-error');
+
+                let hasError = false;
+
+                // Проверка на пустые поля
                 if (!loginInput.value.trim()) {
-                    e.preventDefault();
                     error1.textContent = '*обязательно';
                     error1.classList.add('show-error');
-                    return;
+                    hasError = true;
                 }
 
                 if (!passwordInput.value.trim()) {
-                    e.preventDefault();
-                    error1.textContent = '*обязательно';
-                    error1.classList.add('show-error');
-                    return;
+                    error2.textContent = '*обязательно';
+                    error2.classList.add('show-error');
+                    hasError = true;
                 }
+
+                if (hasError) return;
+
+                // Отправка данных на сервер для проверки
+                fetch('{% url "check_user" %}', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRFToken': '{{ csrf_token }}'
+                    },
+                    body: JSON.stringify({
+                        login: loginInput.value.trim(),
+                        password: passwordInput.value.trim()
+                    })
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.exists) {
+                        // Пользователь найден, можно выполнить вход
+                        window.location.href = '{% url "recovery" %}';
+                    } else {
+                        // Пользователь не найден
+
+                        error2.textContent = '*неверный логин или пароль';
+                        error2.classList.add('show-error');
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                });
             });
         });
     </script>
