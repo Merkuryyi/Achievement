@@ -3,48 +3,56 @@
 <head>
     <title>Achievements</title>
     {% load static %}
-    <link rel="stylesheet" href="{% static 'achievements_app/css/styles.css' %}">
+    <link rel="stylesheet" href="{% static 'achievements_app/css/autorization.css' %}">
     <link href="https://fonts.googleapis.com/css2?family=Inter&display=swap" rel="stylesheet">
 </head>
 <body>
     <div class="header"></div>
     <div class="title">Вход</div>
-    <div class="minititle">Введите логин</div>
-    <div class="minititle2">Введите пароль</div>
-    <div class="eror">*ошибка</div>
-    <div class="eror2">*ошибка</div>
-    <a href="{% url 'recovery' %}" class="forgotPassword">забыли пароль?</a>
 
-    <div class="button"></div>
-    <div class="buttonText">Вход</div>
-    <div class="containerLogin container-toggle">
-        <input type="text" class="input-field" placeholder="Логин">
-    </div>
-    <div class="containerPassword container-toggle">
-        <input type="password" class="input-field" placeholder="Пароль">
-    </div>
+
+    <form method="post" action="{% url 'login' %}" id="login-form">
+        {% csrf_token %}
+
+        <div class="minititle">Введите логин</div>
+        <div class="minititle2">Введите пароль</div>
+
+        <div class="eror">{% if form.errors %}*неверный логин или пароль{% endif %}</div>
+
+        <div class="containerLogin container-toggle">
+            <input type="text" name="username" class="input-field" placeholder="Логин" value="{{ form.username.value|default:'' }}">
+        </div>
+
+        <div class="containerPassword container-toggle">
+            <input type="password" name="password" class="input-field" placeholder="Пароль">
+        </div>
+
+        <a href="{% url 'recovery' %}" class="forgotPassword">забыли пароль?</a>
+        <div class="button"></div>
+        <div class="buttonText">Вход</div>
+
+    </form>
+
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            const button = document.querySelector('.button');
-            const loginInput = document.querySelector('.containerLogin input');
-            const passwordInput = document.querySelector('.containerPassword input');
+            const form = document.getElementById('login-form');
+            const loginInput = document.querySelector('input[name="username"]');
+            const passwordInput = document.querySelector('input[name="password"]');
             const error1 = document.querySelector('.eror');
-            const error2 = document.querySelector('.eror2');
 
-            button.addEventListener('click', function() {
-
+            form.addEventListener('submit', function(e) {
                 if (!loginInput.value.trim()) {
+                    e.preventDefault();
                     error1.textContent = '*обязательно';
                     error1.classList.add('show-error');
-                } else {
-                    error1.classList.remove('show-error');
+                    return;
                 }
 
                 if (!passwordInput.value.trim()) {
-                    error2.textContent = '*обязательно';
-                    error2.classList.add('show-error');
-                } else {
-                    error2.classList.remove('show-error');
+                    e.preventDefault();
+                    error1.textContent = '*обязательно';
+                    error1.classList.add('show-error');
+                    return;
                 }
             });
         });
