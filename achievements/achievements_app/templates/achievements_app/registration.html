@@ -11,7 +11,7 @@
     <input type="password" class="input-field" placeholder="Пароль">
     </div>
     <div class="containerEmail container-toggle">
-    <input type="password" class="input-field" placeholder="Почта">
+    <input type="email" class="input-field" placeholder="Почта">
     </div>
     <div class="containerNumberPhone container-toggle">
     <input type="text" class="input-field" placeholder="Номер телефона"></div>
@@ -28,58 +28,57 @@
 
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-        const button = document.querySelector('.button');
-        const phoneInput = document.querySelector('.containerNumberPhone input');
-        const passwordInput = document.querySelector('.containerPassword input');
-        const emailInput = document.querySelector('.containerEmail input');
-        const error1 = document.querySelector('.eror');
-        const error2 = document.querySelector('.eror2');
-        const error3 = document.querySelector('.eror3');
+            const button = document.querySelector('.button');
+            const phoneInput = document.querySelector('.containerNumberPhone input');
+            const passwordInput = document.querySelector('.containerPassword input');
+            const emailInput = document.querySelector('.containerEmail input');
+            const error1 = document.querySelector('.eror');
+            const error2 = document.querySelector('.eror2');
+            const error3 = document.querySelector('.eror3');
 
-        button.addEventListener('click', function() {
-            if (!phoneInput.value.trim()) {
-                error1.textContent = '*обязательно';
-                error1.style.display = 'block';
-                error1.style.opacity = '1';
-            } else {
-                error1.style.display = 'none';
-                error1.style.opacity = '0';
-            }
-            if (!passwordInput.value.trim()) {
-                error3.textContent = '*обязательно';
-                error3.style.display = 'block';
-                error3.style.opacity = '1';
-            } else {
-                error3.style.display = 'none';
-                error3.style.opacity = '0';
-            }
-            if (!emailInput.value.trim()) {
-                error2.textContent = '*обязательно';
-                error2.style.display = 'block';
-                error2.style.opacity = '1';
-            } else {
-                error2.style.display = 'none';
-                error2.style.opacity = '0';
-            }
-        });
-        document.addEventListener("DOMContentLoaded", function() {
-          phoneInput.forEach(input => {
-            input.addEventListener('input', function(event) {
-              let value = this.value.replace(/\D/g, '');
-              let formattedValue = '';
-
-              if (value.length > 0) {
-                formattedValue = `+7(${value.substring(1, 4)})${value.substring(4, 7)}-${value.substring(7, 9)}-${value.substring(9, 11)}`;
-              }
-
-              this.value = formattedValue;
+            button.addEventListener('click', function () {
+                if (!phoneInput.value.trim()) {
+                    error1.textContent = '*обязательно';
+                    error1.style.display = 'block';
+                    error1.style.opacity = '1';
+                } else {
+                    error1.style.display = 'none';
+                    error1.style.opacity = '0';
+                }
+                if (!passwordInput.value.trim()) {
+                    error3.textContent = '*обязательно';
+                    error3.style.display = 'block';
+                    error3.style.opacity = '1';
+                } else {
+                    error3.style.display = 'none';
+                    error3.style.opacity = '0';
+                }
+                if (!emailInput.value.trim()) {
+                    error2.textContent = '*обязательно';
+                    error2.style.display = 'block';
+                    error2.style.opacity = '1';
+                } else {
+                    error2.style.display = 'none';
+                    error2.style.opacity = '0';
+                }
             });
-          });
+           phoneInput.addEventListener('input', function(event) {
+               let value = this.value.replace(/\D/g, '');
+               if (value.length > 0 && (value[0] === '7' || value[0] === '8')) {
+                   value = '7' + value.substring(1);
+               }
+               let formattedValue = '';
+               if (value.length > 0) {
+                   formattedValue = '+7';
+                   if (value.length > 1) {formattedValue += ' (' + value.substring(1, 4);}
+                   if (value.length > 4) {formattedValue += ') ' + value.substring(4, 7);}
+                   if (value.length > 7) {formattedValue += '-' + value.substring(7, 9); }
+                   if (value.length > 9) {formattedValue += '-' + value.substring(9, 11);}
+               }
+               this.value = formattedValue;
+           });
+
         });
-
-        const email = document.querySelector('.emailUse');
-        const miniTitle = document.querySelector('.miniTitle');
-
     </script>
 </body>
 </html>

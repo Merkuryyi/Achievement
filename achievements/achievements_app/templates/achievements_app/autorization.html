@@ -26,11 +26,30 @@
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             const button = document.querySelector('.button');
+            const forgotPassword = document.querySelector('.forgotPassword');
+
             const loginInput = document.querySelector('.containerLogin input');
             const passwordInput = document.querySelector('.containerPassword input');
             const error1 = document.querySelector('.eror');
             const error2 = document.querySelector('.eror2');
+            forgotPassword.addEventListener('click', function() {
 
+                error1.classList.remove('show-error');
+                error2.classList.remove('show-error');
+
+                let hasError = false;
+                if (!loginInput.value.trim()) {
+                    error1.textContent = '*обязательно';
+                    error1.classList.add('show-error');
+                    hasError = true;
+                }
+                if (!passwordInput.value.trim()) {
+                    error2.textContent = '*обязательно';
+                    error2.classList.add('show-error');
+                    hasError = true;
+                }
+                if (hasError) return;
+            });
             button.addEventListener('click', function() {
                 // Сброс ошибок
                 error1.classList.remove('show-error');
