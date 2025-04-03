@@ -7,6 +7,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter&display=swap" rel="stylesheet">
 </head>
 <body>
+<div class="background"></div>
     <div class="containerPassword container-toggle">
     <input type="password" class="input-field" placeholder="Пароль">
     </div>
@@ -15,7 +16,6 @@
     </div>
     <div class="containerNumberPhone container-toggle">
     <input type="text" class="input-field" placeholder="Номер телефона"></div>
-    <a href="{% url 'autorization' %}" class="backText" ><</a>
     <div class="title">Регистрация</div>
     <div class="miniTitle">Введите номер телефона</div>
     <div class="miniTitle2">Введите почту</div>
@@ -35,12 +35,19 @@
             const error1 = document.querySelector('.eror');
             const error2 = document.querySelector('.eror2');
             const error3 = document.querySelector('.eror3');
-
+            function isValidEmail(email) {
+                const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                return re.test(email);
+            }
             button.addEventListener('click', function () {
+                 let isValid = true;
+
+                // Проверка телефона
                 if (!phoneInput.value.trim()) {
                     error1.textContent = '*обязательно';
                     error1.style.display = 'block';
                     error1.style.opacity = '1';
+                    isValid = false;
                 } else {
                     error1.style.display = 'none';
                     error1.style.opacity = '0';
@@ -49,6 +56,7 @@
                     error3.textContent = '*обязательно';
                     error3.style.display = 'block';
                     error3.style.opacity = '1';
+                    isValid = false;
                 } else {
                     error3.style.display = 'none';
                     error3.style.opacity = '0';
@@ -57,10 +65,18 @@
                     error2.textContent = '*обязательно';
                     error2.style.display = 'block';
                     error2.style.opacity = '1';
+                    isValid = false;
+                } else if (!isValidEmail(emailInput.value)) {
+                    error2.textContent = '*неверный формат';
+                    error2.style.display = 'block';
+                    error2.style.opacity = '1';
+                    isValid = false;
                 } else {
                     error2.style.display = 'none';
                     error2.style.opacity = '0';
                 }
+                if (isValid) {window.location.href = "{% url 'additionalInformation' %}";}
+                return isValid;
             });
            phoneInput.addEventListener('input', function(event) {
                let value = this.value.replace(/\D/g, '');
@@ -77,6 +93,13 @@
                }
                this.value = formattedValue;
            });
+            emailInput.addEventListener('blur', function() {
+                if (emailInput.value.trim() && !isValidEmail(emailInput.value)) {
+                    error2.textContent = '*неверный формат email';
+                    error2.style.display = 'block';
+                    error2.style.opacity = '1';
+                }
+            });
 
         });
     </script>

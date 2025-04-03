@@ -1,3 +1,18 @@
+body {
+    background-color: #ECF2F8;
+}
+.background
+{
+    position: absolute;
+    width: 727px;
+    height: 877px;
+    left: calc(50% - 727px/2 + 0.5px);
+    top: 49px;
+    background: #FFFFFF;
+    border-radius: 5px;
+    left: 597px;
+    top: 49px;
+}
 .container-toggle {
     position: absolute;
     background: #ECF2F8 !important;
@@ -178,7 +193,7 @@
 }
 
 .eror2 {
-    width: 88px;
+    width: 300px;
     height: 19px;
     left: 800px;
     top: 550px;

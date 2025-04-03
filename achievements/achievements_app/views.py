@@ -1,9 +1,7 @@
-
-
-from django.contrib.auth import login, authenticate
 from django.shortcuts import render, redirect
-from .forms import LoginForm
 from .models import Achievement
+from django.http import JsonResponse
+from django.db import connection
 
 def autorization(request):
     achievements = Achievement.objects.all()
@@ -17,11 +15,10 @@ def registration(request):
     achievements = Achievement.objects.all()
     return render(request, 'achievements_app/registration.html',
                  {'achievements': achievements})
-
-
-from django.http import JsonResponse
-from django.db import connection
-
+def additionalInformation(request):
+    achievements = Achievement.objects.all()
+    return render(request, 'achievements_app/additionalInformation.html',
+                 {'achievements': achievements})
 
 def check_user(request):
     if request.method == 'POST':

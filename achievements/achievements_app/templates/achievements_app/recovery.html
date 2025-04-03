@@ -66,22 +66,16 @@
                 error3.style.opacity = '0';
             }
         });
-
-
-
-
         const email = document.querySelector('.emailUse');
         const miniTitle = document.querySelector('.miniTitle');
         email.addEventListener('click', function() {
             if (miniTitle.textContent === 'Введите код с номера телефона') {
                 miniTitle.textContent = 'Введите код с почты';
                 email.textContent = 'использовать номер телефона';
-                phoneInput.placeholder = "Почта";
 
             } else {
                 miniTitle.textContent = 'Введите код с номера телефона';
                 email.textContent = 'использовать почту';
-                phoneInput.placeholder = "Номер телефона";
             }
         });
 
