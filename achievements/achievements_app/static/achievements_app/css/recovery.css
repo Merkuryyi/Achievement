@@ -52,10 +52,7 @@ body {
     outline: none;
     color: #878CCD;
 }
-.input-field::placeholder {
-    color: #878CCD;
-    opacity: 1;
-}
+
 .containerPassword {
     width: 329px;
     height: 47px;

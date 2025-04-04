@@ -9,10 +9,10 @@
 <body>
 <div class="background"></div>
     <div class="containerPassword container-toggle">
-    <input type="password" class="input-field" placeholder="Пароль">
+    <input type="password" class="input-field" maxlength="30" placeholder="Пароль">
     </div>
     <div class="containerEmail container-toggle">
-    <input type="email" class="input-field" placeholder="Почта">
+    <input type="email" class="input-field" maxlength="30" placeholder="Почта">
     </div>
     <div class="containerNumberPhone container-toggle">
     <input type="text" class="input-field" placeholder="Номер телефона"></div>
@@ -75,7 +75,7 @@
                     error2.style.display = 'none';
                     error2.style.opacity = '0';
                 }
-                if (isValid) {window.location.href = "{% url 'additionalInformation' %}";}
+                if (isValid) {window.location.href = "{% url 'information' %}";}
                 return isValid;
             });
            phoneInput.addEventListener('input', function(event) {

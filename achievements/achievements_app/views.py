@@ -15,9 +15,9 @@ def registration(request):
     achievements = Achievement.objects.all()
     return render(request, 'achievements_app/registration.html',
                  {'achievements': achievements})
-def additionalInformation(request):
+def information(request):
     achievements = Achievement.objects.all()
-    return render(request, 'achievements_app/additionalInformation.html',
+    return render(request, 'achievements_app/information.html',
                  {'achievements': achievements})
 
 def check_user(request):

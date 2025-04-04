@@ -9,13 +9,13 @@
 <body>
     <div class="background"></div>
     <div class="containerPassword container-toggle">
-    <input type="password" class="input-field" placeholder="Пароль">
+    <input type="password" class="input-field" maxlength="30" placeholder="Пароль">
     </div>
     <div class="containerRepeatPassword container-toggle">
-    <input type="password" class="input-field" placeholder="Повторите пароль">
+    <input type="password" class="input-field" maxlength="30" placeholder="Повторите пароль">
     </div>
     <div class="containerNumberPhone container-toggle">
-    <input type="text" class="input-field" placeholder="Код"></div>
+    <input type="text" class="input-field" maxlength="4" placeholder="Код"></div>
     <a href="{% url 'autorization' %}" class="backText" ><</a>
     <div class="title">Восстановление</div>
     <div class="miniTitle">Введите код с номера телефона</div>
@@ -45,6 +45,7 @@
                 error1.textContent = '*обязательно';
                 error1.style.display = 'block';
                 error1.style.opacity = '1';
+
             } else {
                 error1.style.display = 'none';
                 error1.style.opacity = '0';
