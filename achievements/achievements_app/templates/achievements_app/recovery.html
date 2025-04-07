@@ -43,16 +43,16 @@
         const error2 = document.querySelector('.eror2');
         const error3 = document.querySelector('.eror3');
         const buttonSmall = document.querySelector('.buttonSmall');
-         const urlParams = new URLSearchParams(window.location.search);
-    const urlLogin = urlParams.get('login');
-    const storageLogin = sessionStorage.getItem('recovery_login');
-    const login = urlLogin || storageLogin;
-    const loginField = document.getElementById('recovery_login');
+        const urlParams = new URLSearchParams(window.location.search);
+        const urlLogin = urlParams.get('login');
+        const storageLogin = sessionStorage.getItem('recovery_login');
+        const login = urlLogin || storageLogin;
+        const loginField = document.getElementById('recovery_login');
 
     if (login && loginField) {
         loginField.value = login;
         sessionStorage.removeItem('recovery_login');
-        console.log('Логин восстановлен:', login);
+        console.log(login);
     } else if (!loginField) {
         console.error('Элемент recovery_login не найден в DOM');
     }
@@ -74,6 +74,27 @@
                 error1.style.display = 'none';
                 error1.style.opacity = '0';
                 hasEror = true;
+                if (codeInput.value !== code.value) {
+                error1.textContent = '*неверный код';
+                error1.style.display = 'block';
+                error1.style.opacity = '1';
+                hasEror = false;
+                }
+                else {
+                    error1.style.display = 'none';
+                    error1.style.opacity = '0';
+                    hasEror = true;
+                }
+            }
+             if (!repeatPasswordInput.value.trim()) {
+                error3.textContent = '*обязательно';
+                error3.style.display = 'block';
+                error3.style.opacity = '1';
+                hasEror = false;
+            } else {
+                error3.style.display = 'none';
+                error3.style.opacity = '0';
+                hasEror = true;
             }
             if (!passwordInput.value.trim()) {
                 error2.textContent = '*обязательно';
@@ -84,40 +105,23 @@
                 error2.style.display = 'none';
                 error2.style.opacity = '0';
                 hasEror = true;
-            }
-            if (!repeatPasswordInput.value.trim()) {
-                error3.textContent = '*обязательно';
-                error3.style.display = 'block';
-                error3.style.opacity = '1';
-                hasEror = false;
-            } else {
-                error3.style.display = 'none';
-                error3.style.opacity = '0';
-                hasEror = true;
-            }
-            if (passwordInput.value !== repeatPasswordInput.value) {
+                 if (passwordInput.value !== repeatPasswordInput.value) {
                 error3.textContent = '*пароли не совпадают';
                 error3.style.display = 'block';
                 error3.style.opacity = '1';
                 hasEror = false;
+                }
+                else {
+                    error3.style.display = 'none';
+                    error3.style.opacity = '0';
+                    hasEror = true;
+                }
             }
-            else {
-                error3.style.display = 'none';
-                error3.style.opacity = '0';
-                hasEror = true;
-            }
-
-            if (codeInput.value !== code.value) {
-                error1.textContent = '*неверный код';
-                error1.style.display = 'block';
-                error1.style.opacity = '1';
-                hasEror = false;
-            }
-            else {
-                error1.style.display = 'none';
-                error1.style.opacity = '0';
-                hasEror = true;
-            }
+            const postData = {
+                login: login,
+                password: passwordInput.value
+            };
+            console.log(postData);
             fetch('{% url "passwordReset" %}', {
                 method: 'POST',
                 headers: {
@@ -129,7 +133,6 @@
                 .then(response => response.json())
                 .then(data => {
                     if (data.success) {
-                        alert('Пароль изменен!');
                         window.location.href = '{% url "autorization" %}';
                     } else {
                         throw new Error(data.error || 'Ошибка сервера');
@@ -141,12 +144,6 @@
                     error2.style.display = 'block';
                 });
         });
-
-
-
-
-
-
     });
      </script>
 </body>

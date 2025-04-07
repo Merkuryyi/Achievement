@@ -40,16 +40,29 @@ def check_user(request):
     return JsonResponse({'exists': False})
 
 
+import traceback
+
+
 def passwordReset(request):
     if request.method == 'POST':
         try:
             data = json.loads(request.body)
+            login = data.get('login')
+            password = data.get('password')
+
+            if not login or not password:
+                return JsonResponse({'error': 'Логин и пароль обязательны'}, status=400)
+
             with connection.cursor() as cursor:
                 cursor.execute(
                     "UPDATE users SET password = %s WHERE login = %s",
-                    [make_password(data.get('password')), data.get('login')]
+                    [password, login]
                 )
+                if cursor.rowcount == 0:
+                    return JsonResponse({'error': 'Пользователь не найден'}, status=404)
+
             return JsonResponse({'success': True})
-        except:
-            return JsonResponse({'error': 'Ошибка'}, status=400)
-    return JsonResponse({'error': 'Только POST'}, status=405)
+        except Exception as e:
+            traceback.print_exc()
+            return JsonResponse({'error': str(e)}, status=500)
+    return JsonResponse({'error': 'Метод не разрешен'}, status=405)
