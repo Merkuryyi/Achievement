@@ -120,7 +120,6 @@ body {
     opacity: 1;
 }
 
-
 .containerLogin {
     width: 329px;
     height: 47px;
@@ -165,4 +164,58 @@ body {
         width: 100%;
         margin: 10px 0;
     }
+}
+.button{
+    position: absolute;
+     width: 329px;
+    height: 47px;
+    left: 386px;
+    top: 798px;
+    background: #D2BAFF;
+    border-radius: 5px;
+    transition: background-color 0.3s ease;
+    cursor: pointer;
+}
+.buttonText
+{
+    position: absolute;
+    height: 47px;
+    width: 126px;
+    left: 487px;
+    top: 729px;
+    font-family: 'Inter';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 24px;
+    line-height: 29px;
+    text-align: center;
+    color: #FFFFFF;
+}
+.button:hover{
+    background-color: #B896F7;
+}
+.button:active{
+    background-color: #B896F7;
+    transform: translateY(1px);
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+.backText
+{
+    position: absolute;
+    width: 88px;
+    height: 19px;
+    left: 154px;
+    top: 826px;
+    font-family: 'Inter';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 20px;
+    line-height: 24px;
+    color: #D2BAFF;
+}
+.backText:hover{
+    text-decoration: underline;
+    text-underline-offset: 3px;
+    text-decoration-thickness: 2px;
+    text-decoration-color: #D2BAFF;
 }

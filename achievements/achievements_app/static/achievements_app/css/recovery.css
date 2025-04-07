@@ -27,7 +27,7 @@ body {
     position: absolute;
     width: 727px;
     height: 877px;
-    left: calc(50% - 727px/2 + 0.5px);
+    left: 597px;
     top: 49px;
     background: #FFFFFF;
     border-radius: 5px;
@@ -200,7 +200,7 @@ body {
     opacity: 0;
 }
 .eror {
-    width: 88px;
+    width: 200px;
     height: 19px;
     left: 800px;
     top: 371px;
@@ -213,7 +213,7 @@ body {
     top: 550px;
 }
 .eror3 {
-    width: 88px;
+    width: 245px;
     height: 19px;
     left: 800px;
     top: 729px;

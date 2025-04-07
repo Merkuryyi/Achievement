@@ -1,8 +1,9 @@
 from django.shortcuts import render, redirect
 from .models import Achievement
 from django.http import JsonResponse
+from django.contrib.auth.hashers import make_password
 from django.db import connection
-
+import json
 def autorization(request):
     achievements = Achievement.objects.all()
     return render(request, 'achievements_app/autorization.html',
@@ -37,3 +38,18 @@ def check_user(request):
         return JsonResponse({'exists': count > 0})
 
     return JsonResponse({'exists': False})
+
+
+def passwordReset(request):
+    if request.method == 'POST':
+        try:
+            data = json.loads(request.body)
+            with connection.cursor() as cursor:
+                cursor.execute(
+                    "UPDATE users SET password = %s WHERE login = %s",
+                    [make_password(data.get('password')), data.get('login')]
+                )
+            return JsonResponse({'success': True})
+        except:
+            return JsonResponse({'error': 'Ошибка'}, status=400)
+    return JsonResponse({'error': 'Только POST'}, status=405)

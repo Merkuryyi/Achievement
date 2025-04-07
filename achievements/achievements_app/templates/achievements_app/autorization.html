@@ -13,7 +13,7 @@
     <div class="minititle2">Введите пароль</div>
     <div class="eror">*ошибка</div>
     <div class="eror2">*ошибка</div>
-    <a href="{% url 'recovery' %}" class="forgotPassword">забыли пароль?</a>
+    <a href="{% url 'recovery' %}?login=" class="forgotPassword">забыли пароль?</a>
 
     <div class="button"></div>
     <div class="buttonText">Вход</div>
@@ -36,28 +36,23 @@
 
                 error1.classList.remove('show-error');
                 error2.classList.remove('show-error');
+                const login = loginInput.value.trim();
 
-                let hasError = false;
-                if (!loginInput.value.trim()) {
-                    error1.textContent = '*обязательно';
+                if (!login) {
+                    error1.textContent = '*Введите логин';
                     error1.classList.add('show-error');
-                    hasError = true;
+                    return;
                 }
-                if (!passwordInput.value.trim()) {
-                    error2.textContent = '*обязательно';
-                    error2.classList.add('show-error');
-                    hasError = true;
-                }
-                if (hasError) return;
+
+                sessionStorage.setItem('recovery_login', login);
+                window.location.href = `{% url 'recovery' %}?login=${encodeURIComponent(login)}`;
             });
             button.addEventListener('click', function() {
-                // Сброс ошибок
                 error1.classList.remove('show-error');
                 error2.classList.remove('show-error');
 
                 let hasError = false;
 
-                // Проверка на пустые поля
                 if (!loginInput.value.trim()) {
                     error1.textContent = '*обязательно';
                     error1.classList.add('show-error');
@@ -69,10 +64,7 @@
                     error2.classList.add('show-error');
                     hasError = true;
                 }
-
                 if (hasError) return;
-
-                // Отправка данных на сервер для проверки
                 fetch('{% url "check_user" %}', {
                     method: 'POST',
                     headers: {
@@ -87,11 +79,8 @@
                 .then(response => response.json())
                 .then(data => {
                     if (data.exists) {
-                        // Пользователь найден, можно выполнить вход
                         window.location.href = '{% url "recovery" %}';
                     } else {
-                        // Пользователь не найден
-
                         error2.textContent = '*неверный логин или пароль';
                         error2.classList.add('show-error');
                     }

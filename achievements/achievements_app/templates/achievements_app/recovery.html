@@ -29,63 +29,123 @@
     <div class="buttonSmallText">код</div>
     <div class="buttonText">Восстановление</div>
     <div class="emailUse">использовать почту</div>
+    <!-- Добавьте где-нибудь внутри <body> -->
+<input type="hidden" id="recovery_login" name="login">
 
      <script>
+
          document.addEventListener('DOMContentLoaded', function() {
         const button = document.querySelector('.button');
-        const phoneInput = document.querySelector('.containerNumberPhone input');
+        const codeInput = document.querySelector('.containerNumberPhone input');
         const passwordInput = document.querySelector('.containerPassword input');
         const repeatPasswordInput = document.querySelector('.containerRepeatPassword input');
         const error1 = document.querySelector('.eror');
         const error2 = document.querySelector('.eror2');
         const error3 = document.querySelector('.eror3');
         const buttonSmall = document.querySelector('.buttonSmall');
+         const urlParams = new URLSearchParams(window.location.search);
+    const urlLogin = urlParams.get('login');
+    const storageLogin = sessionStorage.getItem('recovery_login');
+    const login = urlLogin || storageLogin;
+    const loginField = document.getElementById('recovery_login');
+
+    if (login && loginField) {
+        loginField.value = login;
+        sessionStorage.removeItem('recovery_login');
+        console.log('Логин восстановлен:', login);
+    } else if (!loginField) {
+        console.error('Элемент recovery_login не найден в DOM');
+    }
+    let code;
+    buttonSmall.addEventListener('click', function() {
+            const randomNumber = Math.floor(Math.random() * (9999 - 1000 + 1)) + 1000;
+            code = randomNumber;
+            console.log('Сгенерированный код:', randomNumber);
+        });
         button.addEventListener('click', function() {
-            if (!phoneInput.value.trim()) {
+        let hasEror = true;
+            if (!codeInput.value.trim()) {
                 error1.textContent = '*обязательно';
                 error1.style.display = 'block';
                 error1.style.opacity = '1';
+                hasEror = false;
 
             } else {
                 error1.style.display = 'none';
                 error1.style.opacity = '0';
+                hasEror = true;
             }
             if (!passwordInput.value.trim()) {
                 error2.textContent = '*обязательно';
                 error2.style.display = 'block';
                 error2.style.opacity = '1';
+                hasEror = false;
             } else {
                 error2.style.display = 'none';
                 error2.style.opacity = '0';
+                hasEror = true;
             }
             if (!repeatPasswordInput.value.trim()) {
                 error3.textContent = '*обязательно';
                 error3.style.display = 'block';
                 error3.style.opacity = '1';
+                hasEror = false;
             } else {
                 error3.style.display = 'none';
                 error3.style.opacity = '0';
+                hasEror = true;
             }
-        });
-        const email = document.querySelector('.emailUse');
-        const miniTitle = document.querySelector('.miniTitle');
-        email.addEventListener('click', function() {
-            if (miniTitle.textContent === 'Введите код с номера телефона') {
-                miniTitle.textContent = 'Введите код с почты';
-                email.textContent = 'использовать номер телефона';
-
-            } else {
-                miniTitle.textContent = 'Введите код с номера телефона';
-                email.textContent = 'использовать почту';
+            if (passwordInput.value !== repeatPasswordInput.value) {
+                error3.textContent = '*пароли не совпадают';
+                error3.style.display = 'block';
+                error3.style.opacity = '1';
+                hasEror = false;
             }
+            else {
+                error3.style.display = 'none';
+                error3.style.opacity = '0';
+                hasEror = true;
+            }
+
+            if (codeInput.value !== code.value) {
+                error1.textContent = '*неверный код';
+                error1.style.display = 'block';
+                error1.style.opacity = '1';
+                hasEror = false;
+            }
+            else {
+                error1.style.display = 'none';
+                error1.style.opacity = '0';
+                hasEror = true;
+            }
+            fetch('{% url "passwordReset" %}', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': '{{ csrf_token }}'
+                },
+                body: JSON.stringify(postData)
+            })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        alert('Пароль изменен!');
+                        window.location.href = '{% url "autorization" %}';
+                    } else {
+                        throw new Error(data.error || 'Ошибка сервера');
+                    }
+                })
+                .catch(error => {
+                    console.error('Ошибка:', error);
+                    error2.textContent = error.message || 'Ошибка соединения';
+                    error2.style.display = 'block';
+                });
         });
 
-        if (buttonSmall) {
-            buttonSmall.addEventListener('click', function() {
-                const randomNumber = Math.floor(Math.random() * (9999 - 1000 + 1)) + 1000;
-                console.log('Сгенерированный код:', randomNumber);
-            });
-        }
+
+
+
+
 
     });
      </script>
