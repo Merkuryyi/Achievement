@@ -29,8 +29,7 @@
     <div class="buttonSmallText">код</div>
     <div class="buttonText">Восстановление</div>
     <div class="emailUse">использовать почту</div>
-    <!-- Добавьте где-нибудь внутри <body> -->
-<input type="hidden" id="recovery_login" name="login">
+    <input type="hidden" id="recovery_login" name="login">
 
      <script>
 
@@ -104,17 +103,17 @@
             } else {
                 error2.style.display = 'none';
                 error2.style.opacity = '0';
-                hasEror = true;
+                hasEror = false;
                  if (passwordInput.value !== repeatPasswordInput.value) {
                 error3.textContent = '*пароли не совпадают';
                 error3.style.display = 'block';
                 error3.style.opacity = '1';
-                hasEror = false;
+                hasEror = true;
                 }
                 else {
                     error3.style.display = 'none';
                     error3.style.opacity = '0';
-                    hasEror = true;
+                    hasEror = false;
                 }
             }
             const postData = {

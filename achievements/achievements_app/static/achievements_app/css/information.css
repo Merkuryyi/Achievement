@@ -145,6 +145,12 @@ body {
     left: 551px;
     top: 513px;
 }
+.containerURL {
+    width: 329px;
+    height: 47px;
+    left: 1258px;
+    top: 513px;
+}
 .input-field:-webkit-autofill,
 .input-field:-webkit-autofill:hover,
 .input-field:-webkit-autofill:focus,
@@ -179,17 +185,18 @@ body {
 .buttonText
 {
     position: absolute;
-    height: 47px;
-    width: 126px;
-    left: 487px;
-    top: 729px;
+    width: 208px;
+    height: 23px;
+    left: 440px;
+    top: 807px;
     font-family: 'Inter';
     font-style: normal;
     font-weight: 400;
     font-size: 24px;
     line-height: 29px;
     text-align: center;
-    color: #FFFFFF; //000000
+    color: #FFFFFF;
+    cursor: pointer;
 }
 .button:hover{
     background-color: #B896F7;
@@ -218,4 +225,33 @@ body {
     text-underline-offset: 3px;
     text-decoration-thickness: 2px;
     text-decoration-color: #D2BAFF;
+}
+
+.eror
+{
+    position: absolute;
+    font-family: 'Inter', sans-serif;
+    font-size: 20px;
+    line-height: 24px;
+    color: #CD8987;
+    transition: opacity 0.3s ease;
+    opacity: 0; width: 200px;
+    height: 19px;
+    left: 184px;
+    top: 371px;
+}
+.show-error {
+    opacity: 1;
+}
+.photo
+{
+    position: absolute;
+    left: 1363px;
+    top: 301px;
+    bottom: 60%;
+    background: #878CCD;
+    border-radius: 50%;
+    width: 106px;
+    height: 106px;
+
 }

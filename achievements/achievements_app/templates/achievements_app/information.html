@@ -14,7 +14,7 @@
     <div class="miniTitleRightHigh">Имя</div>
     <div class="miniTitleRightLow">Отчество</div>
     <div class="miniTitleLeftLow">Фамилия</div>
-
+    <div class="eror" style="display: none;">*ошибка</div>
 
     <div class="containerLogin container-toggle">
         <input type="text" class="input-field" maxlength="30" placeholder="Логин">
@@ -28,12 +28,30 @@
     <div class="containerPatronymic container-toggle">
         <input type="text" class="input-field" maxlength="30" placeholder="Отчество">
     </div>
-
+    <div class="containerURL container-toggle">
+        <input type="text" class="input-field" maxlength="200" placeholder="URL">
+    </div>
     <div class="button"></div>
-<div class="buttonText">Сохранить</div>
+    <div class="buttonText">Сохранить</div>
     <a href="{% url 'registration' %}" class="backText" >назад</a>
+    <div class="photo"></div>
     <script>
-
+        document.addEventListener('DOMContentLoaded', function() {
+            const loginInput = document.querySelector('.containerLogin input');
+            const button = document.querySelector('.button');
+            const error1 = document.querySelector('.eror');
+            button.addEventListener('click', function () {
+                if (!loginInput.value.trim()) {
+                    error1.textContent = '*обязательно';
+                    error1.style.display = 'block';
+                    error1.style.opacity = '1';
+                }
+                else {
+                    error1.style.display = 'none';
+                    error1.style.opacity = '0';
+                }
+            });
+        });
     </script>
 </body>
 </html>
