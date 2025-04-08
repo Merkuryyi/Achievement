@@ -25,7 +25,6 @@
     <div class="eror3" style="display: none;">*ошибка</div>
     <div class="button"></div>
     <div class="buttonText">Далее</div>
-
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             const button = document.querySelector('.button');
@@ -39,45 +38,68 @@
                 const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
                 return re.test(email);
             }
+            function isValidNumberPhone(phone) {
+                const re = /^\+7\s\(\d{3}\)\s\d{3}-\d{2}-\d{2}$/;
+                return re.test(phone);
+            }
             button.addEventListener('click', function () {
-                 let isValid = true;
-
-                // Проверка телефона
+                 let hasEror = true;
+                   if (!emailInput.value.trim()) {
+                    error2.textContent = '*обязательно';
+                    error2.style.display = 'block';
+                    error2.style.opacity = '1';
+                    hasEror = true;
+                } else if (!isValidEmail(emailInput.value)) {
+                    error2.textContent = '*неверный формат';
+                    error2.style.display = 'block';
+                    error2.style.opacity = '1';
+                    hasEror = true;
+                } else {
+                    error2.style.display = 'none';
+                    error2.style.opacity = '0';
+                     hasEror = false;
+                }
                 if (!phoneInput.value.trim()) {
                     error1.textContent = '*обязательно';
                     error1.style.display = 'block';
                     error1.style.opacity = '1';
-                    isValid = false;
-                } else {
+                    hasEror = true;
+                }
+                else if (!isValidNumberPhone(phoneInput.value)) {
+                    error1.textContent = '*неверный формат';
+                    error1.style.display = 'block';
+                    error1.style.opacity = '1';
+                    hasEror = true;
+
+                }else {
                     error1.style.display = 'none';
                     error1.style.opacity = '0';
+                    hasEror = false;
                 }
                 if (!passwordInput.value.trim()) {
                     error3.textContent = '*обязательно';
                     error3.style.display = 'block';
                     error3.style.opacity = '1';
-                    isValid = false;
+                    hasEror = true;
                 } else {
                     error3.style.display = 'none';
                     error3.style.opacity = '0';
+                    hasEror = false;
                 }
-                if (!emailInput.value.trim()) {
-                    error2.textContent = '*обязательно';
-                    error2.style.display = 'block';
-                    error2.style.opacity = '1';
-                    isValid = false;
-                } else if (!isValidEmail(emailInput.value)) {
-                    error2.textContent = '*неверный формат';
-                    error2.style.display = 'block';
-                    error2.style.opacity = '1';
-                    isValid = false;
-                } else {
-                    error2.style.display = 'none';
-                    error2.style.opacity = '0';
+
+                if (!hasEror) {
+
+                    window.location.href = "{% url 'information' %}";
+                    sessionStorage.setItem('numberPhone', phoneInput.value.trim());
+                    sessionStorage.setItem('email', emailInput.value.trim());
+                    sessionStorage.setItem('password', passwordInput.value.trim());
+
                 }
-                if (isValid) {window.location.href = "{% url 'information' %}";}
-                return isValid;
+                return hasEror;
+
+
             });
+
            phoneInput.addEventListener('input', function(event) {
                let value = this.value.replace(/\D/g, '');
                if (value.length > 0 && (value[0] === '7' || value[0] === '8')) {
@@ -93,13 +115,6 @@
                }
                this.value = formattedValue;
            });
-            emailInput.addEventListener('blur', function() {
-                if (emailInput.value.trim() && !isValidEmail(emailInput.value)) {
-                    error2.textContent = '*неверный формат email';
-                    error2.style.display = 'block';
-                    error2.style.opacity = '1';
-                }
-            });
 
         });
     </script>

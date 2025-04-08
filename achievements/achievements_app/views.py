@@ -23,7 +23,6 @@ def information(request):
 
 def check_user(request):
     if request.method == 'POST':
-        import json
         data = json.loads(request.body)
         login = data.get('login')
         password = data.get('password')
@@ -39,9 +38,7 @@ def check_user(request):
 
     return JsonResponse({'exists': False})
 
-
 import traceback
-
 
 def passwordReset(request):
     if request.method == 'POST':
