@@ -1,7 +1,6 @@
 from django.shortcuts import render, redirect
 from .models import Achievement
 from django.http import JsonResponse
-from django.contrib.auth.hashers import make_password
 from django.db import connection
 import json
 def autorization(request):
@@ -63,3 +62,20 @@ def passwordReset(request):
             traceback.print_exc()
             return JsonResponse({'error': str(e)}, status=500)
     return JsonResponse({'error': 'Метод не разрешен'}, status=405)
+
+def registerUser(request):
+    if request.method == 'POST':
+            data = json.loads(request.body)
+            password = data.get('password')
+            email = data.get('email')
+            phone = data.get('phone')
+
+
+            with connection.cursor() as cursor:
+                cursor.execute("",
+                [password, email, phone])
+
+    return JsonResponse({'exists': True})
+
+
+

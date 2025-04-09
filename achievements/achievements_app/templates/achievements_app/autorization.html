@@ -35,14 +35,10 @@
             forgotPassword.addEventListener('click', function() {
 
                 const login = loginInput.value.trim();
-                if (!loginInput.value.trim())
+                if (loginInput.value.trim())
                 {
-                    e.preventDefault();
-                    return;
-                }
-                else{
-                      window.location.href = `{% url 'recovery' %}?login=${encodeURIComponent(login)}`;
-                       sessionStorage.setItem('recovery_login', login);
+                    window.location.href = `{% url 'recovery' %}?login=${encodeURIComponent(login)}`;
+                    sessionStorage.setItem('recovery_login', login);
                 }
 
             });

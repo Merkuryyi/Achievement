@@ -40,6 +40,10 @@
             const loginInput = document.querySelector('.containerLogin input');
             const button = document.querySelector('.button');
             const error1 = document.querySelector('.eror');
+            const email = sessionStorage.getItem('email');
+            const password = sessionStorage.getItem('password');
+            const numberPhone = sessionStorage.getItem('recovery_login');
+
             button.addEventListener('click', function () {
                 if (!loginInput.value.trim()) {
                     error1.textContent = '*обязательно';
