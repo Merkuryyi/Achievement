@@ -227,7 +227,10 @@ body {
     text-decoration-color: #D2BAFF;
 }
 
-.eror
+.eror1,
+.eror3,
+.eror2,
+.eror4
 {
     position: absolute;
     font-family: 'Inter', sans-serif;
@@ -235,10 +238,36 @@ body {
     line-height: 24px;
     color: #CD8987;
     transition: opacity 0.3s ease;
-    opacity: 0; width: 200px;
+    opacity: 0;
+}
+
+.eror1
+{
+    width: 200px;
     height: 19px;
     left: 184px;
     top: 371px;
+}
+.eror2
+{
+    width: 200px;
+    height: 19px;
+    left: 581px;
+    top: 371px;
+}
+.eror3
+{
+    width: 200px;
+    height: 19px;
+    left: 184px;
+    top: 570px;
+}
+.eror4
+{
+    width: 200px;
+    height: 19px;
+    left: 581px;
+    top: 570px;
 }
 .show-error {
     opacity: 1;

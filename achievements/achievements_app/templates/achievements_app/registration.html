@@ -44,37 +44,40 @@
             }
             button.addEventListener('click', function () {
                  let hasEror = true;
+                 let phoneEmpty;
+                 let emailEmpty;
                    if (!emailInput.value.trim()) {
                     error2.textContent = '*обязательно';
                     error2.style.display = 'block';
                     error2.style.opacity = '1';
-                    hasEror = true;
+                    emailEmpty = true;
+
                 } else if (!isValidEmail(emailInput.value)) {
                     error2.textContent = '*неверный формат';
                     error2.style.display = 'block';
                     error2.style.opacity = '1';
-                    hasEror = true;
+                    emailEmpty = true;
                 } else {
                     error2.style.display = 'none';
                     error2.style.opacity = '0';
-                     hasEror = false;
+                     emailEmpty = false;
                 }
                 if (!phoneInput.value.trim()) {
                     error1.textContent = '*обязательно';
                     error1.style.display = 'block';
                     error1.style.opacity = '1';
-                    hasEror = true;
+                    phoneEmpty = true;
                 }
                 else if (!isValidNumberPhone(phoneInput.value)) {
                     error1.textContent = '*неверный формат';
                     error1.style.display = 'block';
                     error1.style.opacity = '1';
-                    hasEror = true;
+                    phoneEmpty = true;
 
                 }else {
                     error1.style.display = 'none';
                     error1.style.opacity = '0';
-                    hasEror = false;
+                    phoneEmpty = false;
                 }
                 if (!passwordInput.value.trim()) {
                     error3.textContent = '*обязательно';
@@ -86,16 +89,58 @@
                     error3.style.opacity = '0';
                     hasEror = false;
                 }
+                if (!emailEmpty && !phoneEmpty) {
+                    validateAndRedirect();
+                    async function validateAndRedirect() {
+                        try {
+                            // 1. Сначала проверяем email
+                            const emailResponse = await fetch('{% url "check_email" %}', {
+                                method: 'POST',
+                                headers: {
+                                    'Content-Type': 'application/json',
+                                    'X-CSRFToken': '{{ csrf_token }}'
+                                },
+                                body: JSON.stringify({email: emailInput.value.trim()})
+                            });
 
-                if (!hasEror) {
+                            const emailData = await emailResponse.json();
 
-                    window.location.href = "{% url 'information' %}";
-                    sessionStorage.setItem('numberPhone', phoneInput.value.trim());
-                    sessionStorage.setItem('email', emailInput.value.trim());
-                    sessionStorage.setItem('password', passwordInput.value.trim());
+                            if (emailData.exists) {
+                                error2.textContent = '*email существует';
+                                error2.style.display = 'block';
+                                return;
+                            }
+                            const phoneResponse = await fetch('{% url "check_phone" %}', {
+                                method: 'POST',
+                                headers: {
+                                    'Content-Type': 'application/json',
+                                    'X-CSRFToken': '{{ csrf_token }}'
+                                },
+                                body: JSON.stringify({phone: phoneInput.value.trim()})
+                            });
+
+                            const phoneData = await phoneResponse.json();
+
+                            if (phoneData.exists) {
+                                error1.textContent = '*телефон существует';
+                                error1.style.display = 'block';
+                                return;
+                            }
+                            if (!emailEmpty && !phoneEmpty) {
+                                window.location.href = "{% url 'information' %}";
+                                sessionStorage.setItem('numberPhone', phoneInput.value.trim());
+                                sessionStorage.setItem('email', emailInput.value.trim());
+                                sessionStorage.setItem('password', passwordInput.value.trim());
+                            }
+
+                        } catch (error) {
+                            console.error('Error:', error);
+                        }
+                    }
 
                 }
-                return hasEror;
+
+
 
 
             });

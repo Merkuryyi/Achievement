@@ -37,6 +37,53 @@ def check_user(request):
 
     return JsonResponse({'exists': False})
 
+
+def check_login(request):
+    if request.method == 'POST':
+        data = json.loads(request.body)
+        login = data.get('login')
+
+        with connection.cursor() as cursor:
+            cursor.execute(
+                "select COUNT(login) from users where login = %s",
+                [login]
+            )
+            count = cursor.fetchone()[0]
+
+        return JsonResponse({'exists': count == 1})
+
+    return JsonResponse({'exists': False})
+
+def check_email(request):
+    if request.method == 'POST':
+        data = json.loads(request.body)
+        email = data.get('email')
+
+        with connection.cursor() as cursor:
+            cursor.execute(
+                "select COUNT(email) from users where email = %s",
+                [email]
+            )
+            count = cursor.fetchone()[0]
+
+        return JsonResponse({'exists': count == 1})
+
+    return JsonResponse({'exists': False})
+def check_phone(request):
+    if request.method == 'POST':
+        data = json.loads(request.body)
+        phone = data.get('phone')
+
+        with connection.cursor() as cursor:
+            cursor.execute(
+                "select COUNT(phone) from users where phone = %s",
+                [phone]
+            )
+            count = cursor.fetchone()[0]
+
+        return JsonResponse({'exists': count == 1})
+
+    return JsonResponse({'exists': False})
 import traceback
 
 def passwordReset(request):
@@ -69,11 +116,23 @@ def registerUser(request):
             password = data.get('password')
             email = data.get('email')
             phone = data.get('phone')
-
-
+            login = data.get('login')
+            status = "active"
             with connection.cursor() as cursor:
-                cursor.execute("",
-                [password, email, phone])
+                cursor.execute("insert into users (login, password, phone, email, ) values (%s, %s, %s, %s, %s)",
+                [login, password, phone, email, status])
+
+    return JsonResponse({'exists': True})
+
+def registerUserAdditionally(request):
+    if request.method == 'POST':
+            data = json.loads(request.body)
+            lastname = data.get('lastname')
+            firstname = data.get('firstname')
+            patronymic = data.get('patronym')
+            with connection.cursor() as cursor:
+                cursor.execute("insert into additional_information_users (lastname, firstname, patronymic) values (%s, %s, %s, %s)",
+                [lastname, firstname, patronymic])
 
     return JsonResponse({'exists': True})
 

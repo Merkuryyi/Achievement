@@ -14,8 +14,10 @@
     <div class="miniTitleRightHigh">Имя</div>
     <div class="miniTitleRightLow">Отчество</div>
     <div class="miniTitleLeftLow">Фамилия</div>
-    <div class="eror" style="display: none;">*ошибка</div>
-
+    <div class="eror1" style="display: none;">*ошибка</div>
+    <div class="eror2" style="display: none;">*ошибка</div>
+    <div class="eror3" style="display: none;">*ошибка</div>
+    <div class="eror4" style="display: none;">*ошибка</div>
     <div class="containerLogin container-toggle">
         <input type="text" class="input-field" maxlength="30" placeholder="Логин">
     </div>
@@ -38,22 +40,126 @@
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             const loginInput = document.querySelector('.containerLogin input');
+            const nameInput = document.querySelector('.containerName input');
+            const lNameInput = document.querySelector('.containerLName input');
+            const patronymiInput = document.querySelector('.containerPatronymic input');
             const button = document.querySelector('.button');
-            const error1 = document.querySelector('.eror');
+            const error1 = document.querySelector('.eror1');
+            const error2 = document.querySelector('.eror2');
+            const error3 = document.querySelector('.eror3');
+            const error4 = document.querySelector('.eror4');
             const email = sessionStorage.getItem('email');
             const password = sessionStorage.getItem('password');
-            const numberPhone = sessionStorage.getItem('recovery_login');
-
+            const numberPhone = sessionStorage.getItem('numberPhone');
+            let hasEror = true;
+            let loginStringEmpty = false;
             button.addEventListener('click', function () {
                 if (!loginInput.value.trim()) {
                     error1.textContent = '*обязательно';
                     error1.style.display = 'block';
                     error1.style.opacity = '1';
+                    hasEror = true;
+                    loginStringEmpty = true;
                 }
                 else {
                     error1.style.display = 'none';
                     error1.style.opacity = '0';
+                    hasEror = false;
+                    loginStringEmpty = false;
                 }
+                if (!nameInput.value.trim()) {
+                    error2.textContent = '*обязательно';
+                    error2.style.display = 'block';
+                    error2.style.opacity = '1';
+                    hasEror = true;
+                }
+                else {
+                    error2.style.display = 'none';
+                    error2.style.opacity = '0';
+                    hasEror = false;
+                }
+                if (!lNameInput.value.trim()) {
+                    error3.textContent = '*обязательно';
+                    error3.style.display = 'block';
+                    error3.style.opacity = '1';
+                    hasEror = true;
+                }
+                else {
+                    error3.style.display = 'none';
+                    error3.style.opacity = '0';
+                    hasEror = false;
+                }
+                if (!patronymiInput.value.trim()) {
+                    error4.textContent = '*обязательно';
+                    error4.style.display = 'block';
+                    error4.style.opacity = '1';
+                    hasEror = true;
+                }
+                else {
+                    error4.style.display = 'none';
+                    error4.style.opacity = '0';
+                    hasEror = false;
+                }
+                if (!loginStringEmpty) {
+                fetch('{% url "check_login" %}', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRFToken': '{{ csrf_token }}'
+                    },
+                    body: JSON.stringify({
+                        login: loginInput.value.trim(),
+                    })
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.exists) {
+
+                        error1.textContent = '*логин существует';
+                        error1.style.display = 'block';
+                        error1.style.opacity = '1';
+                    } else {
+                        error1.style.display = 'none';
+                        error1.style.opacity = '0';
+
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                });
+
+                }
+               /* if (!hasError) {
+                    const userData = {
+                        login: loginInput.value.trim(),
+                        firstName: nameInput.value.trim(),
+                        lastName: lNameInput.value.trim(),
+                        patronymic: patronymiInput.value.trim(),
+                        email: sessionStorage.getItem('email'),
+                        password: sessionStorage.getItem('password'),
+                        phone: sessionStorage.getItem('numberPhone')
+                    };
+                    fetch('/register', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'X-CSRFToken': getCSRFToken() // Нужно реализовать эту функцию
+                        },
+                        body: JSON.stringify(userData)
+                    })
+                        .then(response => response.json())
+                        .then(data => {
+                            if (data.success) {
+                                window.location.href = '/success-page'; // Перенаправление при успехе
+                            } else {
+                                showGlobalError(data.message || 'Ошибка регистрации');
+                            }
+                        })
+                        .catch(error => {
+                            showGlobalError('Ошибка соединения с сервером');
+                        });
+                }*/
+
             });
         });
     </script>
