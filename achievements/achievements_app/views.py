@@ -118,23 +118,24 @@ def registerUser(request):
             phone = data.get('phone')
             login = data.get('login')
             status = "active"
-            with connection.cursor() as cursor:
-                cursor.execute("insert into users (login, password, phone, email, ) values (%s, %s, %s, %s, %s)",
-                [login, password, phone, email, status])
-
-    return JsonResponse({'exists': True})
-
-def registerUserAdditionally(request):
-    if request.method == 'POST':
-            data = json.loads(request.body)
             lastname = data.get('lastname')
             firstname = data.get('firstname')
             patronymic = data.get('patronym')
             with connection.cursor() as cursor:
-                cursor.execute("insert into additional_information_users (lastname, firstname, patronymic) values (%s, %s, %s, %s)",
-                [lastname, firstname, patronymic])
+                cursor.execute("insert into users (login, password, phone, email, password ) values (%s, %s, %s, %s, %s)",
+                [login, password, phone, email, status])
+            with connection.cursor() as cursor1:
+                cursor1.execute(
+                    "select user_id from users where phone = %s",
+                    [phone]
+                )
+                id = cursor1.fetchone()[0]
 
-    return JsonResponse({'exists': True})
+            with connection.cursor() as cursor:
+                cursor.execute("insert into additional_information_users (user_id, lastname, firstname, patronymic) values (id, %s, %s, %s)",
+                [lastname, firstname, patronymic])
+    return JsonResponse({'success': True})
+
 
 
 

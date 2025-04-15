@@ -128,8 +128,9 @@
                     console.error('Error:', error);
                 });
 
+
                 }
-               /* if (!hasError) {
+                    if (!hasEror) {
                     const userData = {
                         login: loginInput.value.trim(),
                         firstName: nameInput.value.trim(),
@@ -139,28 +140,29 @@
                         password: sessionStorage.getItem('password'),
                         phone: sessionStorage.getItem('numberPhone')
                     };
-                    fetch('/register', {
+                    fetch('{% url "registerUser" %}', {
                         method: 'POST',
                         headers: {
                             'Content-Type': 'application/json',
-                            'X-CSRFToken': getCSRFToken() // Нужно реализовать эту функцию
+                            'X-CSRFToken': '{{ csrf_token }}'
                         },
                         body: JSON.stringify(userData)
                     })
                         .then(response => response.json())
                         .then(data => {
                             if (data.success) {
-                                window.location.href = '/success-page'; // Перенаправление при успехе
+                                window.location.href = '/success-page';
                             } else {
                                 showGlobalError(data.message || 'Ошибка регистрации');
                             }
                         })
                         .catch(error => {
-                            showGlobalError('Ошибка соединения с сервером');
-                        });
-                }*/
+                            console.error('Error:', error);
+                        })
+                }
 
             });
+
         });
     </script>
 </body>

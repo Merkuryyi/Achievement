@@ -93,7 +93,6 @@
                     validateAndRedirect();
                     async function validateAndRedirect() {
                         try {
-                            // 1. Сначала проверяем email
                             const emailResponse = await fetch('{% url "check_email" %}', {
                                 method: 'POST',
                                 headers: {
