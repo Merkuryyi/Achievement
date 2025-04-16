@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Achievements</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'achievements_app/css/panel.css' %}">
+    <link href="https://fonts.googleapis.com/css2?family=Inter&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="backgroundLeft"></div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const loginInput = document.querySelector('.containerLogin input');
+
+            button.addEventListener('click', function () {
+                if (!loginInput.value.trim()) {
+                    error1.textContent = '*обязательно';
+                    error1.style.display = 'block';
+                    error1.style.opacity = '1';
+                    hasEror = true;
+                    loginStringEmpty = true;
+                }
+                else {
+
+                }
+                    if (!hasEror) {
+                    const userData = {
+                        login: loginInput.value.trim(),
+                        firstName: nameInput.value.trim(),
+                        lastName: lNameInput.value.trim(),
+                        patronymic: patronymiInput.value.trim(),
+                        email: sessionStorage.getItem('email'),
+                        password: sessionStorage.getItem('password'),
+                        phone: sessionStorage.getItem('numberPhone')
+                    };
+                    fetch('{% url "registerUser" %}', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'X-CSRFToken': '{{ csrf_token }}'
+                        },
+                        body: JSON.stringify(userData)
+                    })
+                        .then(response => response.json())
+                        .then(data => {
+                            if (data.success) {
+                                window.location.href = "{% url 'recovery' %}";
+                            } else {
+                                showGlobalError(data.message || 'Ошибка регистрации');
+                            }
+                        })
+                        .catch(error => {
+                            console.error('Error:', error);
+                        })
+                }
+
+            });
+
+        });
+    </script>
+</body>
+</html>

@@ -15,4 +15,5 @@ path('registerUser/', views.registerUser, name = 'registerUser'),
 path('check_login/', views.check_login, name = 'check_login'),
 path('check_phone/', views.check_phone, name = 'check_phone'),
 path('check_email/', views.check_email, name = 'check_email'),
+path('', views.mainPage, name = 'mainPage'),
 ]

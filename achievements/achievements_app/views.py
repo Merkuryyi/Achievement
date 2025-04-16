@@ -19,7 +19,10 @@ def information(request):
     achievements = Achievement.objects.all()
     return render(request, 'achievements_app/information.html',
                  {'achievements': achievements})
-
+def mainPage(request):
+    achievements = Achievement.objects.all()
+    return render(request, 'achievements_app/mainPage.html',
+                 {'achievements': achievements})
 def check_user(request):
     if request.method == 'POST':
         data = json.loads(request.body)
@@ -118,11 +121,11 @@ def registerUser(request):
             phone = data.get('phone')
             login = data.get('login')
             status = "active"
-            lastname = data.get('lastname')
-            firstname = data.get('firstname')
-            patronymic = data.get('patronym')
+            lastname = data.get('lastName')
+            firstname = data.get('firstName')
+            patronymic = data.get('patronymic')
             with connection.cursor() as cursor:
-                cursor.execute("insert into users (login, password, phone, email, password ) values (%s, %s, %s, %s, %s)",
+                cursor.execute("insert into users (login, password, phone, email, status) values (%s, %s, %s, %s, %s)",
                 [login, password, phone, email, status])
             with connection.cursor() as cursor1:
                 cursor1.execute(
@@ -132,8 +135,8 @@ def registerUser(request):
                 id = cursor1.fetchone()[0]
 
             with connection.cursor() as cursor:
-                cursor.execute("insert into additional_information_users (user_id, lastname, firstname, patronymic) values (id, %s, %s, %s)",
-                [lastname, firstname, patronymic])
+                cursor.execute("insert into additional_information_users (user_id, lastname, firstname, patronymic) values (%s, %s, %s, %s)",
+                [id, lastname, firstname, patronymic])
     return JsonResponse({'success': True})
 
 
