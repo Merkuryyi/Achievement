@@ -7,11 +7,11 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter&display=swap" rel="stylesheet">
 </head>
 <body>
-    <div class="backgroundLeft"></div>
+    <div class="background"></div>
 
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            const loginInput = document.querySelector('.containerLogin input');
+          /*  const loginInput = document.querySelector('.containerLogin input');
 
             button.addEventListener('click', function () {
                 if (!loginInput.value.trim()) {
@@ -27,11 +27,7 @@
                     if (!hasEror) {
                     const userData = {
                         login: loginInput.value.trim(),
-                        firstName: nameInput.value.trim(),
-                        lastName: lNameInput.value.trim(),
-                        patronymic: patronymiInput.value.trim(),
-                        email: sessionStorage.getItem('email'),
-                        password: sessionStorage.getItem('password'),
+
                         phone: sessionStorage.getItem('numberPhone')
                     };
                     fetch('{% url "registerUser" %}', {
@@ -55,7 +51,7 @@
                         })
                 }
 
-            });
+            });*/
 
         });
     </script>

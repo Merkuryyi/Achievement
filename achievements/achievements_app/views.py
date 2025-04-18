@@ -23,6 +23,18 @@ def mainPage(request):
     achievements = Achievement.objects.all()
     return render(request, 'achievements_app/mainPage.html',
                  {'achievements': achievements})
+def userInformation(request):
+    achievements = Achievement.objects.all()
+    return render(request, 'achievements_app/userInformation.html',
+                 {'achievements': achievements})
+def editPassword(request):
+    achievements = Achievement.objects.all()
+    return render(request, 'achievements_app/editPassword.html',
+                 {'achievements': achievements})
+def panel(request):
+    achievements = Achievement.objects.all()
+    return render(request, 'achievements_app/panel.html',
+                 {'achievements': achievements})
 def check_user(request):
     if request.method == 'POST':
         data = json.loads(request.body)
@@ -137,6 +149,34 @@ def registerUser(request):
             with connection.cursor() as cursor:
                 cursor.execute("insert into additional_information_users (user_id, lastname, firstname, patronymic) values (%s, %s, %s, %s)",
                 [id, lastname, firstname, patronymic])
+    return JsonResponse({'success': True})
+
+
+def editUserInformation(request):
+    if request.method == 'POST':
+            data = json.loads(request.body)
+            phone = data.get('phone')
+            login = data.get('login')
+            lastname = data.get('lastName')
+            firstname = data.get('firstName')
+            patronymic = data.get('patronymic')
+
+            with connection.cursor() as cursor1:
+                cursor1.execute(
+                    "select user_id from users where phone = %s",
+                    [phone]
+                )
+                id = cursor1.fetchone()[0]
+
+
+            with connection.cursor() as cursor:
+                cursor.execute("update users set login = %s where user_id = %s",
+                [login, id])
+
+            with connection.cursor() as cursor:
+                cursor.execute("update additional_information_users set lastname = %s, firstname = %s, patronymic = %s where user_id = %s",
+                [lastname, firstname, patronymic, id])
+
     return JsonResponse({'success': True})
 
 

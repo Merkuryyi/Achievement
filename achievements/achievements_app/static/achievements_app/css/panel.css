@@ -1,0 +1,16 @@
+
+body {
+    background-color: #ECF2F8;
+}
+.background
+{
+
+    position: absolute;
+    width: 1824px;
+    height: 86px;
+    left: 48px;
+    top: 23px;
+    background: #D2BAFF;
+    border-radius: 5px;
+
+}
