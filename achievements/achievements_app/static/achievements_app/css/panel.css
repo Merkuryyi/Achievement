@@ -8,7 +8,7 @@ body {
     position: absolute;
     width: 1824px;
     height: 86px;
-    left: 58px;
+    left: 48px;
     top: 23px;
     background: #FFFFFF;
     border-radius: 5px;
@@ -18,8 +18,8 @@ body {
 {
 
     position: absolute;
-    width: 1824px;
-    height: 86px;
+    width: 116px;
+    height: 43px;
     left: 144px;
     top: 43px;
     background: #ECF2F8;
@@ -59,8 +59,8 @@ body {
     opacity: 1;
 }
 .containerSearch {
-        width: 1824px;
-    height: 86px;
-    left: 227px;
+    width: 1454px;
+    height: 43px;
+    left: 277px;
     top: 44px;
 }

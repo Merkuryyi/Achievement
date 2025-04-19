@@ -15,21 +15,21 @@ body {
 }
 .backgroundLeft
 {
-    top: 132px;
-    left: 58px;
+    top: 119px;
+    left: 48px;
 }
 
 .backgroundRight
 {
-    top: 132px;
-    left: 970px;
+    top: 119px;
+    left: 960px;
 }
 .title{
     position: absolute;
     width: 235px;
     height: 35px;
     left: 399px;
-    top: 223px;
+    top: 210px;
     font-family: 'Inter';
     font-style: normal;
     font-weight: 400;
@@ -37,6 +37,25 @@ body {
     line-height: 44px;
     text-align: center;
     color: #878CCD;
+}
+.login
+{
+    position: absolute;
+    width: 77px;
+    height: 46px;
+    left: 1401px;
+    top: 584px;
+
+    font-family: 'Inter';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 36px;
+    line-height: 44px;
+    text-align: center;
+
+    color: #878CCD;
+
+
 }
 .miniTitleRightHigh,
 .miniTitleLeftHigh,
@@ -57,28 +76,28 @@ body {
      width: 76px;
     height: 23px;
     left: 154px;
-    top: 344px;
+    top: 331px;
 }
 .miniTitleRightHigh
 {
      width: 53px;
     height: 23px;
     left: 551px;
-    top: 344px;
+    top: 331px;
 }
 .miniTitleLeftLow
 {
      width: 114px;
     height: 23px;
     left: 154px;
-    top: 543px;
+    top: 530px;
 }
 .miniTitleRightLow
 {
      width: 118px;
     height: 23px;
     left: 551px;
-    top: 543px;
+    top: 530px;
 }.container-toggle {
     position: absolute;
     background: #ECF2F8 !important;;
@@ -125,32 +144,32 @@ body {
     width: 329px;
     height: 47px;
     left: 154px;
-    top: 397px;
+    top: 384px;
 }
 
 .containerName {
     width: 329px;
     height: 47px;
     left: 551px;
-    top: 397px;
+    top: 384px;
 }
 .containerLName {
     width: 329px;
     height: 47px;
     left: 154px;
-    top: 596px;
+    top: 583px;
 }
 .containerPatronymic {
     width: 329px;
     height: 47px;
     left: 551px;
-    top: 596px;
+    top: 583px;
 }
 .containerURL {
     width: 329px;
     height: 47px;
     left: 1258px;
-    top: 596px;
+    top: 583px;
 }
 .input-field:-webkit-autofill,
 .input-field:-webkit-autofill:hover,
@@ -177,7 +196,7 @@ body {
      width: 329px;
     height: 47px;
     left: 386px;
-    top: 881px;
+    top: 869px;
     background: #D2BAFF;
     border-radius: 5px;
     transition: background-color 0.3s ease;
@@ -189,7 +208,7 @@ body {
     width: 208px;
     height: 23px;
     left: 440px;
-    top: 890px;
+    top: 878px;
     font-family: 'Inter';
     font-style: normal;
     font-weight: 400;
@@ -213,7 +232,7 @@ body {
     width: 88px;
     height: 19px;
     left: 154px;
-    top: 909px;
+    top: 886px;
     font-family: 'Inter';
     font-style: normal;
     font-weight: 400;
@@ -247,28 +266,28 @@ body {
     width: 200px;
     height: 19px;
     left: 184px;
-    top: 454px;
+    top: 441px;
 }
 .eror2
 {
     width: 200px;
     height: 19px;
     left: 581px;
-    top: 454px;
+    top: 441px;
 }
 .eror3
 {
     width: 200px;
     height: 19px;
     left: 184px;
-    top: 653px;
+    top: 640px;
 }
 .eror4
 {
     width: 200px;
     height: 19px;
     left: 581px;
-    top: 653px;
+    top: 640px;
 }
 .show-error {
     opacity: 1;
@@ -276,8 +295,8 @@ body {
 .photo
 {
     position: absolute;
-    left: 1363px;
-    top: 387px;
+    left: 1353px;
+    top: 347px;
     bottom: 60%;
     background: #878CCD;
     border-radius: 50%;
