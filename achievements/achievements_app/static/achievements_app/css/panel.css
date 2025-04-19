@@ -8,9 +8,59 @@ body {
     position: absolute;
     width: 1824px;
     height: 86px;
-    left: 48px;
+    left: 58px;
     top: 23px;
-    background: #D2BAFF;
+    background: #FFFFFF;
     border-radius: 5px;
+}
 
+.backgroundScores
+{
+
+    position: absolute;
+    width: 1824px;
+    height: 86px;
+    left: 144px;
+    top: 43px;
+    background: #ECF2F8;
+    border-radius: 5px;
+}
+
+.container-toggle {
+    position: absolute;
+    background: #ECF2F8 !important;
+    border-radius: 5px;
+    box-sizing: border-box;
+    transition: background 0.3s ease;
+}
+
+.input-field::placeholder {
+    color: #878CCD;
+    opacity: 1;
+}
+.container-toggle:focus-within {
+    border: 2px solid #D2BAFF;
+    background: #ECF2F8;
+    box-shadow: 0 0 0 0px rgba(138, 106, 255, 0.2);
+}
+.input-field {
+    width: 90%;
+    height: 100%;
+    border: none;
+    background: transparent;
+    padding: 0 15px;
+    font-family: 'Inter', sans-serif;
+    font-size: 16px;
+    outline: none;
+    color: #878CCD;
+}
+.input-field::placeholder {
+    color: #878CCD;
+    opacity: 1;
+}
+.containerSearch {
+        width: 1824px;
+    height: 86px;
+    left: 227px;
+    top: 44px;
 }
