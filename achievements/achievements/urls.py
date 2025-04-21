@@ -18,6 +18,7 @@ urlpatterns = [
     path('', views.mainPage, name = 'mainPage'),
     path('userInformation/', views.userInformation, name = 'userInformation'),
     path('panel/', views.panel, name = 'panel'),
-    path('editPassword/', views.editPassword, name = 'editPassword')
-
+    path('editPassword/', views.editPassword, name = 'editPassword'),
+    path('scoreUser/', views.scoreUser, name = 'scoreUser'),
+path('check_password/', views.check_password, name = 'check_password'),
 ]

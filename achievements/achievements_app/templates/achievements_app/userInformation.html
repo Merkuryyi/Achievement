@@ -41,9 +41,6 @@
     <div class="login"></div>
     <div class="photo"></div>
     <script>
-   /* fetch('/panel.html')
-    .then(response => response.text())
-    .then(html => document.getElementById('panel-container').innerHTML = html);*/
         document.addEventListener('DOMContentLoaded', function() {
             const loginInput = document.querySelector('.containerLogin input');
             const nameInput = document.querySelector('.containerName input');
@@ -54,9 +51,6 @@
             const error2 = document.querySelector('.eror2');
             const error3 = document.querySelector('.eror3');
             const error4 = document.querySelector('.eror4');
-            const email = sessionStorage.getItem('email');
-            const password = sessionStorage.getItem('password');
-            const numberPhone = sessionStorage.getItem('numberPhone');
             let hasEror = true;
             let loginStringEmpty = false;
             button.addEventListener('click', function () {

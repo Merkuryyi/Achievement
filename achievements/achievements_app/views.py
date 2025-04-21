@@ -99,31 +99,19 @@ def check_phone(request):
         return JsonResponse({'exists': count == 1})
 
     return JsonResponse({'exists': False})
-import traceback
 
 def passwordReset(request):
     if request.method == 'POST':
-        try:
             data = json.loads(request.body)
-            login = data.get('login')
+            phone = data.get('phone')
             password = data.get('password')
-
-            if not login or not password:
-                return JsonResponse({'error': 'Логин и пароль обязательны'}, status=400)
 
             with connection.cursor() as cursor:
                 cursor.execute(
-                    "UPDATE users SET password = %s WHERE login = %s",
-                    [password, login]
+                    "UPDATE users SET password = %s WHERE phone = %s",
+                    [password, phone]
                 )
-                if cursor.rowcount == 0:
-                    return JsonResponse({'error': 'Пользователь не найден'}, status=404)
-
-            return JsonResponse({'success': True})
-        except Exception as e:
-            traceback.print_exc()
-            return JsonResponse({'error': str(e)}, status=500)
-    return JsonResponse({'error': 'Метод не разрешен'}, status=405)
+    return JsonResponse({'success': True})
 
 def registerUser(request):
     if request.method == 'POST':
@@ -167,8 +155,6 @@ def editUserInformation(request):
                     [phone]
                 )
                 id = cursor1.fetchone()[0]
-
-
             with connection.cursor() as cursor:
                 cursor.execute("update users set login = %s where user_id = %s",
                 [login, id])
@@ -178,6 +164,49 @@ def editUserInformation(request):
                 [lastname, firstname, patronymic, id])
 
     return JsonResponse({'success': True})
+
+def scoreUser(request):
+    try:
+        data = json.loads(request.body)
+        phone = data.get('phone')
+        cursor = connection.cursor()
+        try:
+            cursor.execute(
+                "SELECT COUNT(*) FROM achievement "
+                "INNER JOIN users ON achievement.user_id = users.user_id "
+                "WHERE phone = %s",
+                [phone]
+            )
+            score = cursor.fetchone()[0]
+            return JsonResponse({'score': score})
+        finally:
+            cursor.close()
+
+    except json.JSONDecodeError:
+        return JsonResponse({'error': 'Invalid JSON'}, status=400)
+    except Exception as e:
+        return JsonResponse({'error': str(e)}, status=500)
+
+def check_password(request):
+    try:
+        data = json.loads(request.body)
+        phone = data.get('phone')
+        cursor = connection.cursor()
+        try:
+            cursor.execute(
+                "select password from users where phone = %s",
+                [phone]
+            )
+            password = cursor.fetchone()[0]
+            return JsonResponse({'password': password})
+        finally:
+            cursor.close()
+
+    except json.JSONDecodeError:
+        return JsonResponse({'error': 'Invalid JSON'}, status=400)
+    except Exception as e:
+        return JsonResponse({'error': str(e)}, status=500)
+
 
 
 

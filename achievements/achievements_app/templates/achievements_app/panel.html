@@ -12,50 +12,36 @@
     <div class="containerSearch container-toggle">
     <input type="text" class="input-field" maxlength="30" placeholder="Пароль">
     </div>
-
+    <photo class="photoProfile"></photo>
+    <buttonSearch class="buttonSearch"></buttonSearch>
+    <scoresIcon class="scoresIcon"></scoresIcon>
+    <scores class="scores">1</scores>
     <script>
+        const button = document.querySelector('.buttonSearch');
+        const scores = document.querySelector('.scores');
         document.addEventListener('DOMContentLoaded', function() {
-          /*  const loginInput = document.querySelector('.containerLogin input');
-
-            button.addEventListener('click', function () {
-                if (!loginInput.value.trim()) {
-                    error1.textContent = '*обязательно';
-                    error1.style.display = 'block';
-                    error1.style.opacity = '1';
-                    hasEror = true;
-                    loginStringEmpty = true;
+                const userData = {
+                    phone: sessionStorage.getItem('numberPhone')
+                };
+                fetch('{% url "scoreUser" %}', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRFToken': '{{ csrf_token }}'
+                    },
+                    body: JSON.stringify(userData)
+                })
+                .then(response => response.json())
+                .then(data => {
+                if (data.score !== undefined) {
+                    scores.textContent = data.score;
+                } else {
+                    showGlobalError(data.error || 'Неизвестная ошибка сервера');
                 }
-                else {
-
-                }
-                    if (!hasEror) {
-                    const userData = {
-                        login: loginInput.value.trim(),
-
-                        phone: sessionStorage.getItem('numberPhone')
-                    };
-                    fetch('{% url "registerUser" %}', {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json',
-                            'X-CSRFToken': '{{ csrf_token }}'
-                        },
-                        body: JSON.stringify(userData)
-                    })
-                        .then(response => response.json())
-                        .then(data => {
-                            if (data.success) {
-                                window.location.href = "{% url 'recovery' %}";
-                            } else {
-                                showGlobalError(data.message || 'Ошибка регистрации');
-                            }
-                        })
-                        .catch(error => {
-                            console.error('Error:', error);
-                        })
-                }
-
-            });*/
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                })
 
         });
     </script>

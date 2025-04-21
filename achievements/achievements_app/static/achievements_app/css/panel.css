@@ -6,7 +6,7 @@ body {
 {
 
     position: absolute;
-    width: 1824px;
+    width: 1814px;
     height: 86px;
     left: 48px;
     top: 23px;
@@ -63,4 +63,67 @@ body {
     height: 43px;
     left: 277px;
     top: 44px;
+}
+.photoProfile
+{
+    position: absolute;
+    left: 83px;
+    top: 44px;
+    bottom: 60%;
+    background: #878CCD;
+    border-radius: 50%;
+    width: 42px;
+    height: 42px;
+
+}
+.buttonSearch
+{
+    position: absolute;
+    left: 1749px;
+    top: 44px;
+    width: 74px;
+    height: 43px;
+    background: #D2BAFF;
+    border-radius: 5px;
+    flex: none;
+    order: 3;
+    flex-grow: 0;
+}
+.scoresIcon
+{
+    position: absolute;
+    left: 155px;
+    top: 56px;
+    width: 19px;
+    height: 19px;
+    background: #D2BAFF;
+    border-radius: 5px;
+
+}
+.scores
+{
+    position: absolute;
+    left: 181px;
+    top: 51px;
+    width: 72px;
+    height: 29px;
+    font-family: 'Inter';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 24px;
+    line-height: 29px;
+    text-align: right;
+    color: #878CCD;
+    flex: none;
+    order: 1;
+    flex-grow: 0;
+
+}
+.buttonSearch:hover{
+    background-color: #B896F7;
+}
+.buttonSearch:active{
+    background-color: #B896F7;
+    transform: translateY(1px);
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
 }
