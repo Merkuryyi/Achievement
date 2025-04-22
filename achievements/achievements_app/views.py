@@ -191,6 +191,7 @@ def check_password(request):
     try:
         data = json.loads(request.body)
         phone = data.get('phone')
+        passwordInput = data.get('password')
         cursor = connection.cursor()
         try:
             cursor.execute(
@@ -198,7 +199,13 @@ def check_password(request):
                 [phone]
             )
             password = cursor.fetchone()[0]
-            return JsonResponse({'password': password})
+
+            if password == passwordInput:
+                return JsonResponse({'valid': True})
+            else:
+                return JsonResponse({'valid': False})
+
+
         finally:
             cursor.close()
 
