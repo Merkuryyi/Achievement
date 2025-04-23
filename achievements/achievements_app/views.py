@@ -35,6 +35,10 @@ def panel(request):
     achievements = Achievement.objects.all()
     return render(request, 'achievements_app/panel.html',
                  {'achievements': achievements})
+def mainPageProfile(request):
+    achievements = Achievement.objects.all()
+    return render(request, 'achievements_app/mainPageProfile.html',
+                 {'achievements': achievements})
 def check_user(request):
     if request.method == 'POST':
         data = json.loads(request.body)

@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Achievements</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'achievements_app/css/mainPageProfile.css' %}">
+    <link href="https://fonts.googleapis.com/css2?family=Inter&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="background"></div>
+
+
+
+
+    <script>
+       /* const button = document.querySelector('.buttonSearch');
+        const scores = document.querySelector('.scores');
+        document.addEventListener('DOMContentLoaded', function() {
+                const userData = {
+                    phone: sessionStorage.getItem('numberPhone')
+                };
+                fetch('{% url "scoreUser" %}', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRFToken': '{{ csrf_token }}'
+                    },
+                    body: JSON.stringify(userData)
+                })
+                .then(response => response.json())
+                .then(data => {
+                if (data.score !== undefined) {
+                    scores.textContent = data.score;
+                } else {
+                    showGlobalError(data.error || 'Неизвестная ошибка сервера');
+                }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                })
+
+        });*/
+    </script>
+</body>
+</html>
