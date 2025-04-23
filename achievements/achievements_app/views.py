@@ -199,7 +199,7 @@ def check_password(request):
         cursor = connection.cursor()
         try:
             cursor.execute(
-                "select password from users where phone = %s",
+                "SELECT password FROM users where phone = %s",
                 [phone]
             )
             password = cursor.fetchone()[0]
@@ -210,6 +210,26 @@ def check_password(request):
                 return JsonResponse({'valid': False})
 
 
+        finally:
+            cursor.close()
+
+    except json.JSONDecodeError:
+        return JsonResponse({'error': 'Invalid JSON'}, status=400)
+    except Exception as e:
+        return JsonResponse({'error': str(e)}, status=500)
+
+def loginUser(request):
+    try:
+        data = json.loads(request.body)
+        phone = data.get('phone')
+        cursor = connection.cursor()
+        try:
+            cursor.execute(
+                "SELECT login FROM users WHERE phone = %s",
+                [phone]
+            )
+            login = cursor.fetchone()[0]
+            return JsonResponse({'login': login})
         finally:
             cursor.close()
 

@@ -10,3 +10,92 @@ background: #ECF2F8;
 border-radius: 5px;
 
 }
+.loginUser{
+    position: absolute;
+    width: 217px;
+    height: 34px;
+    left: 161px;
+    top: 150px;
+
+    font-family: 'Inter';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 32px;
+    line-height: 39px;
+    color: #878CCD;
+
+}
+.securityText,
+.notificationText,
+.achievementsText,
+.exitText,
+.deleteProfile{
+    font-family: 'Inter';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 24px;
+    line-height: 29px;
+}
+.securityText
+{
+    position: absolute;
+    width: 217px;
+    height: 29px;
+    left: 94px;
+    top: 221px;
+    color: #878CCD;
+}
+.notificationText
+{
+    position: absolute;
+    width: 217px;
+    height: 23px;
+    left: 94px;
+    top: 286px;
+    color: #878CCD;
+}
+.achievementsText
+{
+    position: absolute;
+    width: 217px;
+    height: 23px;
+    left: 94px;
+    top: 351px;
+    color: #878CCD;
+}
+.exitText
+{
+    position: absolute;
+    width: 222px;
+    height: 25px;
+    left: 94px;
+    top: 416px;
+    color: #878CCD;
+}
+.deleteProfile
+{
+    position: absolute;
+    width: 224px;
+    height: 23px;
+    left: 94px;
+    top: 481px;
+    color: #CD8787;
+}
+.photo{
+    position: absolute;
+    width: 47px;
+    height: 47px;
+    left: 94px;
+    top: 144px;
+    background: #878CCD;
+    border-radius: 50%;
+}
+.icon {
+    position: absolute;
+    top: 416px;    /* Отступ сверху */
+    left: 155px;   /* Отступ слева */
+
+    cursor: pointer; /* Изменяем курсор при наведении */
+    width: 24px;
+    height: 24px;
+}

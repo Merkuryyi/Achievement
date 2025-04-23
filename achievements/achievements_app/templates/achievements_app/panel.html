@@ -21,7 +21,7 @@
         const scores = document.querySelector('.scores');
         document.addEventListener('DOMContentLoaded', function() {
                 const userData = {
-                    phone: sessionStorage.getItem('numberPhone')
+                    phone: localStorage.getItem('numberPhone')
                 };
                 fetch('{% url "scoreUser" %}', {
                     method: 'POST',
