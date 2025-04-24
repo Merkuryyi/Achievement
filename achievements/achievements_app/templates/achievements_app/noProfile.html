@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Achievements</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'achievements_app/css/mainPageProfile.css' %}">
+    <link href="https://fonts.googleapis.com/css2?family=Inter&display=swap" rel="stylesheet">
+</head>
+<body>
+<div class="background"></div>
+<div class="registrationTitle">Регистрация</div>
+<div>
+    <button class="button"> </button>
+    <buttonText class="autorizationTitle">Вход</buttonText>
+</div>
+    <script>
+        const button = document.querySelector('.button');
+        const buttonText = document.querySelector('.autorizationTitle');
+        const registrationText = document.querySelector('.registrationTitle');
+        document.addEventListener('DOMContentLoaded', function() {
+            function redirectToAuth()
+            {
+                window.location.href = "{% url 'autorization' %}";
+            }
+
+            button.addEventListener('click', redirectToAuth);
+            buttonText.addEventListener('click', redirectToAuth);
+            registrationText.addEventListener('click', function ()
+            {
+                window.location.href = "{% url 'registration' %}";
+            });
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,49 @@
+.background
+{
+    position: absolute;
+    width: 439px;
+    height: 427px;
+    left: 48px;
+    top: 119px;
+    background: #ECF2F8;
+    border-radius: 5px;
+}
+.registrationTitle
+{
+    position: absolute;
+    width: 157px;
+    height: 25px;
+    left: 189px;
+    top: 305px;
+    font-family: 'Inter';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 24px;
+    line-height: 29px;
+    color: #878CCD;
+    cursor: pointer;
+}
+.autorizationTitle
+{
+    position: absolute;
+    width: 61px;
+    height: 25px;
+    left: 232px;
+    top: 346px;
+    font-family: 'Inter';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 24px;
+    line-height: 29px;
+    color: #FEFEFE;
+    cursor: pointer;
+}
+.button
+{
+    position: absolute;
+    left: 223px;
+    top: 339px;
+    background: #D2BAFF;
+    border-radius: 5px;
+    cursor: pointer;
+}

@@ -39,6 +39,10 @@ def mainPageProfile(request):
     achievements = Achievement.objects.all()
     return render(request, 'achievements_app/mainPageProfile.html',
                  {'achievements': achievements})
+def noProfile(request):
+    achievements = Achievement.objects.all()
+    return render(request, 'achievements_app/noProfile.html',
+                 {'achievements': achievements})
 def check_user(request):
     if request.method == 'POST':
         data = json.loads(request.body)

@@ -102,7 +102,7 @@ border-radius: 5px;
 .iconNext1 {
     position: absolute;
     left: 425px;
-    top: 247px;
+    top: 225px;
     cursor: pointer;
     width: 21px;
     height: 11px;
@@ -110,7 +110,7 @@ border-radius: 5px;
 .iconNext2 {
     position: absolute;
     left: 425px;
-    top: 312px;
+    top: 290px;
     cursor: pointer;
     width: 21px;
     height: 11px;
@@ -118,7 +118,7 @@ border-radius: 5px;
 .iconNext3 {
     position: absolute;
     left: 425px;
-    top: 376px;
+    top: 353px;
     cursor: pointer;
     width: 21px;
     height: 11px;
@@ -134,8 +134,8 @@ border-radius: 5px;
 .iconDelete
 {
     position: absolute;
-    left: 415px;
-    top: 479px;
+    left: 414px;
+    top: 477px;
     width: 35px;
     height: 37px;
 }
