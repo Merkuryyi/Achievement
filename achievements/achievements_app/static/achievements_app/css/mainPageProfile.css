@@ -92,10 +92,50 @@ border-radius: 5px;
 }
 .icon {
     position: absolute;
-    top: 416px;    /* Отступ сверху */
-    left: 155px;   /* Отступ слева */
-
-    cursor: pointer; /* Изменяем курсор при наведении */
+    top: 155px;
+    left: 416px;
+    cursor: pointer;
     width: 24px;
     height: 24px;
+}
+
+.iconNext1 {
+    position: absolute;
+    left: 425px;
+    top: 247px;
+    cursor: pointer;
+    width: 21px;
+    height: 11px;
+}
+.iconNext2 {
+    position: absolute;
+    left: 425px;
+    top: 312px;
+    cursor: pointer;
+    width: 21px;
+    height: 11px;
+}
+.iconNext3 {
+    position: absolute;
+    left: 425px;
+    top: 376px;
+    cursor: pointer;
+    width: 21px;
+    height: 11px;
+}
+.iconExit {
+    position: absolute;
+    left: 420px;
+    top: 419px;
+    cursor: pointer;
+    width: 22px;
+    height: 25px;
+}
+.iconDelete
+{
+    position: absolute;
+    left: 415px;
+    top: 479px;
+    width: 35px;
+    height: 37px;
 }
