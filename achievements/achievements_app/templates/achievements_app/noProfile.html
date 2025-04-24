@@ -3,18 +3,20 @@
 <head>
     <title>Achievements</title>
     {% load static %}
-    <link rel="stylesheet" href="{% static 'achievements_app/css/mainPageProfile.css' %}">
+    <link rel="stylesheet" href="{% static 'achievements_app/css/noProfile.css' %}">
     <link href="https://fonts.googleapis.com/css2?family=Inter&display=swap" rel="stylesheet">
 </head>
 <body>
-<div class="background"></div>
+
+<div class="backgroundNoProfile"></div>
 <div class="registrationTitle">Регистрация</div>
 <div>
-    <button class="button"> </button>
+    <buttons class="buttons"></buttons>
     <buttonText class="autorizationTitle">Вход</buttonText>
 </div>
+
     <script>
-        const button = document.querySelector('.button');
+        const button = document.querySelector('.buttons');
         const buttonText = document.querySelector('.autorizationTitle');
         const registrationText = document.querySelector('.registrationTitle');
         document.addEventListener('DOMContentLoaded', function() {
@@ -22,7 +24,6 @@
             {
                 window.location.href = "{% url 'autorization' %}";
             }
-
             button.addEventListener('click', redirectToAuth);
             buttonText.addEventListener('click', redirectToAuth);
             registrationText.addEventListener('click', function ()

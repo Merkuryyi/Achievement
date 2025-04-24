@@ -1,5 +1,7 @@
-.background
+
+.backgroundNoProfile
 {
+
     position: absolute;
     width: 439px;
     height: 427px;
@@ -7,7 +9,10 @@
     top: 119px;
     background: #ECF2F8;
     border-radius: 5px;
+
 }
+
+
 .registrationTitle
 {
     position: absolute;
@@ -38,12 +43,25 @@
     color: #FEFEFE;
     cursor: pointer;
 }
-.button
+.buttons
 {
     position: absolute;
     left: 223px;
     top: 339px;
+    width: 74px;
+    height: 43px;
     background: #D2BAFF;
     border-radius: 5px;
     cursor: pointer;
+    transition: background-color 0.3s ease;
+    bottom: 85.29%;
+
+}
+.buttons:hover{
+    background-color: #B896F7;
+}
+.buttons:active{
+    background-color: #B896F7;
+    transform: translateY(1px);
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
 }

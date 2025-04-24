@@ -7,18 +7,26 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter&display=swap" rel="stylesheet">
 </head>
 <body>
-    <div class="background"></div>
-<div class="backgroundScores"></div>
+    <div class="backgroundPanel"></div>
+    <div class="backgroundScores"></div>
     <div class="containerSearch container-toggle">
     <input type="text" class="input-field" maxlength="30" placeholder="Поиск">
     </div>
-    <photo class="photoProfile"></photo>
+    <photo class="photoProfileHigh"></photo>
     <buttonSearch class="buttonSearch"></buttonSearch>
     <scoresIcon class="scoresIcon"></scoresIcon>
     <scores class="scores">1</scores>
+    <div id="profile-container" style="display:none;">
+        {% include 'achievements_app/mainPageProfile.html' %}
+    </div>
+   <div id="noProfile-container" style="display:none;">
+    {% include 'achievements_app/noProfile.html' %}
+       </div>
     <script>
-        const button = document.querySelector('.buttonSearch');
+        const buttons = document.querySelector('.buttonSearch');
         const scores = document.querySelector('.scores');
+        const photoProfile = document.querySelector('.photoProfileHigh');
+
         document.addEventListener('DOMContentLoaded', function() {
                 const userData = {
                     phone: localStorage.getItem('numberPhone')
@@ -42,7 +50,26 @@
                 .catch(error => {
                     console.error('Error:', error);
                 })
+            photoProfile.addEventListener('click', function ()
+            {
+                const modal = document.createElement('div');
+                modal.className = 'custom-modal';
+                if (localStorage.getItem('numberPhone') !== null) {
 
+                    const profile = document.getElementById('profile-container');
+                    profile.style.display = 'block';
+
+                }
+
+
+
+
+                else {
+                    const profile = document.getElementById('noProfile-container');
+                    profile.style.display = 'block';
+                }
+
+            });
         });
     </script>
 </body>

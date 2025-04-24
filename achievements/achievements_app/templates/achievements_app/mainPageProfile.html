@@ -7,10 +7,10 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter&display=swap" rel="stylesheet">
 </head>
 <body>
-<div class="background"></div>
+<div class="backgroundProfile"></div>
 <div>
-    <login class="loginUser">userame</login>
-    <photo class="photo"></photo>
+    <login class="loginUser">username</login>
+    <photo class="photoProfile"></photo>
     <icon class="icon">
         <svg  viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
             <path d="M11 4H4C3.46957 4 2.96086 4.21071 2.58579 4.58579C2.21071 4.96086 2 5.46957 2 6V20C2 20.5304
@@ -126,7 +126,9 @@
         const icon = document.querySelector('.icon');
         const iconExit = document.querySelector('.iconExit');
         document.addEventListener('DOMContentLoaded', function() {
-                const userData = {
+            if (localStorage.getItem('numberPhone') !== null) {
+                console.log('Номер телефона найден:', localStorage.getItem('numberPhone'));
+                 const userData = {
                     phone: localStorage.getItem('numberPhone')
                 };
                 fetch('{% url "loginUser" %}', {
@@ -148,15 +150,19 @@
                 .catch(error => {
                     console.error('Error:', error);
                 })
-            icon.addEventListener('click', function ()
-            {
-                window.location.href = "{% url 'userInformation' %}";
-            });
-            iconExit.addEventListener('click', function ()
-            {
-                localStorage.removeItem('numberPhone');
-                window.location.href = "{% url 'mainPage' %}";
-            });
+                icon.addEventListener('click', function ()
+                {
+                    window.location.href = "{% url 'userInformation' %}";
+                });
+                iconExit.addEventListener('click', function ()
+                {
+                    localStorage.removeItem('numberPhone');
+                    window.location.href = "{% url 'mainPage' %}";
+                });
+            } else {
+                console.log('Номер телефона не найден в localStorage');
+            }
+
         });
 
     </script>

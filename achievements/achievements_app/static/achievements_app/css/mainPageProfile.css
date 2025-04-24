@@ -1,4 +1,5 @@
-.background
+
+.backgroundProfile
 {
 
 position: absolute;
@@ -81,7 +82,7 @@ border-radius: 5px;
     top: 481px;
     color: #CD8787;
 }
-.photo{
+.photoProfile{
     position: absolute;
     width: 47px;
     height: 47px;

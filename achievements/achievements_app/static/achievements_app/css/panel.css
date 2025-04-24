@@ -1,8 +1,5 @@
 
-body {
-    background-color: #ECF2F8;
-}
-.background
+.backgroundPanel
 {
 
     position: absolute;
@@ -64,7 +61,7 @@ body {
     left: 277px;
     top: 44px;
 }
-.photoProfile
+.photoProfileHigh
 {
     position: absolute;
     left: 83px;

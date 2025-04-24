@@ -1,0 +1,25 @@
+body {
+    background-color: #ECF2F8;
+}
+.backgroundLeft,
+.backgroundRight
+{
+    position: absolute;
+    width: 902px;
+    height: 877px;
+    left: 58px;
+    top: 49px;
+    background: #FFFFFF;
+    border-radius: 5px;
+}
+.backgroundLeft
+{
+    top: 119px;
+    left: 48px;
+}
+
+.backgroundRight
+{
+    top: 119px;
+    left: 960px;
+}
