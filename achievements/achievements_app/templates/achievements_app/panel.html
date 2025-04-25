@@ -16,10 +16,10 @@
     <buttonSearch class="buttonSearch"></buttonSearch>
     <scoresIcon class="scoresIcon"></scoresIcon>
     <scores class="scores">1</scores>
-    <div id="profile-container" style="display:none;">
+    <div id="profile-container" style="display:none">
         {% include 'achievements_app/mainPageProfile.html' %}
     </div>
-   <div id="noProfile-container" style="display:none;">
+   <div id="noProfile-container" style="display:none">
     {% include 'achievements_app/noProfile.html' %}
        </div>
     <script>
@@ -60,13 +60,9 @@
                     profile.style.display = 'block';
 
                 }
-
-
-
-
                 else {
-                    const profile = document.getElementById('noProfile-container');
-                    profile.style.display = 'block';
+                    const profile1 = document.getElementById('noProfile-container');
+                    profile1.style.display = 'block';
                 }
 
             });
