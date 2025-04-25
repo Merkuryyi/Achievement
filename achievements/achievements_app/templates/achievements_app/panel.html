@@ -10,62 +10,99 @@
     <div class="backgroundPanel"></div>
     <div class="backgroundScores"></div>
     <div class="containerSearch container-toggle">
-    <input type="text" class="input-field" maxlength="30" placeholder="Поиск">
+        <input type="text" class="input-field" maxlength="30" placeholder="Поиск">
     </div>
     <photo class="photoProfileHigh"></photo>
     <buttonSearch class="buttonSearch"></buttonSearch>
     <scoresIcon class="scoresIcon"></scoresIcon>
     <scores class="scores">1</scores>
-    <div id="profile-container" style="display:none">
+    <div id="noProfileModal" class="modal" style="display: none;">
+        {% include 'achievements_app/noProfile.html' %}
+    </div>
+    <div id="profileModal" class="modal" style="display: none;">
         {% include 'achievements_app/mainPageProfile.html' %}
     </div>
-   <div id="noProfile-container" style="display:none">
-    {% include 'achievements_app/noProfile.html' %}
-       </div>
+
     <script>
+        function openModal() {
+            if (localStorage.getItem('numberPhone') !== null) {
+                document.getElementById('profileModal').style.display = 'block';
+            }
+            else {
+                document.getElementById('noProfileModal').style.display = 'block';
+            }
+        }
+        function closeModal() {
+            if (localStorage.getItem('numberPhone') !== null)
+            {
+                document.getElementById('profileModal').style.display = 'none';
+            }
+            else
+            {
+                document.getElementById('noProfileModal').style.display = 'none';
+            }
+
+        }
+            window.onclick = function(event)
+            {
+                if (localStorage.getItem('numberPhone') !== null)
+                {
+                    document.getElementById('profileModal').style.display = 'none';
+                }
+                else
+                {
+                    document.getElementById('noProfileModal').style.display = 'none';
+                }
+            }
+        window.onclick = function(event) {
+          let modal;
+          if (localStorage.getItem('numberPhone') !== null)
+            {
+                modal = document.getElementById('profileModal');
+            }
+            else
+            {
+               modal = document.getElementById('noProfileModal');
+            }
+          if (event.target === modal) {
+            closeModal();
+          }
+
+        }
         const buttons = document.querySelector('.buttonSearch');
         const scores = document.querySelector('.scores');
         const photoProfile = document.querySelector('.photoProfileHigh');
-
-        document.addEventListener('DOMContentLoaded', function() {
-                const userData = {
-                    phone: localStorage.getItem('numberPhone')
-                };
-                fetch('{% url "scoreUser" %}', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'X-CSRFToken': '{{ csrf_token }}'
-                    },
-                    body: JSON.stringify(userData)
-                })
-                .then(response => response.json())
-                .then(data => {
-                if (data.score !== undefined) {
-                    scores.textContent = data.score;
-                } else {
-                    showGlobalError(data.error || 'Неизвестная ошибка сервера');
-                }
-                })
-                .catch(error => {
-                    console.error('Error:', error);
-                })
+            const modal = document.createElement('div');
+                    modal.className = 'custom-modal';
+        document.addEventListener('DOMContentLoaded', function()
+        {
+            const userData = {
+                phone: localStorage.getItem('numberPhone')
+            };
+            fetch('{% url "scoreUser" %}', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': '{{ csrf_token }}'
+                },
+                body: JSON.stringify(userData)
+            })
+            .then(response => response.json())
+            .then(data => {
+            if (data.score !== undefined) {
+                scores.textContent = data.score;
+            } else {
+                showGlobalError(data.error || 'Неизвестная ошибка сервера');
+            }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            })
             photoProfile.addEventListener('click', function ()
             {
-                const modal = document.createElement('div');
-                modal.className = 'custom-modal';
-                if (localStorage.getItem('numberPhone') !== null) {
-
-                    const profile = document.getElementById('profile-container');
-                    profile.style.display = 'block';
-
-                }
-                else {
-                    const profile1 = document.getElementById('noProfile-container');
-                    profile1.style.display = 'block';
-                }
-
+                openModal();
             });
+
         });
     </script>
 </body>

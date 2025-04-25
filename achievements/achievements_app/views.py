@@ -39,10 +39,11 @@ def mainPageProfile(request):
     achievements = Achievement.objects.all()
     return render(request, 'achievements_app/mainPageProfile.html',
                  {'achievements': achievements})
+from django.http import HttpResponse
+from django.template.loader import render_to_string
 def noProfile(request):
-    achievements = Achievement.objects.all()
-    return render(request, 'achievements_app/noProfile.html',
-                 {'achievements': achievements})
+    html = render_to_string('achievements_app/noProfile.html')
+    return HttpResponse(html)
 def check_user(request):
     if request.method == 'POST':
         data = json.loads(request.body)

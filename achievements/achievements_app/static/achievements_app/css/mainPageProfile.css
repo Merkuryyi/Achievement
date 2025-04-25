@@ -1,15 +1,12 @@
-
 .backgroundProfile
 {
-
-position: absolute;
-width: 439px;
-height: 427px;
-left: 48px;
-top: 119px;
-background: #ECF2F8;
-border-radius: 5px;
-
+    position: absolute;
+    width: 439px;
+    height: 427px;
+    left: 48px;
+    top: 119px;
+    background: #ECF2F8;
+    border-radius: 5px;
 }
 .loginUser{
     position: absolute;
@@ -36,6 +33,7 @@ border-radius: 5px;
     font-weight: 400;
     font-size: 24px;
     line-height: 29px;
+    cursor: pointer;
 }
 .securityText
 {
