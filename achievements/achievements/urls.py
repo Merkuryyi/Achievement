@@ -23,5 +23,7 @@ urlpatterns = [
     path('check_password/', views.check_password, name = 'check_password'),
     path('mainPageProfile/', views.mainPageProfile, name = 'mainPageProfile'),
     path('loginUser/', views.loginUser, name = 'loginUser'),
-path('noProfile/', views.noProfile, name = 'noProfile')
+    path('noProfile/', views.noProfile, name = 'noProfile'),
+    path('myAchievement/', views.myAchievement, name = 'myAchievement'),
+    path('securityProfile/', views.securityProfile, name = 'securityProfile'),
 ]

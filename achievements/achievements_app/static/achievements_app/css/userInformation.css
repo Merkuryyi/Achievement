@@ -37,24 +37,31 @@ body {
     text-align: center;
     color: #878CCD;
 }
+.photo {
+    position: relative;
+    top: 458px;
+    left: 1363px;
+    bottom: 60%;
+    background: #878CCD;
+    border-radius: 50%;
+    width: 106px;
+    height: 106px;
+}
 .login
 {
     position: absolute;
-    width: 77px;
+    width: 1000px;
     height: 46px;
-    left: 1401px;
-    top: 584px;
-
+    left: 50%;
+    top: 126px;
     font-family: 'Inter';
     font-style: normal;
     font-weight: 400;
     font-size: 36px;
     line-height: 44px;
     text-align: center;
-
     color: #878CCD;
-
-
+    transform: translate(-50%, 0%);
 }
 .miniTitleRightHigh,
 .miniTitleLeftHigh,
@@ -290,16 +297,4 @@ body {
 }
 .show-error {
     opacity: 1;
-}
-.photo
-{
-    position: absolute;
-    left: 1353px;
-    top: 347px;
-    bottom: 60%;
-    background: #878CCD;
-    border-radius: 50%;
-    width: 106px;
-    height: 106px;
-
 }

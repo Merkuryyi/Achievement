@@ -1,0 +1,115 @@
+.backgroundProfile
+{
+    position: absolute;
+    width: 439px;
+    height: 386px;
+    left: 48px;
+    top: 119px;
+    background: #ECF2F8;
+    border-radius: 5px;
+}
+.phoneTitle,
+.emailTitle,
+.passwordTitle
+{
+    position: absolute;
+    font-family: 'Inter';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 24px;
+    line-height: 29px;
+    color: #878CCD;
+}
+.phoneTitle
+{
+    width: 198px;
+    height: 23px;
+    left: 97px;
+    top: 225px;
+}
+.emailTitle
+{
+    width: 71px;
+    height: 23px;
+    left: 97px;
+    top: 312px;
+}
+.passwordTitle
+{
+    position: absolute;
+    width: 94px;
+    height: 23px;
+    left: 94px;
+    top: 401px;
+}
+.title
+{
+    position: absolute;
+    width: 230px;
+    height: 31px;
+    left: 94px;
+    top: 154px;
+    font-family: 'Inter';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 32px;
+    line-height: 39px;
+    color: #878CCD;
+}
+.iconNext1 {
+    position: absolute;
+    left: 442px;
+    top: 294px;
+    cursor: pointer;
+    width: 21px;
+    height: 11px;
+}
+.iconNext2 {
+    position: absolute;
+    left: 442px;
+    top: 360px;
+    cursor: pointer;
+    width: 21px;
+    height: 11px;
+}
+.iconNext3 {
+    position: absolute;
+    left: 442px;
+    top: 440px;
+    cursor: pointer;
+    width: 21px;
+    height: 11px;
+}
+.phoneUser,
+.emailUser,
+.passwordUser
+{
+    position: absolute;
+    font-family: 'Inter';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 24px;
+    line-height: 29px;
+    color: #DB93D6;
+}
+.phoneUser
+{
+    width: 242px;
+    height: 22px;
+    left: 97px;
+    top: 270px;
+}
+.emailUser
+{
+    width: 310px;
+    height: 24px;
+    left: 97px;
+    top: 357px;
+}
+.passwordUser
+{
+    width: 245px;
+    height: 24px;
+    left: 94px;
+    top: 445px;
+}

@@ -33,47 +33,40 @@
             }
         }
         function closeModal() {
-            if (localStorage.getItem('numberPhone') !== null)
-            {
+            if (localStorage.getItem('numberPhone') !== null) {
                 document.getElementById('profileModal').style.display = 'none';
             }
-            else
-            {
+            else {
                 document.getElementById('noProfileModal').style.display = 'none';
             }
 
         }
             window.onclick = function(event)
             {
-                if (localStorage.getItem('numberPhone') !== null)
-                {
+                if (localStorage.getItem('numberPhone') !== null) {
                     document.getElementById('profileModal').style.display = 'none';
                 }
-                else
-                {
+                else {
                     document.getElementById('noProfileModal').style.display = 'none';
                 }
             }
-        window.onclick = function(event) {
-          let modal;
-          if (localStorage.getItem('numberPhone') !== null)
-            {
-                modal = document.getElementById('profileModal');
+            window.onclick = function(event) {
+                let modal;
+                if (localStorage.getItem('numberPhone') !== null) {
+                    modal = document.getElementById('profileModal');
+                }
+                else {
+                    modal = document.getElementById('noProfileModal');
+                }
+                if (event.target === modal) {
+                    closeModal();
+                }
             }
-            else
-            {
-               modal = document.getElementById('noProfileModal');
-            }
-          if (event.target === modal) {
-            closeModal();
-          }
-
-        }
         const buttons = document.querySelector('.buttonSearch');
         const scores = document.querySelector('.scores');
         const photoProfile = document.querySelector('.photoProfileHigh');
-            const modal = document.createElement('div');
-                    modal.className = 'custom-modal';
+        const modal = document.createElement('div');
+        modal.className = 'custom-modal';
         document.addEventListener('DOMContentLoaded', function()
         {
             const userData = {
@@ -89,11 +82,11 @@
             })
             .then(response => response.json())
             .then(data => {
-            if (data.score !== undefined) {
-                scores.textContent = data.score;
-            } else {
-                showGlobalError(data.error || 'Неизвестная ошибка сервера');
-            }
+                if (data.score !== undefined) {
+                    scores.textContent = data.score;
+                } else {
+                    showGlobalError(data.error || 'Неизвестная ошибка сервера');
+                }
             })
             .catch(error => {
                 console.error('Error:', error);
@@ -102,7 +95,6 @@
             {
                 openModal();
             });
-
         });
     </script>
 </body>

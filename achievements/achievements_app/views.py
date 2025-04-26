@@ -3,6 +3,8 @@ from .models import Achievement
 from django.http import JsonResponse
 from django.db import connection
 import json
+from django.http import HttpResponse
+from django.template.loader import render_to_string
 def autorization(request):
     achievements = Achievement.objects.all()
     return render(request, 'achievements_app/autorization.html',
@@ -39,11 +41,19 @@ def mainPageProfile(request):
     achievements = Achievement.objects.all()
     return render(request, 'achievements_app/mainPageProfile.html',
                  {'achievements': achievements})
-from django.http import HttpResponse
-from django.template.loader import render_to_string
+
 def noProfile(request):
-    html = render_to_string('achievements_app/noProfile.html')
-    return HttpResponse(html)
+    achievements = Achievement.objects.all()
+    return render(request, 'achievements_app/noProfile.html',
+                 {'achievements': achievements})
+def myAchievement(request):
+    achievements = Achievement.objects.all()
+    return render(request, 'achievements_app/myAchievement.html',
+                 {'achievements': achievements})
+def securityProfile(request):
+    achievements = Achievement.objects.all()
+    return render(request, 'achievements_app/securityProfile.html',
+                 {'achievements': achievements})
 def check_user(request):
     if request.method == 'POST':
         data = json.loads(request.body)

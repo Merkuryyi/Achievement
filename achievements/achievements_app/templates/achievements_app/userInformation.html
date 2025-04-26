@@ -20,7 +20,7 @@
     <div class="eror3" style="display: none;">*ошибка</div>
     <div class="eror4" style="display: none;">*ошибка</div>
     <div class="containerLogin container-toggle">
-<div id="containerLogin"></div>
+    <div id="containerLogin"></div>
         <input type="text" class="input-field" maxlength="30" placeholder="Логин">
     </div>
     <div class="containerName container-toggle">
@@ -38,8 +38,9 @@
     <div class="button"></div>
     <div class="buttonText">Сохранить</div>
     <a href="{% url 'mainPage' %}" class="backText">отмена</a>
-    <div class="login"></div>
-    <div class="photo"></div>
+    <div class="photo">
+        <div class="login">username</div>
+    </div>
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             const loginInput = document.querySelector('.containerLogin input');
@@ -51,51 +52,61 @@
             const error2 = document.querySelector('.eror2');
             const error3 = document.querySelector('.eror3');
             const error4 = document.querySelector('.eror4');
+            const login = document.querySelector('.login');
             let hasEror = true;
             let loginStringEmpty = false;
-            button.addEventListener('click', function () {
-                if (!loginInput.value.trim()) {
+            button.addEventListener('click', function ()
+            {
+                if (!loginInput.value.trim())
+                {
                     error1.textContent = '*обязательно';
                     error1.style.display = 'block';
                     error1.style.opacity = '1';
                     hasEror = true;
                     loginStringEmpty = true;
                 }
-                else {
+                else
+                {
                     error1.style.display = 'none';
                     error1.style.opacity = '0';
                     hasEror = false;
                     loginStringEmpty = false;
                 }
-                if (!nameInput.value.trim()) {
+                if (!nameInput.value.trim())
+                {
                     error2.textContent = '*обязательно';
                     error2.style.display = 'block';
                     error2.style.opacity = '1';
                     hasEror = true;
                 }
-                else {
+                else
+                {
                     error2.style.display = 'none';
                     error2.style.opacity = '0';
                     hasEror = false;
                 }
-                if (!lNameInput.value.trim()) {
+                if (!lNameInput.value.trim())
+                {
                     error3.textContent = '*обязательно';
                     error3.style.display = 'block';
                     error3.style.opacity = '1';
                     hasEror = true;
                 }
-                else {
+                else
+                {
                     error3.style.display = 'none';
                     error3.style.opacity = '0';
                     hasEror = false;
                 }
-                if (!patronymiInput.value.trim()) {
+                if (!patronymiInput.value.trim())
+                {
                     error4.textContent = '*обязательно';
                     error4.style.display = 'block';
                     error4.style.opacity = '1';
                     hasEror = true;
                 }
-                else {
+                else
+                {
                     error4.style.display = 'none';
                     error4.style.opacity = '0';
                     hasEror = false;
@@ -112,16 +123,17 @@
                     })
                 })
                 .then(response => response.json())
-                .then(data => {
-                    if (data.exists) {
-
+                .then(data =>
+                {
+                    if (data.exists)
+                    {
                         error1.textContent = '*логин существует';
                         error1.style.display = 'block';
                         error1.style.opacity = '1';
-                    } else {
+                    } else
+                    {
                         error1.style.display = 'none';
                         error1.style.opacity = '0';
-
                     }
                 })
                 .catch(error => {
@@ -158,6 +170,38 @@
                         })
                 }
             });
+            if (localStorage.getItem('numberPhone') !== null) {
+                console.log('Номер телефона найден:', localStorage.getItem('numberPhone'));
+                 const userData = {
+                    phone: localStorage.getItem('numberPhone')
+                };
+                fetch('{% url "loginUser" %}', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRFToken': '{{ csrf_token }}'
+                    },
+                    body: JSON.stringify(userData)
+                })
+                .then(response => response.json())
+                .then(data =>
+                {
+                    if (data.login !== undefined)
+                    {
+                        login.textContent = data.login;
+                    } else
+                    {
+                        showGlobalError(data.error || 'Неизвестная ошибка сервера');
+                    }
+                })
+                .catch(error =>
+                {
+                    console.error('Error:', error);
+                })
+            }
+            else {
+                console.log('Номер телефона не найден в localStorage');
+            }
 
         });
     </script>

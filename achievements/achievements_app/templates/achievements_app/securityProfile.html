@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Achievements</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'achievements_app/css/securityProfile.css' %}">
+    <link href="https://fonts.googleapis.com/css2?family=Inter&display=swap" rel="stylesheet">
+</head>
+<body>
+<div class="backgroundProfile"></div>
+<div class="title">Безопасность</div>
+<div>
+    <phoneTitle class="phoneTitle">Номер телефона</phoneTitle>
+    <phoneUser class="phoneUser">+7 *** *** **-**</phoneUser>
+    <iconNext class="iconNext1">
+        <svg width="11" height="21" viewBox="0 0 11 21" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M0.21256 0.214867C-0.0708535 0.504303 -0.0708535 0.974636 0.21256 1.26407L9.26409
+            10.4899L0.21256 19.7337C-0.0708535 20.0232 -0.0708535 20.4935 0.21256 20.7829C0.495974 21.0724
+            0.956522 21.0724 1.23994 20.7829L10.7874 11.0325C10.9291 10.8878 11 10.7069 11 10.5079C11 10.327
+            10.9291 10.1281 10.7874 9.98334L1.23994 0.232958C0.956522 -0.0745681 0.495974 -0.0745695 0.21256
+            0.214867Z" fill="#878CCD"/>
+        </svg>
+    </iconNext>
+</div>
+<div>
+    <emailTitle class="emailTitle">Почта</emailTitle>
+    <emailUser class="emailUser">*********@yandex.ru</emailUser>
+    <iconNext class="iconNext2">
+        <svg width="11" height="21" viewBox="0 0 11 21" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M0.21256 0.214867C-0.0708535 0.504303 -0.0708535 0.974636 0.21256 1.26407L9.26409
+            10.4899L0.21256 19.7337C-0.0708535 20.0232 -0.0708535 20.4935 0.21256 20.7829C0.495974 21.0724
+            0.956522 21.0724 1.23994 20.7829L10.7874 11.0325C10.9291 10.8878 11 10.7069 11 10.5079C11 10.327
+            10.9291 10.1281 10.7874 9.98334L1.23994 0.232958C0.956522 -0.0745681 0.495974 -0.0745695 0.21256
+            0.214867Z" fill="#878CCD"/>
+        </svg>
+    </iconNext>
+</div>
+<div>
+    <passwordTitle class="passwordTitle">Пароль</passwordTitle>
+    <passwordUser class="passwordUser">**************</passwordUser>
+    <iconNext class="iconNext3">
+        <svg width="11" height="21" viewBox="0 0 11 21" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M0.21256 0.214867C-0.0708535 0.504303 -0.0708535 0.974636 0.21256 1.26407L9.26409
+            10.4899L0.21256 19.7337C-0.0708535 20.0232 -0.0708535 20.4935 0.21256 20.7829C0.495974 21.0724
+            0.956522 21.0724 1.23994 20.7829L10.7874 11.0325C10.9291 10.8878 11 10.7069 11 10.5079C11 10.327
+            10.9291 10.1281 10.7874 9.98334L1.23994 0.232958C0.956522 -0.0745681 0.495974 -0.0745695 0.21256
+            0.214867Z" fill="#878CCD"/>
+        </svg>
+    </iconNext>
+</div>
+    <script>
+        const loginUser = document.querySelector('.loginUser');
+
+            if (localStorage.getItem('numberPhone') !== null) {
+                console.log('Номер телефона найден:', localStorage.getItem('numberPhone'));
+            }
+
+    </script>
+</body>
+</html>

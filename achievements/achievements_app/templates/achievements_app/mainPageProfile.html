@@ -24,7 +24,6 @@
         </svg>
     </icon>
 </div>
-
 <div>
     <security  class="securityText">Безопасность</security>
     <iconNext class="iconNext1">
@@ -75,9 +74,7 @@
             <path d="M17.1323 6.32031V4.75781" stroke="#878CCD" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
             <path d="M17.1323 20.3125V18.75" stroke="#878CCD" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
         </svg>
-
     </iconExit>
-
 </div>
 
 <div>
@@ -125,6 +122,8 @@
         const loginUser = document.querySelector('.loginUser');
         const icon = document.querySelector('.icon');
         const iconExit = document.querySelector('.iconExit');
+        const iconSecurity = document.querySelector('.iconNext1');
+        const securityText = document.querySelector('.securityText');
         document.addEventListener('DOMContentLoaded', function() {
             if (localStorage.getItem('numberPhone') !== null) {
                 console.log('Номер телефона найден:', localStorage.getItem('numberPhone'));
@@ -140,14 +139,18 @@
                     body: JSON.stringify(userData)
                 })
                 .then(response => response.json())
-                .then(data => {
-                if (data.login !== undefined) {
-                    loginUser.textContent = data.login;
-                } else {
-                    showGlobalError(data.error || 'Неизвестная ошибка сервера');
-                }
+                .then(data =>
+                {
+                    if (data.login !== undefined)
+                    {
+                        loginUser.textContent = data.login;
+                    } else
+                    {
+                        showGlobalError(data.error || 'Неизвестная ошибка сервера');
+                    }
                 })
-                .catch(error => {
+                .catch(error =>
+                {
                     console.error('Error:', error);
                 })
                 icon.addEventListener('click', function ()
@@ -159,9 +162,15 @@
                     localStorage.removeItem('numberPhone');
                     window.location.href = "{% url 'mainPage' %}";
                 });
-            } else {
+            }
+            else {
                 console.log('Номер телефона не найден в localStorage');
             }
+            function redirectToAuth() {
+                window.location.href = "{% url 'securityProfile' %}";
+            }
+            iconSecurity.addEventListener('click', redirectToAuth);
+            securityText.addEventListener('click', redirectToAuth);
 
         });
 
