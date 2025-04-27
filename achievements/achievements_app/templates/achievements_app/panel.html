@@ -22,46 +22,11 @@
     <div id="profileModal" class="modal" style="display: none;">
         {% include 'achievements_app/mainPageProfile.html' %}
     </div>
-
+    <div id="securityModal" class="modal" style="display: none;">
+        {% include 'achievements_app/securityProfile.html' %}
+    </div>
     <script>
-        function openModal() {
-            if (localStorage.getItem('numberPhone') !== null) {
-                document.getElementById('profileModal').style.display = 'block';
-            }
-            else {
-                document.getElementById('noProfileModal').style.display = 'block';
-            }
-        }
-        function closeModal() {
-            if (localStorage.getItem('numberPhone') !== null) {
-                document.getElementById('profileModal').style.display = 'none';
-            }
-            else {
-                document.getElementById('noProfileModal').style.display = 'none';
-            }
 
-        }
-            window.onclick = function(event)
-            {
-                if (localStorage.getItem('numberPhone') !== null) {
-                    document.getElementById('profileModal').style.display = 'none';
-                }
-                else {
-                    document.getElementById('noProfileModal').style.display = 'none';
-                }
-            }
-            window.onclick = function(event) {
-                let modal;
-                if (localStorage.getItem('numberPhone') !== null) {
-                    modal = document.getElementById('profileModal');
-                }
-                else {
-                    modal = document.getElementById('noProfileModal');
-                }
-                if (event.target === modal) {
-                    closeModal();
-                }
-            }
         const buttons = document.querySelector('.buttonSearch');
         const scores = document.querySelector('.scores');
         const photoProfile = document.querySelector('.photoProfileHigh');
@@ -69,6 +34,73 @@
         modal.className = 'custom-modal';
         document.addEventListener('DOMContentLoaded', function()
         {
+            let pageName;
+            function openModal() {
+                closeAllModals();
+                if(pageName == 'initial')
+                {
+                    if (localStorage.getItem('numberPhone') !== null) {
+                    document.getElementById('profileModal').style.display = 'block';
+                    }
+                    else {
+                        document.getElementById('noProfileModal').style.display = 'block';
+                    }
+                }
+                else if (pageName == 'security')
+                {
+                    document.getElementById('securityModal').style.display = 'block';
+                }
+            }
+            function closeAllModals() {
+                const modals = ['profileModal', 'noProfileModal', 'securityModal'];
+                modals.forEach(modalId => {
+                    const modal = document.getElementById(modalId);
+                    if (modal) modal.style.display = 'none';
+                });
+            }
+            function closeModal() {
+                if (pageName == 'initial') {
+                    if (localStorage.getItem('numberPhone') !== null) {
+                        document.getElementById('profileModal').style.display = 'none';
+                    }
+                    else {
+                        document.getElementById('noProfileModal').style.display = 'none';
+                    }
+                }
+                else if (pageName == 'security')
+                {
+                    document.getElementById('securityModal').style.display = 'none';
+                }
+
+            }
+            window.onclick = function(event)
+            {
+                if (pageName == 'initial') {
+                    if (localStorage.getItem('numberPhone') !== null) {
+                        document.getElementById('profileModal').style.display = 'none';
+                    } else {
+                        document.getElementById('noProfileModal').style.display = 'none';
+                    }
+                }
+                else if (pageName == 'security')
+                {
+                    document.getElementById('securityModal').style.display = 'none';
+                }
+            }
+            window.onclick = function(event) {
+                let modal = null;
+                if (pageName === 'initial') {
+                    modal = localStorage.getItem('numberPhone') !== null
+                        ? document.getElementById('profileModal')
+                        : document.getElementById('noProfileModal');
+                }
+                else if (pageName === 'security') {
+                    modal = document.getElementById('securityModal');
+                }
+                if (modal && event.target === modal) {
+                    closeModal();
+                }
+            }
             const userData = {
                 phone: localStorage.getItem('numberPhone')
             };
@@ -93,8 +125,16 @@
             })
             photoProfile.addEventListener('click', function ()
             {
+                pageName = 'initial';
                 openModal();
             });
+
+            function redirectToAuth() {
+                pageName = 'security';
+                openModal();
+            }
+            iconSecurity.addEventListener('click', redirectToAuth);
+            securityText.addEventListener('click', redirectToAuth);
         });
     </script>
 </body>

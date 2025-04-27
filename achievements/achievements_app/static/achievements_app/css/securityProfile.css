@@ -2,7 +2,7 @@
 {
     position: absolute;
     width: 439px;
-    height: 386px;
+    height: 427px;
     left: 48px;
     top: 119px;
     background: #ECF2F8;
@@ -32,7 +32,7 @@
     width: 71px;
     height: 23px;
     left: 97px;
-    top: 312px;
+    top: 326px;
 }
 .passwordTitle
 {
@@ -40,7 +40,7 @@
     width: 94px;
     height: 23px;
     left: 94px;
-    top: 401px;
+    top: 430px;
 }
 .title
 {
@@ -56,26 +56,26 @@
     line-height: 39px;
     color: #878CCD;
 }
-.iconNext1 {
+.iconNext1Security {
     position: absolute;
     left: 442px;
-    top: 294px;
+    top: 285px;
     cursor: pointer;
     width: 21px;
     height: 11px;
 }
-.iconNext2 {
+.iconNext2Security {
     position: absolute;
     left: 442px;
-    top: 360px;
+    top: 385px;
     cursor: pointer;
     width: 21px;
     height: 11px;
 }
-.iconNext3 {
+.iconNext3Security {
     position: absolute;
     left: 442px;
-    top: 440px;
+    top: 480px;
     cursor: pointer;
     width: 21px;
     height: 11px;
@@ -97,19 +97,19 @@
     width: 242px;
     height: 22px;
     left: 97px;
-    top: 270px;
+    top: 277px;
 }
 .emailUser
 {
     width: 310px;
     height: 24px;
     left: 97px;
-    top: 357px;
+    top: 378px;
 }
 .passwordUser
 {
     width: 245px;
     height: 24px;
     left: 94px;
-    top: 445px;
+    top: 481px;
 }

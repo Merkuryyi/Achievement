@@ -12,7 +12,7 @@
 <div>
     <phoneTitle class="phoneTitle">Номер телефона</phoneTitle>
     <phoneUser class="phoneUser">+7 *** *** **-**</phoneUser>
-    <iconNext class="iconNext1">
+    <iconNext class="iconNext1Security">
         <svg width="11" height="21" viewBox="0 0 11 21" fill="none" xmlns="http://www.w3.org/2000/svg">
             <path d="M0.21256 0.214867C-0.0708535 0.504303 -0.0708535 0.974636 0.21256 1.26407L9.26409
             10.4899L0.21256 19.7337C-0.0708535 20.0232 -0.0708535 20.4935 0.21256 20.7829C0.495974 21.0724
@@ -25,7 +25,7 @@
 <div>
     <emailTitle class="emailTitle">Почта</emailTitle>
     <emailUser class="emailUser">*********@yandex.ru</emailUser>
-    <iconNext class="iconNext2">
+    <iconNext class="iconNext2Security">
         <svg width="11" height="21" viewBox="0 0 11 21" fill="none" xmlns="http://www.w3.org/2000/svg">
             <path d="M0.21256 0.214867C-0.0708535 0.504303 -0.0708535 0.974636 0.21256 1.26407L9.26409
             10.4899L0.21256 19.7337C-0.0708535 20.0232 -0.0708535 20.4935 0.21256 20.7829C0.495974 21.0724
@@ -38,7 +38,7 @@
 <div>
     <passwordTitle class="passwordTitle">Пароль</passwordTitle>
     <passwordUser class="passwordUser">**************</passwordUser>
-    <iconNext class="iconNext3">
+    <iconNext class="iconNext3Security">
         <svg width="11" height="21" viewBox="0 0 11 21" fill="none" xmlns="http://www.w3.org/2000/svg">
             <path d="M0.21256 0.214867C-0.0708535 0.504303 -0.0708535 0.974636 0.21256 1.26407L9.26409
             10.4899L0.21256 19.7337C-0.0708535 20.0232 -0.0708535 20.4935 0.21256 20.7829C0.495974 21.0724
@@ -49,11 +49,29 @@
     </iconNext>
 </div>
     <script>
-        const loginUser = document.querySelector('.loginUser');
+        const phoneTitle = document.querySelector('.phoneTitle');
+        const phoneUser = document.querySelector('.phoneUser');
+        const iconNext1 = document.querySelector('.iconNext1Security');
+        const emailTitle= document.querySelector('.emailTitle');
+        const emailUser = document.querySelector('.emailUser');
+        const iconNext2 = document.querySelector('.iconNext2Security');
+        const passwordTitle = document.querySelector('.passwordTitle');
+        const passwordUser = document.querySelector('.passwordUser');
+        const iconNext3 = document.querySelector('.iconNext3Security');
 
             if (localStorage.getItem('numberPhone') !== null) {
                 console.log('Номер телефона найден:', localStorage.getItem('numberPhone'));
             }
+           document.addEventListener('DOMContentLoaded', function() {
+
+            function editPassword()
+            {
+                window.location.href = "{% url 'editPassword' %}";
+            }
+            passwordTitle.addEventListener('click', editPassword);
+            passwordUser.addEventListener('click', editPassword);
+            iconNext3.addEventListener('click', editPassword);
+        });
 
     </script>
 </body>

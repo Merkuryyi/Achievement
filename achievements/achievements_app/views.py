@@ -159,30 +159,47 @@ def registerUser(request):
     return JsonResponse({'success': True})
 
 
+def get_user_id_by_phone(phone):
+    with connection.cursor() as cursor:
+        cursor.execute(
+            "SELECT user_id FROM users WHERE phone = %s",
+            [phone]
+        )
+        result = cursor.fetchone()
+        return result[0] if result else None
+
+
 def editUserInformation(request):
     if request.method == 'POST':
-            data = json.loads(request.body)
-            phone = data.get('phone')
-            login = data.get('login')
-            lastname = data.get('lastName')
-            firstname = data.get('firstName')
-            patronymic = data.get('patronymic')
+        data = json.loads(request.body)
+        phone = data.get('phone')
+        login = data.get('login')
+        lastname = data.get('lastName')
+        firstname = data.get('firstName')
+        patronymic = data.get('patronymic')
+    try:
+        data = json.loads(request.body)
+        phone = data.get('phone')
+        user_id = get_user_id_by_phone(phone)
 
-            with connection.cursor() as cursor1:
-                cursor1.execute(
-                    "select user_id from users where phone = %s",
-                    [phone]
-                )
-                id = cursor1.fetchone()[0]
-            with connection.cursor() as cursor:
-                cursor.execute("update users set login = %s where user_id = %s",
-                [login, id])
+        with connection.cursor() as cursor:
+            cursor.execute(
+                "UPDATE users SET login = %s WHERE user_id = %s",
+                [login, user_id]
+            )
 
-            with connection.cursor() as cursor:
-                cursor.execute("update additional_information_users set lastname = %s, firstname = %s, patronymic = %s where user_id = %s",
-                [lastname, firstname, patronymic, id])
+            cursor.execute(
+                """UPDATE additional_information_users 
+                   SET lastname = %s, firstname = %s, patronymic = %s WHERE user_id = %s""",
+                [lastname, firstname, patronymic]
+            )
 
-    return JsonResponse({'success': True})
+        return JsonResponse({'success': True})
+
+    except Exception as e:
+        return JsonResponse({'error': str(e)}, status=500)
+
+
 
 def scoreUser(request):
     try:

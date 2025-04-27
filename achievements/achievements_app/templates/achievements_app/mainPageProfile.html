@@ -78,7 +78,6 @@
 </div>
 
 <div>
-    <exit  class="exitText">Выход из профиля</exit>
     <iconDelete class="iconDelete">
         <svg width="35" height="37" viewBox="0 0 35 37" fill="none" xmlns="http://www.w3.org/2000/svg">
             <path d="M7.20209 10.516H9.37349L10.3843 29.3408C10.3945 29.5294 10.4725 29.7068 10.6024 29.8365C10.7323
@@ -115,7 +114,6 @@
         </svg>
 
     </iconDelete>
-
 </div>
     <div class="deleteProfile">Удаление профиля</div>
     <script>
@@ -166,11 +164,7 @@
             else {
                 console.log('Номер телефона не найден в localStorage');
             }
-            function redirectToAuth() {
-                window.location.href = "{% url 'securityProfile' %}";
-            }
-            iconSecurity.addEventListener('click', redirectToAuth);
-            securityText.addEventListener('click', redirectToAuth);
+
 
         });
 
