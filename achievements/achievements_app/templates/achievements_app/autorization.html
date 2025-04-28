@@ -38,7 +38,7 @@
                 if (loginInput.value.trim())
                 {
                     window.location.href = `{% url 'recovery' %}?login=${encodeURIComponent(login)}`;
-                    sessionStorage.setItem('recovery_login', login);
+                    localStorage.setItem('recovery_login', login);
                 }
                 else
                 {
@@ -76,7 +76,9 @@
                 .then(response => response.json())
                 .then(data => {
                     if (data.exists) {
-                        window.location.href = '{% url "recovery" %}';
+                        window.location.href = '{% url "mainPage" %}';
+                        localStorage.setItem('login', loginInput.value.trim());
+
                     } else {
                         error2.textContent = '*неверный логин или пароль';
                         error2.classList.add('show-error');
@@ -85,6 +87,7 @@
                 .catch(error => {
                     console.error('Error:', error);
                 });
+
             });
         });
     </script>

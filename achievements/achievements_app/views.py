@@ -3,8 +3,6 @@ from .models import Achievement
 from django.http import JsonResponse
 from django.db import connection
 import json
-from django.http import HttpResponse
-from django.template.loader import render_to_string
 def autorization(request):
     achievements = Achievement.objects.all()
     return render(request, 'achievements_app/autorization.html',
@@ -54,6 +52,11 @@ def securityProfile(request):
     achievements = Achievement.objects.all()
     return render(request, 'achievements_app/securityProfile.html',
                  {'achievements': achievements})
+def editEmail(request):
+    achievements = Achievement.objects.all()
+    return render(request, 'achievements_app/editEmail.html',
+                 {'achievements': achievements})
+
 def check_user(request):
     if request.method == 'POST':
         data = json.loads(request.body)
@@ -189,8 +192,8 @@ def editUserInformation(request):
             )
 
             cursor.execute(
-                """UPDATE additional_information_users 
-                   SET lastname = %s, firstname = %s, patronymic = %s WHERE user_id = %s""",
+                "UPDATE additional_information_users "
+                "SET lastname = %s, firstname = %s, patronymic = %s WHERE user_id = %s",
                 [lastname, firstname, patronymic]
             )
 
@@ -269,7 +272,18 @@ def loginUser(request):
         return JsonResponse({'error': 'Invalid JSON'}, status=400)
     except Exception as e:
         return JsonResponse({'error': str(e)}, status=500)
+def emailReset(request):
+    if request.method == 'POST':
+            data = json.loads(request.body)
+            phone = data.get('phone')
+            password = data.get('password')
 
+            with connection.cursor() as cursor:
+                cursor.execute(
+                    "UPDATE users SET password = %s WHERE phone = %s",
+                    [password, phone]
+                )
+    return JsonResponse({'success': True})
 
 
 

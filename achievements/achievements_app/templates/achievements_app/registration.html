@@ -127,9 +127,9 @@
                             }
                             if (!emailEmpty && !phoneEmpty) {
                                 window.location.href = "{% url 'information' %}";
-                                sessionStorage.setItem('numberPhone', phoneInput.value.trim());
-                                sessionStorage.setItem('email', emailInput.value.trim());
-                                sessionStorage.setItem('password', passwordInput.value.trim());
+                                localStorage.setItem('numberPhone', phoneInput.value.trim());
+                                localStorage.setItem('email', emailInput.value.trim());
+                                localStorage.setItem('password', passwordInput.value.trim());
                             }
 
                         } catch (error) {

@@ -32,7 +32,7 @@
     <input type="hidden" id="recovery_login" name="login">
 
      <script>
-         document.addEventListener('DOMContentLoaded', function() {
+        document.addEventListener('DOMContentLoaded', function() {
         const button = document.querySelector('.button');
         const codeInput = document.querySelector('.containerNumberPhone input');
         const passwordInput = document.querySelector('.containerPassword input');
@@ -41,100 +41,101 @@
         const error2 = document.querySelector('.eror2');
         const error3 = document.querySelector('.eror3');
         const buttonSmall = document.querySelector('.buttonSmall');
-        const login = sessionStorage.getItem('recovery_login');
-        let code;
+        const login = localStorage.getItem('recovery_login');
+        let code = Math.floor(Math.random() * (9999 - 1000 + 1)) + 1000;
         buttonSmall.addEventListener('click', function() {
-                const randomNumber = Math.floor(Math.random() * (9999 - 1000 + 1)) + 1000;
-                code = randomNumber;
-                console.log('Сгенерированный код:', randomNumber);
-            });
-            button.addEventListener('click', function() {
-            let hasEror = true;
-                if (!codeInput.value.trim()) {
-                    error1.textContent = '*обязательно';
-                    error1.style.display = 'block';
-                    error1.style.opacity = '1';
-                    hasEror = true;
+                code = Math.floor(Math.random() * (9999 - 1000 + 1)) + 1000;
+                console.log('Сгенерированный код:', code);
+        });
 
-                } else {
-                    error1.style.display = 'none';
-                    error1.style.opacity = '0';
-                    hasEror = false;
-                    if (codeInput.value !== code.value) {
+        button.addEventListener('click', function() {
+            let hasError = true;
+             if (!repeatPasswordInput.value.trim()) {
+                error3.textContent = '*обязательно';
+                error3.style.display = 'block';
+                error3.style.opacity = '1';
+                hasError = true;
+            } else {
+                error3.style.display = 'none';
+                error3.style.opacity = '0';
+                hasError = false
+            }
+            if (!passwordInput.value.trim()) {
+                error2.textContent = '*обязательно';
+                error2.style.display = 'block';
+                error2.style.opacity = '1';
+                hasError = true;
+            } else {
+                error2.style.display = 'none';
+                error2.style.opacity = '0';
+                hasError = false;
+                 if (passwordInput.value !== repeatPasswordInput.value)
+                 {
+                    error3.textContent = '*пароли не совпадают';
+                    error3.style.display = 'block';
+                    error3.style.opacity = '1';
+                    hasError = true;
+                 }
+                else
+                {
+                    error3.style.display = 'none';
+                    error3.style.opacity = '0';
+                    hasError = false;
+                }
+            }
+            if (!codeInput.value.trim()) {
+                error1.textContent = '*обязательно';
+                error1.style.display = 'block';
+                error1.style.opacity = '1';
+                hasError = true;
+
+            } else {
+                error1.style.display = 'none';
+                error1.style.opacity = '0';
+                hasError = false;
+                if (codeInput.value.trim() !== String(code)) {
                     error1.textContent = '*неверный код';
                     error1.style.display = 'block';
                     error1.style.opacity = '1';
-                    hasEror = true;
-                    }
-                    else {
-                        error1.style.display = 'none';
-                        error1.style.opacity = '0';
-                        hasEror = false;
-                    }
+                    hasError = true;
                 }
-                 if (!repeatPasswordInput.value.trim()) {
-                    error3.textContent = '*обязательно';
-                    error3.style.display = 'block';
-                    error3.style.opacity = '1';
-                    hasEror = true;
+                else {
+                    error1.style.display = 'none';
+                    error1.style.opacity = '0';
+                    hasError = false;
+                }
+            }
+            if (hasError) {
+                return;
+            }
+             const postData = {
+                login: login,
+                password: password
+            };
+
+            fetch('{% url "passwordReset" %}', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': '{{ csrf_token }}'
+                },
+                body: JSON.stringify(postData)
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    window.location.href = '{% url "autorization" %}';
                 } else {
-                    error3.style.display = 'none';
-                    error3.style.opacity = '0';
-                    hasEror = false
+                    throw new Error(data.error || 'Ошибка сервера');
                 }
-                if (!passwordInput.value.trim()) {
-                    error2.textContent = '*обязательно';
-                    error2.style.display = 'block';
-                    error2.style.opacity = '1';
-                    hasEror = true;
-                } else {
-                    error2.style.display = 'none';
-                    error2.style.opacity = '0';
-                    hasEror = false;
-                     if (passwordInput.value !== repeatPasswordInput.value)
-                     {
-                        error3.textContent = '*пароли не совпадают';
-                        error3.style.display = 'block';
-                        error3.style.opacity = '1';
-                        hasEror = true;
-                    }
-                    else
-                    {
-                        error3.style.display = 'none';
-                        error3.style.opacity = '0';
-                        hasEror = false;
-                    }
-                }
-                if (!hasEror)
-                {
-                    const postData =
-                    {
-                        login: login,
-                        password: passwordInput.value
-                    };
-                    fetch('{% url "passwordReset" %}', {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json',
-                            'X-CSRFToken': '{{ csrf_token }}'
-                        },
-                        body: JSON.stringify(postData)
-                    })
-                    .then(response => response.json())
-                    .then(data => {
-                        if (data.success) {
-                            window.location.href = '{% url "autorization" %}';
-                        } else {
-                            throw new Error(data.error || 'Ошибка сервера');
-                        }
-                    })
-                    .catch(error => {
-                        error2.textContent = error.message || 'Ошибка соединения';
-                        error2.style.display = 'block';
-                    });
-                }
+            })
+            .catch(error => {
+                showError(error2, error.message || 'Ошибка соединения');
             });
         });
+
+
+     });
      </script>
 </body>
 </html>

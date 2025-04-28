@@ -26,4 +26,6 @@ urlpatterns = [
     path('noProfile/', views.noProfile, name = 'noProfile'),
     path('myAchievement/', views.myAchievement, name = 'myAchievement'),
     path('securityProfile/', views.securityProfile, name = 'securityProfile'),
+path('editEmail/', views.editEmail, name = 'editEmail'),
+path('emailReset/', views.emailReset, name = 'emailReset'),
 ]

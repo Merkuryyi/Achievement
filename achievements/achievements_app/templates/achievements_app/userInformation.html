@@ -53,6 +53,7 @@
             const error3 = document.querySelector('.eror3');
             const error4 = document.querySelector('.eror4');
             const login = document.querySelector('.login');
+            login.textContent = localStorage.getItem('login');
             let hasEror = true;
             let loginStringEmpty = false;
             button.addEventListener('click', function ()
@@ -160,9 +161,9 @@
                         .then(response => response.json())
                         .then(data => {
                             if (data.success) {
-                                window.location.href = "{% url 'recovery' %}";
+                                window.location.href = "{% url 'mainPage' %}";
                             } else {
-                                showGlobalError(data.message || 'Ошибка регистрации');
+                                showGlobalError(data.message || 'Ошибка');
                             }
                         })
                         .catch(error => {
@@ -170,38 +171,8 @@
                         })
                 }
             });
-            if (localStorage.getItem('numberPhone') !== null) {
-                console.log('Номер телефона найден:', localStorage.getItem('numberPhone'));
-                 const userData = {
-                    phone: localStorage.getItem('numberPhone')
-                };
-                fetch('{% url "loginUser" %}', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'X-CSRFToken': '{{ csrf_token }}'
-                    },
-                    body: JSON.stringify(userData)
-                })
-                .then(response => response.json())
-                .then(data =>
-                {
-                    if (data.login !== undefined)
-                    {
-                        login.textContent = data.login;
-                    } else
-                    {
-                        showGlobalError(data.error || 'Неизвестная ошибка сервера');
-                    }
-                })
-                .catch(error =>
-                {
-                    console.error('Error:', error);
-                })
-            }
-            else {
-                console.log('Номер телефона не найден в localStorage');
-            }
+
+
 
         });
     </script>

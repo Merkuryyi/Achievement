@@ -122,35 +122,9 @@
         const iconExit = document.querySelector('.iconExit');
         const iconSecurity = document.querySelector('.iconNext1');
         const securityText = document.querySelector('.securityText');
+        loginUser.textContent = localStorage.getItem('login');
         document.addEventListener('DOMContentLoaded', function() {
             if (localStorage.getItem('numberPhone') !== null) {
-                console.log('Номер телефона найден:', localStorage.getItem('numberPhone'));
-                 const userData = {
-                    phone: localStorage.getItem('numberPhone')
-                };
-                fetch('{% url "loginUser" %}', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'X-CSRFToken': '{{ csrf_token }}'
-                    },
-                    body: JSON.stringify(userData)
-                })
-                .then(response => response.json())
-                .then(data =>
-                {
-                    if (data.login !== undefined)
-                    {
-                        loginUser.textContent = data.login;
-                    } else
-                    {
-                        showGlobalError(data.error || 'Неизвестная ошибка сервера');
-                    }
-                })
-                .catch(error =>
-                {
-                    console.error('Error:', error);
-                })
                 icon.addEventListener('click', function ()
                 {
                     window.location.href = "{% url 'userInformation' %}";
@@ -164,7 +138,6 @@
             else {
                 console.log('Номер телефона не найден в localStorage');
             }
-
 
         });
 

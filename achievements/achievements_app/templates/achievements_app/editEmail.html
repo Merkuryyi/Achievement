@@ -3,7 +3,7 @@
 <head>
     <title>Achievements</title>
     {% load static %}
-    <link rel="stylesheet" href="{% static 'achievements_app/css/editPassword.css' %}">
+    <link rel="stylesheet" href="{% static 'achievements_app/css/editEmail.css' %}">
     <link href="https://fonts.googleapis.com/css2?family=Inter&display=swap" rel="stylesheet">
     <meta charset="utf-8">
 </head>
@@ -11,24 +11,26 @@
     {% include 'achievements_app/panel.html' %}
     <div class="backgroundLeft"></div>
     <div class="backgroundRight"></div>
-    <passContainer class="containerPassword container-toggle">
-        <input type="password" class="input-field" maxlength="30" placeholder="Пароль">
+    <passContainer class="containerNewEmail container-toggle">
+        <input type="text" class="input-field" maxlength="30" placeholder="Почта">
     </passContainer>
-    <div class="containerNewPassword container-toggle">
+    <div class="containerPassword container-toggle">
         <input type="password" class="input-field" maxlength="30" placeholder="Пароль">
     </div>
-    <div lastPassContainer class="containerLastPassword container-toggle">
-        <input type="password" class="input-field" placeholder="Пароль">
+    <div class="containerCodeEmail container-toggle">
+        <input type="text" class="input-field" placeholder="Код">
     </div>
-    <div class="titlePassword">Смена пароля</div>
-    <div class="miniTitle">Введите старый пароль</div>
-    <div class="miniTitle2">Введите новый пароль</div>
-    <div class="miniTitle3">Повторите новый пароль</div>
+    <div class="titleEmail">Смена пароля</div>
+    <div class="miniTitle">Введите новую почта</div>
+    <div class="miniTitle2">Введите код с новой почты</div>
+    <div class="miniTitle3">Введите пароль</div>
     <div class="eror" style="display: none;">*ошибка</div>
     <div class="eror2" style="display: none;">*ошибка</div>
     <div class="eror3" style="display: none;">*ошибка</div>
     <div class="button"></div>
     <div class="buttonText">Сохранить</div>
+    <div class="buttonSmall"></div>
+    <div class="buttonSmallText">код</div>
     <div class="photo">
         <div class="login">username</div>
     </div>
@@ -36,69 +38,26 @@
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             const button = document.querySelector('.button');
-            const newPasswordInput = document.querySelector('.containerNewPassword input');
-            const passwordInput = document.querySelector('.containerPassword input');
-            const lastPassword = document.querySelector('.containerLastPassword input');
+            const newEmailInput = document.querySelector('.containerNewEmail input');
+            const emailCodeInput = document.querySelector('.containerCodeEmail input');
+            const password = document.querySelector('.containerPassword input');
             const error1 = document.querySelector('.eror');
             const error2 = document.querySelector('.eror2');
             const error3 = document.querySelector('.eror3');
             const phone = localStorage.getItem('numberPhone');
             let hasError = true;
+            const buttonSmall = document.querySelector('.buttonSmall');
             const loginUser = document.querySelector('.login');
             loginUser.textContent = localStorage.getItem('login');
+            let code;
+            buttonSmall.addEventListener('click', function() {
+                const randomNumber = Math.floor(Math.random() * (9999 - 1000 + 1)) + 1000;
+                code = randomNumber;
+                console.log('Сгенерированный код:', code);
+            });
             button.addEventListener('click', async function ()
             {
-                if (!lastPassword.value.trim())
-                {
-                    error1.textContent = '*обязательно';
-                    error1.style.display = 'block';
-                    error1.style.opacity = '1';
-                    hasError = true;
-                }
-                else
-                {
-                    error1.style.display = 'none';
-                    error1.style.opacity = '0';
-                    const checkResponse = await fetch('{% url "check_password" %}', {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json',
-                            'X-CSRFToken': '{{ csrf_token }}'
-                        },
-                        body: JSON.stringify({
-                            phone: phone,
-                            password: lastPassword.value.trim()
-                        })
-                    });
-                    const checkData = await checkResponse.json();
-
-                    if (!checkData.valid) {
-                        error1.textContent = '*неверный пароль';
-                        error1.style.display = 'block';
-                        error1.style.opacity = '1';
-                        hasError = true;
-                    }
-                    else
-                    {
-                        error1.style.display = 'none';
-                        error1.style.opacity = '0';
-                        hasError = false;
-                    }
-                }
-                if (!newPasswordInput.value.trim())
-                {
-                    error2.textContent = '*обязательно';
-                    error2.style.display = 'block';
-                    error2.style.opacity = '1';
-                   hasError = true;
-                }
-                else
-                {
-                    error2.style.display = 'none';
-                    error2.style.opacity = '0';
-                   hasError = false;
-                }
-                if (!passwordInput.value.trim())
+                if (!password.value.trim())
                 {
                     error3.textContent = '*обязательно';
                     error3.style.display = 'block';
@@ -109,21 +68,78 @@
                 {
                     error3.style.display = 'none';
                     error3.style.opacity = '0';
-                    hasError = false;
-                    if (newPasswordInput.value != passwordInput.value)
-                    {
-                        error3.textContent = '*пароли не совпадают';
+                      const checkResponse = await fetch('{% url "check_password" %}', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'X-CSRFToken': '{{ csrf_token }}'
+                        },
+                        body: JSON.stringify({
+                            phone: phone,
+                            password: password.value.trim()
+                        })
+                    });
+                    const checkData = await checkResponse.json();
+
+                    if (!checkData.valid) {
+                        error3.textContent = '*неверный пароль';
                         error3.style.display = 'block';
                         error3.style.opacity = '1';
                         hasError = true;
                     }
+                    else
+                    {
+                        error3.style.display = 'none';
+                        error3.style.opacity = '0';
+                        hasError = false;
+                    }
+
+                }
+                if (!newEmailInput.value.trim())
+                {
+                    error1.textContent = '*обязательно';
+                    error1.style.display = 'block';
+                    error1.style.opacity = '1';
+                    hasError = true;
+                }
+                else
+                {
+                    error1.style.display = 'none';
+                    error1.style.opacity = '0';
+                    hasError = false;
+                }
+                if (!emailCodeInput.value.trim())
+                {
+                    error2.textContent = '*обязательно';
+                    error2.style.display = 'block';
+                    error2.style.opacity = '1';
+                    hasError = true;
+                }
+                else
+                {
+                    error2.style.display = 'none';
+                    error2.style.opacity = '0';
+                    hasError = false;
+                    console.log(emailCodeInput.value)
+                    if (emailCodeInput.value == code.value) {
+                        error2.textContent = '*неверный код';
+                        error2.style.display = 'block';
+                        error2.style.opacity = '1';
+                        hasError = true;
+                    }
+                    else {
+                        error2.style.display = 'none';
+                        error2.style.opacity = '0';
+                        hasError = false;
+                    }
+
                 }
 
                 if (!hasError)
                 {
                     try
                     {
-                        const resetResponse = await fetch('{% url "passwordReset" %}', {
+                        const resetResponse = await fetch('{% url "emailReset" %}', {
                             method: 'POST',
                             headers: {
                                 'Content-Type': 'application/json',
@@ -131,7 +147,7 @@
                             },
                             body: JSON.stringify({
                                 phone: phone,
-                                password: newPasswordInput.value.trim()
+                                Email: newEmailInput.value.trim()
                             })
                         });
 
