@@ -49,93 +49,77 @@
         });
 
         button.addEventListener('click', function() {
-            let hasError = true;
-             if (!repeatPasswordInput.value.trim()) {
-                error3.textContent = '*обязательно';
-                error3.style.display = 'block';
-                error3.style.opacity = '1';
-                hasError = true;
-            } else {
-                error3.style.display = 'none';
-                error3.style.opacity = '0';
-                hasError = false
-            }
-            if (!passwordInput.value.trim()) {
-                error2.textContent = '*обязательно';
-                error2.style.display = 'block';
-                error2.style.opacity = '1';
-                hasError = true;
-            } else {
-                error2.style.display = 'none';
-                error2.style.opacity = '0';
-                hasError = false;
-                 if (passwordInput.value !== repeatPasswordInput.value)
-                 {
-                    error3.textContent = '*пароли не совпадают';
-                    error3.style.display = 'block';
-                    error3.style.opacity = '1';
-                    hasError = true;
-                 }
-                else
-                {
-                    error3.style.display = 'none';
-                    error3.style.opacity = '0';
-                    hasError = false;
-                }
-            }
-            if (!codeInput.value.trim()) {
-                error1.textContent = '*обязательно';
-                error1.style.display = 'block';
-                error1.style.opacity = '1';
-                hasError = true;
+        let hasError = false;
+        error1.style.display = 'none';
+        error1.style.opacity = '0';
+        error2.style.display = 'none';
+        error2.style.opacity = '0';
+        error3.style.display = 'none';
+        error3.style.opacity = '0';
 
-            } else {
-                error1.style.display = 'none';
-                error1.style.opacity = '0';
-                hasError = false;
-                if (codeInput.value.trim() !== String(code)) {
-                    error1.textContent = '*неверный код';
-                    error1.style.display = 'block';
-                    error1.style.opacity = '1';
-                    hasError = true;
-                }
-                else {
-                    error1.style.display = 'none';
-                    error1.style.opacity = '0';
-                    hasError = false;
-                }
-            }
-            if (hasError) {
-                return;
-            }
-             const postData = {
-                login: login,
-                password: password
-            };
 
-            fetch('{% url "passwordReset" %}', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'X-CSRFToken': '{{ csrf_token }}'
-                },
-                body: JSON.stringify(postData)
-            })
-            .then(response => response.json())
-            .then(data => {
-                if (data.success) {
-                    window.location.href = '{% url "autorization" %}';
-                } else {
-                    throw new Error(data.error || 'Ошибка сервера');
-                }
-            })
-            .catch(error => {
-                showError(error2, error.message || 'Ошибка соединения');
-            });
+        if (!codeInput.value.trim()) {
+            error1.textContent = '*обязательно';
+            error1.style.display = 'block';
+            error1.style.opacity = '1';
+            hasError = true;
+        } else if (codeInput.value.trim() !== String(code)) {
+            error1.textContent = '*неверный код';
+            error1.style.display = 'block';
+            error1.style.opacity = '1';
+            hasError = true;
+        }
+
+        if (!passwordInput.value.trim()) {
+            error2.textContent = '*обязательно';
+            error2.style.display = 'block';
+            error2.style.opacity = '1';
+            hasError = true;
+        }
+
+        if (!repeatPasswordInput.value.trim()) {
+            error3.textContent = '*обязательно';
+            error3.style.display = 'block';
+            error3.style.opacity = '1';
+            hasError = true;
+        } else if (passwordInput.value !== repeatPasswordInput.value) {
+            error3.textContent = '*пароли не совпадают';
+            error3.style.display = 'block';
+            error3.style.opacity = '1';
+            hasError = true;
+        }
+
+        if (hasError) {
+            return;
+        }
+
+        const postData = {
+            login: login,
+            password: passwordInput.value
+        };
+
+        fetch('{% url "passwordReset" %}', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRFToken': '{{ csrf_token }}'
+            },
+            body: JSON.stringify(postData)
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                window.location.href = '{% url "autorization" %}';
+            } else {
+                throw new Error(data.error || 'Ошибка сервера');
+            }
+        })
+        .catch(error => {
+            showError(error2, error.message || 'Ошибка соединения');
         });
+    });
 
-
-     });
+    });
      </script>
 </body>
 </html>

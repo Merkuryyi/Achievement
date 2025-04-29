@@ -56,7 +56,10 @@ def editEmail(request):
     achievements = Achievement.objects.all()
     return render(request, 'achievements_app/editEmail.html',
                  {'achievements': achievements})
-
+def editPhone(request):
+    achievements = Achievement.objects.all()
+    return render(request, 'achievements_app/editPhone.html',
+                 {'achievements': achievements})
 def check_user(request):
     if request.method == 'POST':
         data = json.loads(request.body)
@@ -276,14 +279,27 @@ def emailReset(request):
     if request.method == 'POST':
             data = json.loads(request.body)
             phone = data.get('phone')
-            password = data.get('password')
+            email = data.get('email')
 
             with connection.cursor() as cursor:
                 cursor.execute(
-                    "UPDATE users SET password = %s WHERE phone = %s",
-                    [password, phone]
+                    "UPDATE users SET email = %s WHERE phone = %s",
+                    [email, phone]
                 )
     return JsonResponse({'success': True})
+def phoneReset(request):
+    if request.method == 'POST':
+            data = json.loads(request.body)
+            phone = data.get('phone')
+            login = data.get('login')
+
+            with connection.cursor() as cursor:
+                cursor.execute(
+                    "UPDATE users SET phone = %s WHERE login = %s",
+                    [phone, login]
+                )
+    return JsonResponse({'success': True})
+
 
 
 

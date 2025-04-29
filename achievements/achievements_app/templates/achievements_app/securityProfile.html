@@ -71,6 +71,20 @@
             passwordTitle.addEventListener('click', editPassword);
             passwordUser.addEventListener('click', editPassword);
             iconNext3.addEventListener('click', editPassword);
+            function editEmail()
+            {
+                window.location.href = "{% url 'editEmail' %}";
+            }
+            emailTitle.addEventListener('click', editEmail);
+            emailUser.addEventListener('click', editEmail);
+            iconNext2.addEventListener('click', editEmail);
+            function editPhone()
+            {
+                window.location.href = "{% url 'editPhone' %}";
+            }
+            phoneTitle.addEventListener('click', editPhone);
+            phoneUser.addEventListener('click', editPhone);iconNext1.addEventListener('click', editPhone);
+
         });
 
     </script>

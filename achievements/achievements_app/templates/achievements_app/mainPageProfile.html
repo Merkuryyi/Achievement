@@ -120,6 +120,7 @@
         const loginUser = document.querySelector('.loginUser');
         const icon = document.querySelector('.icon');
         const iconExit = document.querySelector('.iconExit');
+        const exitText = document.querySelector('.exitText');
         const iconSecurity = document.querySelector('.iconNext1');
         const securityText = document.querySelector('.securityText');
         loginUser.textContent = localStorage.getItem('login');
@@ -129,15 +130,20 @@
                 {
                     window.location.href = "{% url 'userInformation' %}";
                 });
-                iconExit.addEventListener('click', function ()
+
+                 function exit()
                 {
                     localStorage.removeItem('numberPhone');
                     window.location.href = "{% url 'mainPage' %}";
-                });
+                }
+                iconExit.addEventListener('click', exit);
+                exitText.addEventListener('click', exit);
+
             }
             else {
                 console.log('Номер телефона не найден в localStorage');
             }
+
 
         });
 

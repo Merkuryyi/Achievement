@@ -27,5 +27,7 @@ urlpatterns = [
     path('myAchievement/', views.myAchievement, name = 'myAchievement'),
     path('securityProfile/', views.securityProfile, name = 'securityProfile'),
 path('editEmail/', views.editEmail, name = 'editEmail'),
+path('editPhone/', views.editPhone, name = 'editPhone'),
 path('emailReset/', views.emailReset, name = 'emailReset'),
+path('phoneReset/', views.phoneReset, name = 'phoneReset'),
 ]

@@ -161,6 +161,7 @@
                         .then(response => response.json())
                         .then(data => {
                             if (data.success) {
+                                localStorage.setItem('login', loginInput.value.trim());
                                 window.location.href = "{% url 'mainPage' %}";
                             } else {
                                 showGlobalError(data.message || 'Ошибка');
