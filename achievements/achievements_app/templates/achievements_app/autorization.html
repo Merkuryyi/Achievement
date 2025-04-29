@@ -78,7 +78,6 @@
                     if (data.exists) {
                         window.location.href = '{% url "mainPage" %}';
                         localStorage.setItem('login', loginInput.value.trim());
-
                     } else {
                         error2.textContent = '*неверный логин или пароль';
                         error2.classList.add('show-error');

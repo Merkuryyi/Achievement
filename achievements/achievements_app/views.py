@@ -153,16 +153,14 @@ def registerUser(request):
             lastname = data.get('lastName')
             firstname = data.get('firstName')
             patronymic = data.get('patronymic')
+            id = get_user_id_by_phone(phone)
             with connection.cursor() as cursor:
-                cursor.execute("insert into users (login, password, phone, email, status) values (%s, %s, %s, %s, %s)",
-                [login, password, phone, email, status])
-            with connection.cursor() as cursor1:
-                cursor1.execute(
-                    "select user_id from users where phone = %s",
-                    [phone]
-                )
-                id = cursor1.fetchone()[0]
+                cursor.execute("insert into users (login, password, phone, email) values (%s, %s, %s, %s)",
+                [login, password, phone, email])
 
+            with connection.cursor() as cursor:
+                cursor.execute("insert into status_users (user_id, status, date) values (%s, %s, now())",
+                               [id, status])
             with connection.cursor() as cursor:
                 cursor.execute("insert into additional_information_users (user_id, lastname, firstname, patronymic) values (%s, %s, %s, %s)",
                 [id, lastname, firstname, patronymic])
@@ -313,7 +311,8 @@ def status(request):
 
             with connection.cursor() as cursor:
                 cursor.execute(
-                    "SELECT status FROM users WHERE login = %s",
+                    "select status from status_users inner join users on "
+                    "users.user_id = status_users.user_id where login = %s",
                     [login]
                 )
                 row = cursor.fetchone()
@@ -335,5 +334,37 @@ def status(request):
     return JsonResponse({'success': False, 'error': 'Only POST method allowed'}, status=405)
 
 
+def statusReset(request):
+    if request.method == 'POST':
+            data = json.loads(request.body)
+            phone = data.get('phone')
+            user_id = get_user_id_by_phone(phone)
+            status = data.get('status')
+            with connection.cursor() as cursor:
+                cursor.execute(
+                    "update status_users set status = %s, date = now() where user_id = %s",
+                    [status, user_id]
+                )
+    return JsonResponse({'success': True})
 
+def check_status(request):
+    try:
+        data = json.loads(request.body)
+        phone = data.get('phone')
+        cursor = connection.cursor()
+        try:
+            cursor.execute(
+                "select status from status_users inner join users on users.user_id = status_users.user_id where phone = %s",
+                [phone]
+            )
+            status = cursor.fetchone()[0]
+            return JsonResponse({'status': status})
+
+        finally:
+            cursor.close()
+
+    except json.JSONDecodeError:
+        return JsonResponse({'error': 'Invalid JSON'}, status=400)
+    except Exception as e:
+        return JsonResponse({'error': str(e)}, status=500)
 

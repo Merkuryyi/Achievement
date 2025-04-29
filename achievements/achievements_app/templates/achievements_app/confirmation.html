@@ -11,18 +11,18 @@
     {% include 'achievements_app/panel.html' %}
     <div class="backgroundLeft"></div>
     <div class="backgroundRight"></div>
-    <passContainer class="containerNewPhone container-toggle">
-        <input type="text" class="input-field" maxlength="30" placeholder="Номер телефона">
+    <passContainer class="containerCodePhone container-toggle">
+        <input type="text" class="input-field" maxlength="30" placeholder="Код">
     </passContainer>
     <div class="containerPassword container-toggle">
         <input type="password" class="input-field" maxlength="30" placeholder="Пароль">
     </div>
-    <div class="containerCodePhone container-toggle">
+    <div class="containerCodeEmail container-toggle">
         <input type="text" class="input-field" placeholder="Код">
     </div>
-    <div class="titlePhone">Смена номера телефона</div>
-    <div class="miniTitle">Введите новый номер</div>
-    <div class="miniTitle2">Введите код с нового номера</div>
+    <div class="titleСonfirmation">Подтверждение</div>
+    <div class="miniTitle">Введите код с номера телефона</div>
+    <div class="miniTitle2">Введите код с почты</div>
     <div class="miniTitle3">Введите пароль</div>
     <div class="eror" style="display: none;">*ошибка</div>
     <div class="eror2" style="display: none;">*ошибка</div>
@@ -31,6 +31,8 @@
     <div class="buttonText">Сохранить</div>
     <div class="buttonSmall"></div>
     <div class="buttonSmallText">код</div>
+    <div class="buttonSmall2"></div>
+    <div class="buttonSmallText2">код</div>
     <div class="photo">
         <div class="login">username</div>
     </div>
@@ -39,40 +41,28 @@
 
         document.addEventListener('DOMContentLoaded', function() {
             const button = document.querySelector('.button');
-            const newPhoneInput = document.querySelector('.containerNewPhone input');
             const phoneCodeInput = document.querySelector('.containerCodePhone input');
+            const emailCodeInput = document.querySelector('.containerCodeEmail input');
             const password = document.querySelector('.containerPassword input');
             const error1 = document.querySelector('.eror');
             const error2 = document.querySelector('.eror2');
             const error3 = document.querySelector('.eror3');
             const phone = localStorage.getItem('numberPhone');
             const buttonSmall = document.querySelector('.buttonSmall');
+            const buttonSmall2 = document.querySelector('.buttonSmall2');
             const loginUser = document.querySelector('.login');
             loginUser.textContent = localStorage.getItem('login');
             let code = Math.floor(Math.random() * (9999 - 1000 + 1)) + 1000;
+            let code2 = Math.floor(Math.random() * (9999 - 1000 + 1)) + 1000;
             buttonSmall.addEventListener('click', function() {
                     code = Math.floor(Math.random() * (9999 - 1000 + 1)) + 1000;
                     console.log('Сгенерированный код:', code);
             });
-            function isValidPhone(Phone) {
-                const re = /^\+7\s\(\d{3}\)\s\d{3}-\d{2}-\d{2}$/;
-                return re.test(phone);
-            }
-            newPhoneInput.addEventListener('input', function(event) {
-               let value = this.value.replace(/\D/g, '');
-               if (value.length > 0 && (value[0] === '7' || value[0] === '8')) {
-                   value = '7' + value.substring(1);
-               }
-               let formattedValue = '';
-               if (value.length > 0) {
-                   formattedValue = '+7';
-                   if (value.length > 1) {formattedValue += ' (' + value.substring(1, 4);}
-                   if (value.length > 4) {formattedValue += ') ' + value.substring(4, 7);}
-                   if (value.length > 7) {formattedValue += '-' + value.substring(7, 9); }
-                   if (value.length > 9) {formattedValue += '-' + value.substring(9, 11);}
-               }
-               this.value = formattedValue;
-           });
+            buttonSmall2.addEventListener('click', function() {
+                    code2 = Math.floor(Math.random() * (9999 - 1000 + 1)) + 1000;
+                    console.log('Сгенерированный код:', code2);
+            });
+
             button.addEventListener('click', async function() {
             error1.style.display = 'none';
             error1.style.opacity = '0';
@@ -118,24 +108,24 @@
                 }
             }
 
-            if (!newPhoneInput.value.trim()) {
+            if (!phoneCodeInput.value.trim()) {
                 error1.textContent = '*обязательно';
                 error1.style.display = 'block';
                 error1.style.opacity = '1';
                 hasError = true;
-            } else if (!isValidPhone(newPhoneInput.value.trim())) {
-                error1.textContent = '*неверный формат';
+            } else if (phoneCodeInput.value. trim() !== String(code2)) {
+                error1.textContent = '*неверный код';
                 error1.style.display = 'block';
                 error1.style.opacity = '1';
                 hasError = true;
             }
 
-            if (!phoneCodeInput.value.trim()) {
+            if (!emailCodeInput.value.trim()) {
                 error2.textContent = '*обязательно';
                 error2.style.display = 'block';
                 error2.style.opacity = '1';
                 hasError = true;
-            } else if (phoneCodeInput.value. trim() !== String(code)) {
+            } else if (emailCodeInput.value. trim() !== String(code)) {
                 error2.textContent = '*неверный код';
                 error2.style.display = 'block';
                 error2.style.opacity = '1';
@@ -145,25 +135,26 @@
             if (hasError) return;
 
             try {
-                const resetResponse = await fetch('{% url "phoneReset" %}', {
+                const resetResponse = await fetch('{% url "statusReset" %}', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
                         'X-CSRFToken': '{{ csrf_token }}'
                     },
                     body: JSON.stringify({
-                        login: localStorage.getItem('login'),
-                        phone: newPhoneInput.value.trim()
+                        phone: localStorage.getItem('numberPhone'),
+                        status: "active"
                     })
                 });
 
                 const resetData = await resetResponse.json();
 
                 if (resetData.success) {
-                    localStorage.setItem('numberPhone', newPhoneInput.value.trim());
+                    localStorage.setItem('status', 'active');
                     window.location.href = "{% url 'mainPage' %}";
+
                 } else {
-                    showGlobalError(resetData.message || 'Ошибка смены Phone');
+                    showGlobalError(resetData.message || 'Ошибка');
                 }
             } catch (error) {
                 console.error('Error:', error);

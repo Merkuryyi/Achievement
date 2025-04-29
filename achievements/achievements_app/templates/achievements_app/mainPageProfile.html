@@ -126,6 +126,30 @@
         const deleteText = document.querySelector('.deleteProfile');
         const deleteIcon = document.querySelector('.iconDelete');
         loginUser.textContent = localStorage.getItem('login');
+        fetch('{% url "check_status" %}', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': '{{ csrf_token }}'
+                },
+                body: JSON.stringify({
+                    phone: localStorage.getItem('numberPhone')
+                })
+            })
+            .then(response => response.json())
+            .then(data => {
+                console.log(data.login)
+                if (data.login == 'active') {
+                   deleteText.textContent = 'Удаление профиля';
+                   localStorage.setItem('status', 'active');
+                } else {
+                    deleteText.textContent = 'Отменить удаление';
+                    localStorage.setItem('status', 'delete');
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
 
         document.addEventListener('DOMContentLoaded', function() {
             if (localStorage.getItem('numberPhone') !== null) {
@@ -149,35 +173,12 @@
                 }
                 iconExit.addEventListener('click', exit);
                 exitText.addEventListener('click', exit);
-                 fetch('{% url "status" %}', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'X-CSRFToken': '{{ csrf_token }}'
-                    },
-                    body: JSON.stringify(postData)
-                })
-                .then(response => response.json())
-                .then(data => {
-                    if (data.success)
-                    {
-                        deleteText.textContent = 'Отменить удаление';
-                    }
-                    else
-                    {
-                        throw new Error(data.error || 'Ошибка сервера');
-                    }
-                })
-                .catch(error => {
-                    showError(error2, error.message || 'Ошибка соединения');
-                });
-
-
-
-            }
+                             }
             else {
                 console.log('Номер телефона не найден в localStorage');
             }
+
+
         });
 
     </script>
