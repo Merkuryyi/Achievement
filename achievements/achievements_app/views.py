@@ -60,6 +60,10 @@ def editPhone(request):
     achievements = Achievement.objects.all()
     return render(request, 'achievements_app/editPhone.html',
                  {'achievements': achievements})
+def confirmation(request):
+    achievements = Achievement.objects.all()
+    return render(request, 'achievements_app/confirmation.html',
+                 {'achievements': achievements})
 def check_user(request):
     if request.method == 'POST':
         data = json.loads(request.body)
@@ -300,6 +304,35 @@ def phoneReset(request):
                 )
     return JsonResponse({'success': True})
 
+
+def status(request):
+    if request.method == 'POST':
+        try:
+            data = json.loads(request.body)
+            login = data.get('login')
+
+            with connection.cursor() as cursor:
+                cursor.execute(
+                    "SELECT status FROM users WHERE login = %s",
+                    [login]
+                )
+                row = cursor.fetchone()
+
+                if row:
+                    user_status = row[0]
+                    if user_status == 'delete':
+                        return JsonResponse({'success': True})
+                    else:
+                        return JsonResponse({'success': False, 'status': user_status})
+                else:
+                    return JsonResponse({'success': False, 'error': 'User not found'}, status=404)
+
+        except json.JSONDecodeError:
+            return JsonResponse({'success': False, 'error': 'Invalid JSON'}, status=400)
+        except Exception as e:
+            return JsonResponse({'success': False, 'error': str(e)}, status=500)
+
+    return JsonResponse({'success': False, 'error': 'Only POST method allowed'}, status=405)
 
 
 

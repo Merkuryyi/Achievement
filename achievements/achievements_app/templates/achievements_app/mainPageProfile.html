@@ -123,9 +123,20 @@
         const exitText = document.querySelector('.exitText');
         const iconSecurity = document.querySelector('.iconNext1');
         const securityText = document.querySelector('.securityText');
+        const deleteText = document.querySelector('.deleteProfile');
+        const deleteIcon = document.querySelector('.iconDelete');
         loginUser.textContent = localStorage.getItem('login');
+
         document.addEventListener('DOMContentLoaded', function() {
             if (localStorage.getItem('numberPhone') !== null) {
+
+                function deleteProfile()
+                {
+                    window.location.href = "{% url 'confirmation' %}";
+                }
+                deleteIcon.addEventListener('click', deleteProfile);
+                deleteText.addEventListener('click', deleteProfile);
+
                 icon.addEventListener('click', function ()
                 {
                     window.location.href = "{% url 'userInformation' %}";
@@ -138,13 +149,35 @@
                 }
                 iconExit.addEventListener('click', exit);
                 exitText.addEventListener('click', exit);
+                 fetch('{% url "status" %}', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRFToken': '{{ csrf_token }}'
+                    },
+                    body: JSON.stringify(postData)
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success)
+                    {
+                        deleteText.textContent = 'Отменить удаление';
+                    }
+                    else
+                    {
+                        throw new Error(data.error || 'Ошибка сервера');
+                    }
+                })
+                .catch(error => {
+                    showError(error2, error.message || 'Ошибка соединения');
+                });
+
+
 
             }
             else {
                 console.log('Номер телефона не найден в localStorage');
             }
-
-
         });
 
     </script>

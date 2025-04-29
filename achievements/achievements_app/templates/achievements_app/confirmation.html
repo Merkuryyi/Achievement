@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Achievements</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'achievements_app/css/confirmation.css' %}">
+    <link href="https://fonts.googleapis.com/css2?family=Inter&display=swap" rel="stylesheet">
+    <meta charset="utf-8">
+</head>
+<body>
+    {% include 'achievements_app/panel.html' %}
+    <div class="backgroundLeft"></div>
+    <div class="backgroundRight"></div>
+    <passContainer class="containerNewPhone container-toggle">
+        <input type="text" class="input-field" maxlength="30" placeholder="Номер телефона">
+    </passContainer>
+    <div class="containerPassword container-toggle">
+        <input type="password" class="input-field" maxlength="30" placeholder="Пароль">
+    </div>
+    <div class="containerCodePhone container-toggle">
+        <input type="text" class="input-field" placeholder="Код">
+    </div>
+    <div class="titlePhone">Смена номера телефона</div>
+    <div class="miniTitle">Введите новый номер</div>
+    <div class="miniTitle2">Введите код с нового номера</div>
+    <div class="miniTitle3">Введите пароль</div>
+    <div class="eror" style="display: none;">*ошибка</div>
+    <div class="eror2" style="display: none;">*ошибка</div>
+    <div class="eror3" style="display: none;">*ошибка</div>
+    <div class="button"></div>
+    <div class="buttonText">Сохранить</div>
+    <div class="buttonSmall"></div>
+    <div class="buttonSmallText">код</div>
+    <div class="photo">
+        <div class="login">username</div>
+    </div>
+    <a href="{% url 'mainPage' %}" class="backText">отмена</a>
+    <script>
+
+        document.addEventListener('DOMContentLoaded', function() {
+            const button = document.querySelector('.button');
+            const newPhoneInput = document.querySelector('.containerNewPhone input');
+            const phoneCodeInput = document.querySelector('.containerCodePhone input');
+            const password = document.querySelector('.containerPassword input');
+            const error1 = document.querySelector('.eror');
+            const error2 = document.querySelector('.eror2');
+            const error3 = document.querySelector('.eror3');
+            const phone = localStorage.getItem('numberPhone');
+            const buttonSmall = document.querySelector('.buttonSmall');
+            const loginUser = document.querySelector('.login');
+            loginUser.textContent = localStorage.getItem('login');
+            let code = Math.floor(Math.random() * (9999 - 1000 + 1)) + 1000;
+            buttonSmall.addEventListener('click', function() {
+                    code = Math.floor(Math.random() * (9999 - 1000 + 1)) + 1000;
+                    console.log('Сгенерированный код:', code);
+            });
+            function isValidPhone(Phone) {
+                const re = /^\+7\s\(\d{3}\)\s\d{3}-\d{2}-\d{2}$/;
+                return re.test(phone);
+            }
+            newPhoneInput.addEventListener('input', function(event) {
+               let value = this.value.replace(/\D/g, '');
+               if (value.length > 0 && (value[0] === '7' || value[0] === '8')) {
+                   value = '7' + value.substring(1);
+               }
+               let formattedValue = '';
+               if (value.length > 0) {
+                   formattedValue = '+7';
+                   if (value.length > 1) {formattedValue += ' (' + value.substring(1, 4);}
+                   if (value.length > 4) {formattedValue += ') ' + value.substring(4, 7);}
+                   if (value.length > 7) {formattedValue += '-' + value.substring(7, 9); }
+                   if (value.length > 9) {formattedValue += '-' + value.substring(9, 11);}
+               }
+               this.value = formattedValue;
+           });
+            button.addEventListener('click', async function() {
+            error1.style.display = 'none';
+            error1.style.opacity = '0';
+            error2.style.display = 'none';
+            error2.style.opacity = '0';
+            error3.style.display = 'none';
+            error3.style.opacity = '0';
+
+            let hasError = false;
+
+            if (!password.value.trim()) {
+                error3.textContent = '*обязательно';
+                error3.style.display = 'block';
+                error3.style.opacity = '1';
+                hasError = true;
+            } else {
+                try {
+                    const checkResponse = await fetch('{% url "check_password" %}', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'X-CSRFToken': '{{ csrf_token }}'
+                        },
+                        body: JSON.stringify({
+                            phone: phone,
+                            password: password.value
+                        })
+                    });
+                    const checkData = await checkResponse.json();
+
+                    if (!checkData.valid) {
+                        error3.textContent = '*неверный пароль';
+                        error3.style.display = 'block';
+                        error3.style.opacity = '1';
+                        hasError = true;
+                    }
+                } catch (error) {
+                    console.error('Error checking password:', error);
+                    error3.textContent = '*ошибка проверки пароля';
+                    error3.style.display = 'block';
+                    error3.style.opacity = '1';
+                    hasError = true;
+                }
+            }
+
+            if (!newPhoneInput.value.trim()) {
+                error1.textContent = '*обязательно';
+                error1.style.display = 'block';
+                error1.style.opacity = '1';
+                hasError = true;
+            } else if (!isValidPhone(newPhoneInput.value.trim())) {
+                error1.textContent = '*неверный формат';
+                error1.style.display = 'block';
+                error1.style.opacity = '1';
+                hasError = true;
+            }
+
+            if (!phoneCodeInput.value.trim()) {
+                error2.textContent = '*обязательно';
+                error2.style.display = 'block';
+                error2.style.opacity = '1';
+                hasError = true;
+            } else if (phoneCodeInput.value. trim() !== String(code)) {
+                error2.textContent = '*неверный код';
+                error2.style.display = 'block';
+                error2.style.opacity = '1';
+                hasError = true;
+            }
+
+            if (hasError) return;
+
+            try {
+                const resetResponse = await fetch('{% url "phoneReset" %}', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRFToken': '{{ csrf_token }}'
+                    },
+                    body: JSON.stringify({
+                        login: localStorage.getItem('login'),
+                        phone: newPhoneInput.value.trim()
+                    })
+                });
+
+                const resetData = await resetResponse.json();
+
+                if (resetData.success) {
+                    localStorage.setItem('numberPhone', newPhoneInput.value.trim());
+                    window.location.href = "{% url 'mainPage' %}";
+                } else {
+                    showGlobalError(resetData.message || 'Ошибка смены Phone');
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                showGlobalError('Ошибка соединения с сервером');
+            }
+        });
+
+        });
+
+    </script>
+</body>
+</html>

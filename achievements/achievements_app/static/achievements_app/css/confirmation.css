@@ -1,0 +1,308 @@
+body {
+    background-color: #E2E5EF;
+}
+.backgroundLeft
+{
+    top: 119px;
+    left: 48px;
+}
+
+.backgroundRight
+{
+    top: 119px;
+    left: 960px;
+}
+.photo {
+    position: relative;
+    top: 458px;
+    left: 1363px;
+    bottom: 60%;
+    background: #878CCD;
+    border-radius: 50%;
+    width: 106px;
+    height: 106px;
+}
+.login
+{
+    position: absolute;
+    width: 1000px;
+    height: 46px;
+    left: 50%;
+    top: 126px;
+    font-family: 'Inter';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 36px;
+    line-height: 44px;
+    text-align: center;
+    color: #878CCD;
+    transform: translate(-50%, 0%);
+}
+
+.backgroundLeft,
+.backgroundRight
+{
+    position: absolute;
+    width: 902px;
+    height: 877px;
+    background: #FFFFFF;
+    border-radius: 5px;
+}
+
+
+.container-toggle {
+    position: absolute;
+    background: #ECF2F8 !important;
+    border-radius: 5px;
+    box-sizing: border-box;
+    transition: background 0.3s ease;
+}
+.toggle-Phone {
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 16px;
+    color: #D2BAFF;
+    padding: 0;
+    outline: none;
+}
+.input-field::placeholder {
+    color: #878CCD;
+    opacity: 1;
+}
+.container-toggle:focus-within {
+    border: 2px solid #D2BAFF;
+    background: #ECF2F8;
+    box-shadow: 0 0 0 0px rgba(138, 106, 255, 0.2);
+}
+.input-field {
+    width: 90%;
+    height: 100%;
+    border: none;
+    background: transparent;
+    padding: 0 15px;
+    font-family: 'Inter', sans-serif;
+    font-size: 16px;
+    outline: none;
+    color: #878CCD;
+}
+.input-field::placeholder {
+    color: #878CCD;
+    opacity: 1;
+}
+.containerPassword {
+    width: 329px;
+    height: 47px;
+    left: 350px;
+    top: 742px;
+}
+.containerNewPhone {
+    width: 329px;
+    height: 47px;
+    left: 350px;
+    top: 384px;
+}
+.containerCodePhone {
+    width: 242px;
+    height: 47px;
+    left: 350px;
+    top: 563px;
+}
+.titlePhone
+{
+    position: absolute;
+    width: 449px;
+    height: 46px;
+    left: 317px;
+    top: 210px;
+    font-family: 'Inter';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 36px;
+    line-height: 44px;
+    color: #878CCD;
+}
+.miniTitle
+{
+    position: absolute;
+    width: 389px;
+    height: 23px;
+    left: 350px;
+    top: 321px;
+    font-family: 'Inter';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 24px;
+    line-height: 29px;
+    color: #878CCD;
+}
+.miniTitle2
+{
+    position: absolute;
+    width: 500px;
+    height: 23px;
+    left: 350px;
+    top: 510px;
+    font-family: 'Inter';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 24px;
+    line-height: 29px;
+    color: #878CCD;
+}
+.miniTitle3
+{
+    position: absolute;
+    width: 298px;
+    height: 23px;
+    left: 350px;
+    top: 689px;
+    font-family: 'Inter';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 24px;
+    line-height: 29px;
+    color: #878CCD;
+}
+.button,
+.buttonSmall
+ {
+    position: absolute;
+    background: #D2BAFF;
+    border-radius: 5px;
+    transition: background-color 0.3s ease;
+    cursor: pointer;
+}
+.button {
+    position: absolute;
+    width: 329px;
+    height: 47px;
+    left: 350px;
+    top: 869px;
+
+}
+
+.button:hover,
+.buttonSmall:hover{
+    background-color: #B896F7;
+}
+.button:active,
+.buttonSmall:active{
+    background-color: #B896F7;
+    transform: translateY(1px);
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+.buttonText
+{
+    position: absolute;
+    width: 208px;
+    height: 23px;
+    left: 410px;
+    top: 878px;
+
+    font-family: 'Inter';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 24px;
+    line-height: 29px;
+    text-align: center;
+    color: #FFFFFF;
+}
+
+.eror,
+.eror2,
+.eror3{
+    position: absolute;
+    font-family: 'Inter', sans-serif;
+    font-size: 20px;
+    line-height: 24px;
+    color: #CD8987;
+    transition: opacity 0.3s ease;
+    opacity: 0;
+}
+
+.eror {
+    width: 300px;
+    height: 19px;
+    left: 380px;
+    top: 441px;
+}
+
+.eror2 {
+    width: 300px;
+    height: 19px;
+    left: 380px;
+    top: 610px;
+}
+.eror3 {
+    width: 300px;
+    height: 19px;
+    left: 380px;
+    top: 799px;
+}
+.show-error {
+    opacity: 1;
+}
+.backText {
+    position: absolute;
+    width: 88px;
+    height: 19px;
+    left: 144px;
+    top: 887px;
+    font-family: 'Inter', sans-serif;
+    font-style: normal;
+    font-weight: 400;
+    font-size: 24px;
+    line-height: 29px;
+    text-align: center;
+    color: #D2BAFF;
+    text-decoration: none;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.backText:hover{
+    text-decoration: underline;
+    text-underline-offset: 3px;
+    text-decoration-thickness: 2px;
+    text-decoration-color: #D2BAFF;
+}
+.input-field:-webkit-autofill,
+.input-field:-webkit-autofill:hover,
+.input-field:-webkit-autofill:focus,
+.input-field:-webkit-autofill:active {
+  -webkit-box-shadow: 0 0 0 1000px #ECF2F8 inset !important;
+  -webkit-text-fill-color: #878CCD !important;
+  background-color: #ECF2F8 !important;
+  transition: background-color 5000s ease-in-out 0s;
+}
+@supports (-webkit-touch-callout: none) {
+  .input-field {
+    background-color: #ECF2F8 !important;
+  }
+}
+
+.buttonSmall {
+    position: absolute;
+    width: 82px;
+    height: 47px;
+    left: 601px;
+    top: 563px;
+}
+.buttonSmallText {
+    position: absolute;
+    width: 38px;
+    height: 17px;
+    left: 623px;
+    top: 575px;
+    font-family: 'Inter';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 20px;
+    line-height: 24px;
+    color: #FFFFFF;
+}
