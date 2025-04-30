@@ -8,16 +8,36 @@
 </head>
 <body>
 <div class="backgroundProfile"></div>
-<div class="backgroundProfile">
-    <!-- Уведомления будут динамически добавляться здесь -->
-    <div class="notification">Уведомление 1</div>
-    <div class="notification">Уведомление 2</div>
-</div>
+<div class="backgroundProfile"></div>
+<label class="toggle-container">
+  <input type="checkbox" class="toggle-input">
+  <div class="toggle-background"></div>
+  <div class="toggle-switch"></div>
+</label>
+
+<script>
+
+    document.addEventListener('DOMContentLoaded', function() {
+        let checkSwitch = 'inactive';
+        const backgroundSwitch = document.querySelector('.toggle-background');
+        const switchPart = document.querySelector('.toggle-switch');
+         function switching()
+        {
+           if (checkSwitch == 'active')
+           {
+               checkSwitch = 'inactive'
+           }
+           else if (checkSwitch == 'inactive')
+           {
+               checkSwitch = 'active'
+           }
+           console.log(checkSwitch)
+        }
+        backgroundSwitch.addEventListener('click', switching);
+        switchPart.addEventListener('click', switching);
+    });
 
 
-    <script>
-
-
-    </script>
+</script>
 </body>
 </html>

@@ -1,10 +1,57 @@
-.backgroundProfile {
-    width: 439px;        /* Фиксированная ширина (можно изменить) */
-    min-height: 427px;   /* Минимальная высота */
-    margin-left: 48px;   /* Заменяем left на margin */
-    margin-top: 119px;   /* Заменяем top на margin */
-    padding: 20px;       /* Отступы внутри блока */
+.backgroundProfile
+{
+    position: absolute;
+    width: 439px;
+    height: 427px;
+    left: 48px;
+    top: 119px;
     background: #ECF2F8;
     border-radius: 5px;
-    box-sizing: border-box; /* Учитываем padding в общей ширине/высоте */
+}
+.toggle-container {
+    left: 378px;
+    top: 161px;
+  position: relative;
+  display: inline-block;
+  width: 62px;
+  height: 30px;
+  cursor: pointer;
+}
+
+.toggle-background {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background: #CEDDE6;
+  border-radius: 30px;
+  transition: background 0.3s ease;
+}
+
+.toggle-switch {
+
+  position: absolute;
+  width: 20px;
+  height: 20px;
+  left: 4px;
+  top: 5px;
+  background: #FFFFFF;
+  border-radius: 100%;
+  transition: transform 0.3s ease;
+  pointer-events: none;
+}
+
+.toggle-input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+  position: absolute;
+}
+
+/* Состояние "включено" */
+.toggle-input:checked ~ .toggle-background {
+  background: #878CCD;
+}
+
+.toggle-input:checked ~ .toggle-switch {
+  transform: translateX(34px); /* 62px - 20px - 8px (отступы) */
 }

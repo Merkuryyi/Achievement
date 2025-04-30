@@ -54,10 +54,10 @@
         const iconNext1 = document.querySelector('.iconNext1Security');
         const emailTitle= document.querySelector('.emailTitle');
         const emailUser = document.querySelector('.emailUser');
-        const iconNext2 = document.querySelector('.iconNext2Security');
+        const iconNext2Security = document.querySelector('.iconNext2Security');
         const passwordTitle = document.querySelector('.passwordTitle');
         const passwordUser = document.querySelector('.passwordUser');
-        const iconNext3 = document.querySelector('.iconNext3Security');
+        const iconNext3Security = document.querySelector('.iconNext3Security');
 
             if (localStorage.getItem('numberPhone') !== null) {
                 console.log('Номер телефона найден:', localStorage.getItem('numberPhone'));
@@ -70,14 +70,14 @@
             }
             passwordTitle.addEventListener('click', editPassword);
             passwordUser.addEventListener('click', editPassword);
-            iconNext3.addEventListener('click', editPassword);
+            iconNext3Security.addEventListener('click', editPassword);
             function editEmail()
             {
                 window.location.href = "{% url 'editEmail' %}";
             }
             emailTitle.addEventListener('click', editEmail);
             emailUser.addEventListener('click', editEmail);
-            iconNext2.addEventListener('click', editEmail);
+            iconNext2Security.addEventListener('click', editEmail);
             function editPhone()
             {
                 window.location.href = "{% url 'editPhone' %}";
