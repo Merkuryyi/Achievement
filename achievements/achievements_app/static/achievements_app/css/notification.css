@@ -1,0 +1,10 @@
+.backgroundProfile {
+    width: 439px;        /* Фиксированная ширина (можно изменить) */
+    min-height: 427px;   /* Минимальная высота */
+    margin-left: 48px;   /* Заменяем left на margin */
+    margin-top: 119px;   /* Заменяем top на margin */
+    padding: 20px;       /* Отступы внутри блока */
+    background: #ECF2F8;
+    border-radius: 5px;
+    box-sizing: border-box; /* Учитываем padding в общей ширине/высоте */
+}

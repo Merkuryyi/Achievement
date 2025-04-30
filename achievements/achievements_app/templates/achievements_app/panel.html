@@ -25,6 +25,9 @@
     <div id="securityModal" class="modal" style="display: none;">
         {% include 'achievements_app/securityProfile.html' %}
     </div>
+    <div id="notificationModal" class="modal" style="display: none;">
+        {% include 'achievements_app/notification.html' %}
+    </div>
     <script>
 
         const buttons = document.querySelector('.buttonSearch');
@@ -34,7 +37,33 @@
         modal.className = 'custom-modal';
         document.addEventListener('DOMContentLoaded', function()
         {
-            let pageName;
+            fetch('{% url "check_status" %}', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': '{{ csrf_token }}'
+                },
+                body: JSON.stringify({
+                    phone: localStorage.getItem('numberPhone')
+                })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.status == 'active')
+                {
+                   deleteText.textContent = 'Удаление профиля';
+                   localStorage.setItem('status', 'active');
+                }
+                else
+                {
+                    deleteText.textContent = 'Отменить удаление';
+                    localStorage.setItem('status', 'delete');
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+            let pageName = 'initial';
             function openModal() {
                 closeAllModals();
                 if(pageName == 'initial')
@@ -50,26 +79,36 @@
                 {
                     document.getElementById('securityModal').style.display = 'block';
                 }
+                else if (pageName == 'notification')
+                {
+                    document.getElementById('notificationModal').style.display = 'block';
+                }
             }
             function closeAllModals() {
-                const modals = ['profileModal', 'noProfileModal', 'securityModal'];
+                const modals = ['profileModal', 'noProfileModal', 'securityModal', 'notificationModal'];
                 modals.forEach(modalId => {
                     const modal = document.getElementById(modalId);
                     if (modal) modal.style.display = 'none';
                 });
             }
             function closeModal() {
-                if (pageName == 'initial') {
+                if (pageName == 'initial')
+                {
                     if (localStorage.getItem('numberPhone') !== null) {
                         document.getElementById('profileModal').style.display = 'none';
                     }
-                    else {
+                    else
+                    {
                         document.getElementById('noProfileModal').style.display = 'none';
                     }
                 }
                 else if (pageName == 'security')
                 {
                     document.getElementById('securityModal').style.display = 'none';
+                }
+                else if (pageName == 'notification')
+                {
+                    document.getElementById('notificationModal').style.display = 'none';
                 }
 
             }
@@ -86,6 +125,10 @@
                 {
                     document.getElementById('securityModal').style.display = 'none';
                 }
+                else if (pageName == 'notification')
+                {
+                    document.getElementById('notificationModal').style.display = 'none';
+                }
             }
             window.onclick = function(event) {
                 let modal = null;
@@ -96,6 +139,10 @@
                 }
                 else if (pageName === 'security') {
                     modal = document.getElementById('securityModal');
+                }
+                else if (pageName == 'notification')
+                {
+                    modal = document.getElementById('notificationModal');
                 }
                 if (modal && event.target === modal) {
                     closeModal();
@@ -135,6 +182,13 @@
             }
             iconSecurity.addEventListener('click', redirectToAuth);
             securityText.addEventListener('click', redirectToAuth);
+            function notification()
+            {
+                pageName = 'notification';
+                openModal();
+            }
+            notificationText.addEventListener('click', notification);
+            iconNext2.addEventListener('click', notification);
         });
     </script>
 </body>

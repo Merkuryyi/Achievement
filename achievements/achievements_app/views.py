@@ -64,6 +64,10 @@ def confirmation(request):
     achievements = Achievement.objects.all()
     return render(request, 'achievements_app/confirmation.html',
                  {'achievements': achievements})
+def notification(request):
+    achievements = Achievement.objects.all()
+    return render(request, 'achievements_app/notification.html',
+                 {'achievements': achievements})
 def check_user(request):
     if request.method == 'POST':
         data = json.loads(request.body)
@@ -303,37 +307,6 @@ def phoneReset(request):
     return JsonResponse({'success': True})
 
 
-def status(request):
-    if request.method == 'POST':
-        try:
-            data = json.loads(request.body)
-            login = data.get('login')
-
-            with connection.cursor() as cursor:
-                cursor.execute(
-                    "select status from status_users inner join users on "
-                    "users.user_id = status_users.user_id where login = %s",
-                    [login]
-                )
-                row = cursor.fetchone()
-
-                if row:
-                    user_status = row[0]
-                    if user_status == 'delete':
-                        return JsonResponse({'success': True})
-                    else:
-                        return JsonResponse({'success': False, 'status': user_status})
-                else:
-                    return JsonResponse({'success': False, 'error': 'User not found'}, status=404)
-
-        except json.JSONDecodeError:
-            return JsonResponse({'success': False, 'error': 'Invalid JSON'}, status=400)
-        except Exception as e:
-            return JsonResponse({'success': False, 'error': str(e)}, status=500)
-
-    return JsonResponse({'success': False, 'error': 'Only POST method allowed'}, status=405)
-
-
 def statusReset(request):
     if request.method == 'POST':
             data = json.loads(request.body)
@@ -367,4 +340,27 @@ def check_status(request):
         return JsonResponse({'error': 'Invalid JSON'}, status=400)
     except Exception as e:
         return JsonResponse({'error': str(e)}, status=500)
+
+
+def check_isActiveNotification(request):
+    try:
+        data = json.loads(request.body)
+        phone = data.get('phone')
+        cursor = connection.cursor()
+        try:
+            cursor.execute(
+                "select activeNotification from users where phone = %s",
+                [phone]
+            )
+            status = cursor.fetchone()[0]
+            return JsonResponse({'status': status})
+
+        finally:
+            cursor.close()
+
+    except json.JSONDecodeError:
+        return JsonResponse({'error': 'Invalid JSON'}, status=400)
+    except Exception as e:
+        return JsonResponse({'error': str(e)}, status=500)
+
 

@@ -30,8 +30,9 @@ urlpatterns = [
     path('editPhone/', views.editPhone, name = 'editPhone'),
     path('emailReset/', views.emailReset, name = 'emailReset'),
     path('phoneReset/', views.phoneReset, name = 'phoneReset'),
-    path('status/', views.status, name = 'status'),
     path('confirmation/', views.confirmation, name = 'confirmation'),
     path('statusReset/', views.statusReset, name = 'statusReset'),
-path('check_status/', views.check_status, name = 'check_status'),
+    path('check_status/', views.check_status, name = 'check_status'),
+    path('check_isActiveNotification/', views.check_isActiveNotification, name = 'check_isActiveNotification'),
+path('notification/', views.notification, name = 'notification'),
 ]

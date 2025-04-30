@@ -51,7 +51,9 @@
             const buttonSmall = document.querySelector('.buttonSmall');
             const buttonSmall2 = document.querySelector('.buttonSmall2');
             const loginUser = document.querySelector('.login');
+            let confirm = 'undo';
             loginUser.textContent = localStorage.getItem('login');
+            const status = localStorage.getItem('status');
             let code = Math.floor(Math.random() * (9999 - 1000 + 1)) + 1000;
             let code2 = Math.floor(Math.random() * (9999 - 1000 + 1)) + 1000;
             buttonSmall.addEventListener('click', function() {
@@ -62,7 +64,14 @@
                     code2 = Math.floor(Math.random() * (9999 - 1000 + 1)) + 1000;
                     console.log('Сгенерированный код:', code2);
             });
-
+            if (status == 'active')
+            {
+               confirm = 'delete';
+            }
+            else
+            {
+                confirm = 'active';
+            }
             button.addEventListener('click', async function() {
             error1.style.display = 'none';
             error1.style.opacity = '0';
@@ -143,7 +152,7 @@
                     },
                     body: JSON.stringify({
                         phone: localStorage.getItem('numberPhone'),
-                        status: "active"
+                        status: confirm
                     })
                 });
 

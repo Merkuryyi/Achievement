@@ -126,32 +126,11 @@
         const deleteText = document.querySelector('.deleteProfile');
         const deleteIcon = document.querySelector('.iconDelete');
         loginUser.textContent = localStorage.getItem('login');
-        fetch('{% url "check_status" %}', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'X-CSRFToken': '{{ csrf_token }}'
-                },
-                body: JSON.stringify({
-                    phone: localStorage.getItem('numberPhone')
-                })
-            })
-            .then(response => response.json())
-            .then(data => {
-                console.log(data.login)
-                if (data.login == 'active') {
-                   deleteText.textContent = 'Удаление профиля';
-                   localStorage.setItem('status', 'active');
-                } else {
-                    deleteText.textContent = 'Отменить удаление';
-                    localStorage.setItem('status', 'delete');
-                }
-            })
-            .catch(error => {
-                console.error('Error:', error);
-            });
+        const iconNext2 = document.querySelector('.iconNext2');
+        const notificationText = document.querySelector('.notificationText');
 
         document.addEventListener('DOMContentLoaded', function() {
+
             if (localStorage.getItem('numberPhone') !== null) {
 
                 function deleteProfile()
@@ -173,7 +152,8 @@
                 }
                 iconExit.addEventListener('click', exit);
                 exitText.addEventListener('click', exit);
-                             }
+
+            }
             else {
                 console.log('Номер телефона не найден в localStorage');
             }
