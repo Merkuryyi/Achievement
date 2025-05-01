@@ -352,8 +352,29 @@ def check_isActiveNotification(request):
                 "select activeNotification from users where phone = %s",
                 [phone]
             )
-            status = cursor.fetchone()[0]
-            return JsonResponse({'status': status})
+            notification = cursor.fetchone()[0]
+            return JsonResponse({'notification': notification})
+
+        finally:
+            cursor.close()
+
+    except json.JSONDecodeError:
+        return JsonResponse({'error': 'Invalid JSON'}, status=400)
+    except Exception as e:
+        return JsonResponse({'error': str(e)}, status=500)
+
+def editActiveNotification(request):
+    try:
+        data = json.loads(request.body)
+        phone = data.get('phone')
+        isActiveNotification = data.get('isActiveNotification')
+        cursor = connection.cursor()
+        try:
+            cursor.execute(
+                "update users set activeNotification = %s where phone = %s",
+                [isActiveNotification, phone]
+            )
+            return JsonResponse({'success': True})
 
         finally:
             cursor.close()

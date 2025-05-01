@@ -47,11 +47,25 @@
   position: absolute;
 }
 
-/* Состояние "включено" */
+
 .toggle-input:checked ~ .toggle-background {
   background: #878CCD;
 }
 
 .toggle-input:checked ~ .toggle-switch {
-  transform: translateX(34px); /* 62px - 20px - 8px (отступы) */
+  transform: translateX(34px);
+}
+.titleNotification
+{
+    position: absolute;
+    width: 217px;
+    height: 31px;
+    left: 94px;
+    top: 160px;
+    font-family: 'Inter';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 32px;
+    line-height: 39px;
+    color: #878CCD;
 }

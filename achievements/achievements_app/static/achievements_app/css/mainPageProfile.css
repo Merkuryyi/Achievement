@@ -137,3 +137,28 @@
     width: 35px;
     height: 37px;
 }
+.circleNotification
+{
+    position: absolute;
+    width: 26px;
+    height: 26px;
+    left: 334px;
+    top: 288px;
+    background: #878CCD;
+
+}
+.textCountNotification
+{
+    position: absolute;
+    width: 8px;
+    height: 14px;
+    left: 343px;
+    top: 292px;
+
+    font-family: 'Inter';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 17px;
+    color: #FFFFFF;
+}

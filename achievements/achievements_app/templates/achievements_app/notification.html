@@ -14,27 +14,123 @@
   <div class="toggle-background"></div>
   <div class="toggle-switch"></div>
 </label>
-
+<div class="titleNotification">Уведомления</div>
 <script>
 
     document.addEventListener('DOMContentLoaded', function() {
-        let checkSwitch = 'inactive';
+        let checkSwitch = false;
         const backgroundSwitch = document.querySelector('.toggle-background');
         const switchPart = document.querySelector('.toggle-switch');
-         function switching()
-        {
-           if (checkSwitch == 'active')
+
+        async function switching() {
+            if (checkSwitch == true) {
+
+
+                try
+                {
+                    const response = await fetch('{% url "editActiveNotification" %}', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'X-CSRFToken': '{{ csrf_token }}'
+                        },
+                        body: JSON.stringify({
+                            phone: localStorage.getItem('numberPhone'),
+                            isActiveNotification: !checkSwitch
+                        })
+                    });
+
+                    const data = await response.json();
+                    if (!data.success) {
+                        updateSwitchUI(checkSwitch);
+                        console.error('Ошибка обновления:', data.error);
+                    }
+                    else
+                    {
+                        updateSwitchUI(checkSwitch);
+                        checkSwitch = false;
+                    }
+                }
+                catch (error)
+                {
+                    checkSwitch = true;
+                    updateSwitchUI(checkSwitch);
+                }
+            }
+           else if (checkSwitch == false)
            {
-               checkSwitch = 'inactive'
+
+                try
+                {
+                    const response = await fetch('{% url "editActiveNotification" %}', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'X-CSRFToken': '{{ csrf_token }}'
+                        },
+                        body: JSON.stringify({
+                            phone: localStorage.getItem('numberPhone'),
+                            isActiveNotification: !checkSwitch
+                        })
+                    });
+
+                    const data = await response.json();
+                    if (!data.success) {
+
+                        console.error('Ошибка обновления:', data.error);
+                    }
+                    else
+                    {
+                        updateSwitchUI(checkSwitch);
+                        checkSwitch = true;
+                    }
+                }
+                catch (error)
+                {
+                    checkSwitch = false;
+                    updateSwitchUI(checkSwitch);
+                }
            }
-           else if (checkSwitch == 'inactive')
-           {
-               checkSwitch = 'active'
-           }
-           console.log(checkSwitch)
+           console.log(checkSwitch);
         }
         backgroundSwitch.addEventListener('click', switching);
         switchPart.addEventListener('click', switching);
+        fetch('{% url "check_isActiveNotification" %}', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRFToken': '{{ csrf_token }}'
+            },
+            body: JSON.stringify({
+                phone: localStorage.getItem('numberPhone')
+            })
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.notification == true)
+            {
+                updateSwitchUI(checkSwitch);
+                checkSwitch = true;
+            }
+            if (data.notification == false)
+            {
+                 checkSwitch = false;
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+        });
+        function updateSwitchUI(isActive) {
+
+            if (!isActive) {
+                switchPart.style.transform = 'translateX(30px)';
+                backgroundSwitch.style.background = '#878CCD';
+
+            } else {
+                switchPart.style.transform = 'translateX(0)';
+                backgroundSwitch.style.background = '#CEDDE6';
+            }
+        }
     });
 
 
