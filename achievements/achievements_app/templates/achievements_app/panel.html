@@ -35,40 +35,43 @@
         const photoProfile = document.querySelector('.photoProfileHigh');
         const modal = document.createElement('div');
         modal.className = 'custom-modal';
+        const phone = localStorage.getItem('numberPhone');
         document.addEventListener('DOMContentLoaded', function()
         {
-            fetch('{% url "check_status" %}', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'X-CSRFToken': '{{ csrf_token }}'
-                },
-                body: JSON.stringify({
-                    phone: localStorage.getItem('numberPhone')
+            if (phone !== null) {
+                fetch('{% url "check_status" %}', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRFToken': '{{ csrf_token }}'
+                    },
+                    body: JSON.stringify({
+                        phone: phone
+                    })
                 })
-            })
-            .then(response => response.json())
-            .then(data => {
-                if (data.status == 'active')
-                {
-                   deleteText.textContent = 'Удаление профиля';
-                   localStorage.setItem('status', 'active');
-                }
-                else
-                {
-                    deleteText.textContent = 'Отменить удаление';
-                    localStorage.setItem('status', 'delete');
-                }
-            })
-            .catch(error => {
-                console.error('Error:', error);
-            });
+                .then(response => response.json())
+                .then(data => {
+                    if (data.status == 'active')
+                    {
+                       deleteText.textContent = 'Удаление профиля';
+                       localStorage.setItem('status', 'active');
+                    }
+                    else
+                    {
+                        deleteText.textContent = 'Отменить удаление';
+                        localStorage.setItem('status', 'delete');
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                });
+            }
             let pageName = 'initial';
             function openModal() {
                 closeAllModals();
                 if(pageName == 'initial')
                 {
-                    if (localStorage.getItem('numberPhone') !== null) {
+                    if (phone !== null) {
                     document.getElementById('profileModal').style.display = 'block';
                     }
                     else {
@@ -94,7 +97,7 @@
             function closeModal() {
                 if (pageName == 'initial')
                 {
-                    if (localStorage.getItem('numberPhone') !== null) {
+                    if (phone !== null) {
                         document.getElementById('profileModal').style.display = 'none';
                     }
                     else
@@ -115,7 +118,7 @@
             window.onclick = function(event)
             {
                 if (pageName == 'initial') {
-                    if (localStorage.getItem('numberPhone') !== null) {
+                    if (phone !== null) {
                         document.getElementById('profileModal').style.display = 'none';
                     } else {
                         document.getElementById('noProfileModal').style.display = 'none';
@@ -149,7 +152,7 @@
                 }
             }
             const userData = {
-                phone: localStorage.getItem('numberPhone')
+                phone: phone
             };
             fetch('{% url "scoreUser" %}', {
                 method: 'POST',

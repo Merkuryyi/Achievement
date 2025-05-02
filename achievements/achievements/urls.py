@@ -36,4 +36,5 @@ urlpatterns = [
     path('check_isActiveNotification/', views.check_isActiveNotification, name = 'check_isActiveNotification'),
 path('notification/', views.notification, name = 'notification'),
 path('editActiveNotification/', views.editActiveNotification, name = 'editActiveNotification'),
+path('countNotification/', views.countNotification, name = 'countNotification'),
 ]

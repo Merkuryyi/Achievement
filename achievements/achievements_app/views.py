@@ -76,12 +76,12 @@ def check_user(request):
 
         with connection.cursor() as cursor:
             cursor.execute(
-                "SELECT COUNT(*) FROM users WHERE login = %s AND password = %s",
+                "SELECT phone FROM users WHERE login = %s AND password = %s",
                 [login, password]
             )
-            count = cursor.fetchone()[0]
+            phone = cursor.fetchone()[0]
 
-        return JsonResponse({'exists': count > 0})
+        return JsonResponse({'exists': phone})
 
     return JsonResponse({'exists': False})
 
@@ -384,4 +384,24 @@ def editActiveNotification(request):
     except Exception as e:
         return JsonResponse({'error': str(e)}, status=500)
 
+def countNotification(request):
+    try:
+        data = json.loads(request.body)
+        phone = data.get('phone')
+        cursor = connection.cursor()
+        try:
+            cursor.execute(
+                "select count(*) from Notification inner join users on users.user_id =  Notification.user_id"
+                " where phone = %s",
+                [phone]
+            )
+            count = cursor.fetchone()[0]
+            return JsonResponse({'count': count})
 
+        finally:
+            cursor.close()
+
+    except json.JSONDecodeError:
+        return JsonResponse({'error': 'Invalid JSON'}, status=400)
+    except Exception as e:
+        return JsonResponse({'error': str(e)}, status=500)

@@ -8,10 +8,7 @@
 </head>
 <body>
 <div class="backgroundProfile"></div>
-<div>
-    <bacgroundCount class="circleNotification"></bacgroundCount>
-    <textCount class="textCountNotification">0</textCount>
-</div>
+
 <div>
     <login class="loginUser">username</login>
     <photo class="photoProfile"></photo>
@@ -41,8 +38,13 @@
 
     </iconNext>
 </div>
+<div id="notificationContainer" style="display: none;">
+    <backgroundCount class="circleNotification"></backgroundCount>
+    <textCount class="textCountNotification">0</textCount>
+</div>
 <div>
     <notification class="notificationText">Уведомления</notification>
+
     <iconNext class="iconNext2">
         <svg width="11" height="21" viewBox="0 0 11 21" fill="none" xmlns="http://www.w3.org/2000/svg">
             <path d="M0.21256 0.214867C-0.0708535 0.504303 -0.0708535 0.974636 0.21256 1.26407L9.26409
@@ -120,6 +122,7 @@
     </iconDelete>
 </div>
     <div class="deleteProfile">Удаление профиля</div>
+
     <script>
         const loginUser = document.querySelector('.loginUser');
         const icon = document.querySelector('.icon');
@@ -132,10 +135,12 @@
         loginUser.textContent = localStorage.getItem('login');
         const iconNext2 = document.querySelector('.iconNext2');
         const notificationText = document.querySelector('.notificationText');
-
+        const notificationCountText = document.querySelector('.textCountNotification');
+        const countBackground = document.querySelector('.circleNotification');
+        const notificationContainer = document.getElementById('notificationContainer');
         document.addEventListener('DOMContentLoaded', function() {
 
-            if (localStorage.getItem('numberPhone') !== null) {
+            if (phone !== null) {
 
                 function deleteProfile()
                 {
@@ -152,17 +157,42 @@
                  function exit()
                 {
                     localStorage.removeItem('numberPhone');
+                    localStorage.removeItem('status');
+                    localStorage.removeItem('login');
                     window.location.href = "{% url 'mainPage' %}";
                 }
                 iconExit.addEventListener('click', exit);
                 exitText.addEventListener('click', exit);
+                fetch('{% url "countNotification" %}', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRFToken': '{{ csrf_token }}'
+                    },
+                    body: JSON.stringify({
+                        phone: phone
+                    })
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.count > 0) {
+                        notificationCountText.textContent = data.count;
+                        notificationContainer.style.display = 'block';
+                    }
+                    else
+                    {
+                        notificationContainer.style.display = 'none';
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                });
 
             }
-            else {
+            else
+            {
                 console.log('Номер телефона не найден в localStorage');
             }
-
-
         });
 
     </script>
