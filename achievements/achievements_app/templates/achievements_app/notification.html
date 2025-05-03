@@ -7,17 +7,20 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter&display=swap" rel="stylesheet">
 </head>
 <body>
-<div class="backgroundProfile" id="notificationContainer">
+
+<div class="backgroundProfileNotification" id="notificationContainer">
 
   <div class="notifications-list" id="notificationsList">
   </div>
 
 </div>
+<div class="backgroundTitleNotification"></div>
 <label class="toggle-container">
   <input type="checkbox" class="toggle-input">
   <div class="toggle-background"></div>
   <div class="toggle-switch"></div>
 </label>
+
 <div class="titleNotification">Уведомления</div>
 <script>
 
@@ -37,6 +40,48 @@
             text: "Запланирована встреча на завтра",
             date: "11:45"
         }
+        ,
+        {
+            id: 3,
+            text: "Запланирована встреча на завтра",
+            date: "11:45"
+        }
+         ,
+        {
+            id: 4,
+            text: "Запланирована встреча на завтра",
+            date: "11:45"
+        }
+        ,
+        {
+            id: 5,
+            text: "Запланирована встреча на завтра",
+            date: "11:45"
+        } ,
+        {
+            id: 2,
+            text: "Запланирована встреча на завтра",
+            date: "11:45"
+        }
+        ,
+        {
+            id: 3,
+            text: "Запланирована встреча на завтра",
+            date: "11:45"
+        }
+         ,
+        {
+            id: 4,
+            text: "Запланирована встреча на завтра",
+            date: "11:45"
+        }
+        ,
+        {
+            id: 5,
+            text: "Запланирована встреча на завтра",
+            date: "11:45"
+        }
+
     ];
     renderNotifications();
     function renderNotifications() {
@@ -66,10 +111,23 @@
 
             container.appendChild(item);
         });
-        if (notifications.length > 1)
-        {
-            notificationContainer.style.height = `${161 + notifications.length * 125}px`;
+
+
+
+        if (notifications.length > 0) {
+            const itemHeight = 85;
+            const marginBetween = 37;
+            const baseHeight = 187;
+            const bottomPadding = 40; // Дополнительное пространство снизу
+
+            const totalHeight = baseHeight +
+                (notifications.length * itemHeight) +
+                ((notifications.length - 1) * marginBetween) +
+                bottomPadding;
+
+            notificationContainer.style.height = `${totalHeight}px`;
         }
+
 
     }
 

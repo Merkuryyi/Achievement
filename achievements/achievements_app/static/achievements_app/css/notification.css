@@ -1,20 +1,32 @@
-.backgroundProfile {
+.backgroundProfileNotification {
     position: absolute;
     width: 439px;
-    min-height: 246px; /* Изменено на min-height */
+    min-height: 229px;
     left: 48px;
     top: 119px;
     background: #ECF2F8;
     border-radius: 5px;
-    /* Добавляем отступ снизу */
     box-sizing: border-box;
     transition: height 0.3s ease;
-    overflow: hidden;
+    overflow: hidden; /* Заменяем на */
+    overflow-y: auto; /* Вертикальный скролл */
+    height: 70vh; /* Или фиксированная высота в пикселях */
+    max-height: 650px; /* Ограничение максимальной высоты */
+    padding: 20px;
 }
+.backgroundTitleNotification {
+    position: absolute;
+    width: 410px;
+    height: 95px;
+    left: 48px;
+    top: 119px;
+    background: #ECF2F8;
+    border-radius: 5px;
 
+}
 .titleTextNotification {
     position: absolute;
-    left: 46px;
+    left: 47px;
     top: 107px;
     bottom: 90.67%;
     font-family: 'Inter';
@@ -43,8 +55,11 @@
     position: relative;
     top: 107px; /* Отступ от заголовка */
     width: 100%;
+   padding-bottom: 20px;
 }
-
+.notification-item:last-child {
+    margin-bottom: 10px; /* Добавляем отступ к последнему элементу */
+}
 .notification-item {
     height: 100px;
     display: flex;
