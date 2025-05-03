@@ -7,8 +7,12 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter&display=swap" rel="stylesheet">
 </head>
 <body>
-<div class="backgroundProfile"></div>
-<div class="backgroundProfile"></div>
+<div class="backgroundProfile" id="notificationContainer">
+
+  <div class="notifications-list" id="notificationsList">
+  </div>
+
+</div>
 <label class="toggle-container">
   <input type="checkbox" class="toggle-input">
   <div class="toggle-background"></div>
@@ -18,6 +22,65 @@
 <script>
 
     document.addEventListener('DOMContentLoaded', function() {
+
+
+
+        const notifications = [
+        {
+            id: 1,
+            text: "Новое сообщение от пользователя",
+            date: "10:30"
+        }
+        ,
+        {
+            id: 2,
+            text: "Запланирована встреча на завтра",
+            date: "11:45"
+        }
+    ];
+    renderNotifications();
+    function renderNotifications() {
+        const container = document.getElementById('notificationsList');
+        const notificationContainer = document.getElementById('notificationContainer');
+        container.innerHTML = '';
+
+        notifications.forEach((notification, index) => {
+            if (index > 0 && notifications[index].date !== notifications[index - 1].date) {
+                container.appendChild(document.createElement('div')).className = 'notification-spacer';
+            }
+
+            const item = document.createElement('div');
+            item.className = 'notification-item';
+            item.innerHTML = `
+                <div class="notification-content">
+                    <div class="notification-text-container">
+                        <div class="notification-title">${notification.text}</div>
+                        <div class="notification-date">${notification.date}</div>
+                    </div>
+                    <label class="custom-checkbox">
+                        <input type="checkbox" class="notification-checkbox" data-id="${notification.id}">
+                        <span class="checkmark"></span>
+                    </label>
+                </div>
+            `;
+
+            container.appendChild(item);
+        });
+        if (notifications.length > 1)
+        {
+            notificationContainer.style.height = `${161 + notifications.length * 125}px`;
+        }
+
+    }
+
+    function countDateGroups(notifications) {
+        return notifications.reduce((groups, notification, i) => {
+            if (i === 0 || notification.date !== notifications[i - 1].date) groups++;
+            return groups;
+        }, 0);
+    }
+
+
         let checkSwitch = false;
         const backgroundSwitch = document.querySelector('.toggle-background');
         const switchPart = document.querySelector('.toggle-switch');

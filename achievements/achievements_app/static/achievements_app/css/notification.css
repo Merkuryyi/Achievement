@@ -1,13 +1,125 @@
-.backgroundProfile
-{
+.backgroundProfile {
     position: absolute;
     width: 439px;
-    height: 427px;
+    min-height: 246px; /* Изменено на min-height */
     left: 48px;
     top: 119px;
     background: #ECF2F8;
     border-radius: 5px;
+    /* Добавляем отступ снизу */
+    box-sizing: border-box;
+    transition: height 0.3s ease;
+    overflow: hidden;
 }
+
+.titleTextNotification {
+    position: absolute;
+    left: 46px;
+    top: 107px;
+    bottom: 90.67%;
+    font-family: 'Inter';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 24px;
+    line-height: 29px;
+    color: #878CCD;
+}
+
+.dateNotification {
+    position: absolute;
+    left: 46px;
+    right: 80.95%;
+    top: 169px;
+    bottom: 88.3%;
+    font-family: 'Inter';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 24px;
+    line-height: 29px;
+    color: #D2BAFF;
+}
+
+.notifications-list {
+    position: relative;
+    top: 107px; /* Отступ от заголовка */
+    width: 100%;
+}
+
+.notification-item {
+    height: 100px;
+    display: flex;
+    align-items: center;
+    padding: 0 20px;
+    margin-bottom: 37px;
+}
+
+.notification-content {
+    display: flex;
+    width: 100%;
+    align-items: flex-end;
+}
+
+.notification-text-container {
+    margin-left: 20px;
+    flex-grow: 1;
+}
+
+.notification-title {
+
+    font-family: 'Inter';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 24px;
+    line-height: 29px;
+    color: #878CCD;
+    margin-bottom: 5px;
+}
+
+.notification-date {
+    font-size: 14px;
+    color: #D2BAFF;
+    font-family: 'Inter';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 24px;
+}
+
+
+
+.custom-checkbox {
+    position: absolute;
+    left: 362px;
+
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+
+}
+
+
+
+.checkmark {
+    position: absolute;
+
+    width: 20px;
+    height: 20px;
+    background: #CEDDE6;
+    border-radius: 5px;
+    transition: background-color 0.2s ease; /* Плавное изменение цвета */
+}
+
+.custom-checkbox:hover input ~ .checkmark {
+    background-color: #c0d2df;
+}
+.custom-checkbox input:checked ~ .checkmark {
+    background-color: #878CCD;
+}
+.checkmark:after {
+    display: none !important;
+}
+
+
+
 .toggle-container {
     left: 378px;
     top: 161px;
@@ -69,3 +181,4 @@
     line-height: 39px;
     color: #878CCD;
 }
+/* Скрываем стандартный чекбокс */

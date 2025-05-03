@@ -163,30 +163,54 @@
                 }
                 iconExit.addEventListener('click', exit);
                 exitText.addEventListener('click', exit);
-                fetch('{% url "countNotification" %}', {
+                fetch('{% url "check_isActiveNotification" %}', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
                         'X-CSRFToken': '{{ csrf_token }}'
                     },
                     body: JSON.stringify({
-                        phone: phone
+                        phone: localStorage.getItem('numberPhone')
                     })
                 })
                 .then(response => response.json())
                 .then(data => {
-                    if (data.count > 0) {
-                        notificationCountText.textContent = data.count;
-                        notificationContainer.style.display = 'block';
-                    }
-                    else
+                    if (data.notification == true)
                     {
-                        notificationContainer.style.display = 'none';
+                         fetch('{% url "countNotification" %}', {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json',
+                                'X-CSRFToken': '{{ csrf_token }}'
+                            },
+                            body: JSON.stringify({
+                                phone: phone
+                            })
+                        })
+                        .then(response => response.json())
+                        .then(data => {
+                            if (data.count > 0) {
+                                notificationCountText.textContent = data.count;
+                                notificationContainer.style.display = 'block';
+                            }
+                            else
+                            {
+                                notificationContainer.style.display = 'none';
+                            }
+                        })
+                        .catch(error => {
+                            console.error('Error:', error);
+                        });
+                    }
+                    if (data.notification == false)
+                    {
+                         notificationContainer.style.display = 'none';
                     }
                 })
                 .catch(error => {
                     console.error('Error:', error);
                 });
+
 
             }
             else
