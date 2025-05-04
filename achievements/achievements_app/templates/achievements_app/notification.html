@@ -22,67 +22,69 @@
 </label>
 
 <div class="titleNotification">Уведомления</div>
+<div class="noNotification" style="display: none;">Уведомлений нет</div>
 <script>
 
     document.addEventListener('DOMContentLoaded', function() {
+        async function updateNotificationStatus(notificationId) {
+            try {
+                const response = await fetch('{% url "editStatusNotification" %}', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRFToken': '{{ csrf_token }}'
+                    },
+                    body: JSON.stringify({
+                        id: notificationId
+                    })
+                });
+
+                const data = await response.json();
+                if (!data.success) {
+                    console.error('Ошибка обновления статуса:', data.error);
+                }
+            } catch (error) {
+                console.error('Ошибка:', error);
+            }
+        }
+        const noNotification = document.querySelector('.noNotification');
+        let notifications = [];
+        fetchNotifications();
+        async function fetchNotifications() {
+            try {
+                const response = await fetch('{% url "returnNotification" %}', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRFToken': '{{ csrf_token }}'
+                    },
+                    body: JSON.stringify({
+                        phone: localStorage.getItem('numberPhone')
+                    })
+                });
+
+                const data = await response.json();
+                    notifications = (data.notifications || []).map(notif => ({
+                        id: notif.id,
+                        title: notif.title,
+                        created_at: notif.created_time,
+                    }));
+                if (data.notifications.length === 0) {
+                    noNotification.style.display = 'block';
+                }
+                else
+                {
+                    renderNotifications();
+                }
 
 
-
-        const notifications = [
-        {
-            id: 1,
-            text: "Новое сообщение от пользователя",
-            date: "10:30"
-        }
-        ,
-        {
-            id: 2,
-            text: "Запланирована встреча на завтра",
-            date: "11:45"
-        }
-        ,
-        {
-            id: 3,
-            text: "Запланирована встреча на завтра",
-            date: "11:45"
-        }
-         ,
-        {
-            id: 4,
-            text: "Запланирована встреча на завтра",
-            date: "11:45"
-        }
-        ,
-        {
-            id: 5,
-            text: "Запланирована встреча на завтра",
-            date: "11:45"
-        } ,
-        {
-            id: 2,
-            text: "Запланирована встреча на завтра",
-            date: "11:45"
-        }
-        ,
-        {
-            id: 3,
-            text: "Запланирована встреча на завтра",
-            date: "11:45"
-        }
-         ,
-        {
-            id: 4,
-            text: "Запланирована встреча на завтра",
-            date: "11:45"
-        }
-        ,
-        {
-            id: 5,
-            text: "Запланирована встреча на завтра",
-            date: "11:45"
+            }
+            catch (error) {
+                console.error('Error', error)
+            }
         }
 
-    ];
+
     renderNotifications();
     function renderNotifications() {
         const container = document.getElementById('notificationsList');
@@ -99,8 +101,8 @@
             item.innerHTML = `
                 <div class="notification-content">
                     <div class="notification-text-container">
-                        <div class="notification-title">${notification.text}</div>
-                        <div class="notification-date">${notification.date}</div>
+                        <div class="notification-title">${notification.title}</div>
+                        <div class="notification-date">${notification.created_at}</div>
                     </div>
                     <label class="custom-checkbox">
                         <input type="checkbox" class="notification-checkbox" data-id="${notification.id}">
@@ -111,6 +113,12 @@
 
             container.appendChild(item);
         });
+        document.querySelectorAll('.notification-checkbox').forEach(checkbox => {
+        checkbox.addEventListener('change', function() {
+            const notificationId = this.dataset.id;
+            updateNotificationStatus(notificationId);
+        });
+    });
 
 
 
@@ -118,7 +126,7 @@
             const itemHeight = 85;
             const marginBetween = 37;
             const baseHeight = 187;
-            const bottomPadding = 40; // Дополнительное пространство снизу
+            const bottomPadding = 40;
 
             const totalHeight = baseHeight +
                 (notifications.length * itemHeight) +

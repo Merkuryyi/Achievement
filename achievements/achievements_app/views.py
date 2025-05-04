@@ -405,3 +405,58 @@ def countNotification(request):
         return JsonResponse({'error': 'Invalid JSON'}, status=400)
     except Exception as e:
         return JsonResponse({'error': str(e)}, status=500)
+
+
+def returnNotification(request):
+    try:
+        data = json.loads(request.body)
+        phone = data.get('phone')
+
+        with connection.cursor() as cursor:
+            cursor.execute(
+                "SELECT id, title, DATE_TRUNC('second', notification.created_at)::time "
+                "AS created_at FROM notification "
+                "INNER JOIN users ON users.user_id = notification.user_id WHERE users.phone = %s "
+                "AND notification.is_read = false order by created_at desc;",
+                [phone]
+            )
+
+            notifications = cursor.fetchall()
+
+            result = [
+                {
+                    'id': row[0],
+                    'title': row[1],
+                    'created_at': row[2]
+                }
+                for row in notifications
+            ]
+
+            return JsonResponse({'notifications': result}, safe=False)
+
+    except json.JSONDecodeError:
+        return JsonResponse({'error': 'Invalid JSON'}, status=400)
+
+
+    except Exception as e:
+        return JsonResponse({'error': str(e)}, status=500)
+
+def editStatusNotification(request):
+    try:
+        data = json.loads(request.body)
+        id = data.get('id')
+
+        with connection.cursor() as cursor:
+            cursor.execute(
+                "update notification set is_read = true where id = %s",
+                [id]
+            )
+            return JsonResponse({'success': True})
+
+
+    except json.JSONDecodeError:
+        return JsonResponse({'error': 'Invalid JSON'}, status=400)
+
+
+    except Exception as e:
+        return JsonResponse({'error': str(e)}, status=500)

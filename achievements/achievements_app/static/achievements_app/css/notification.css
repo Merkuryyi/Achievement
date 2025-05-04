@@ -24,6 +24,20 @@
     border-radius: 5px;
 
 }
+.noNotification
+{
+    position: absolute;
+    width: 209px;
+    height: 22px;
+    left: 163px;
+    top: 252px;
+    color: #D9C8FD;
+     font-family: 'Inter';
+    font-style: normal;
+    font-weight: 209;
+    font-size: 24px;
+    line-height: 22px;
+}
 .titleTextNotification {
     position: absolute;
     left: 47px;

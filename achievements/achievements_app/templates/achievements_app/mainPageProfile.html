@@ -137,6 +137,7 @@
         const notificationText = document.querySelector('.notificationText');
         const notificationCountText = document.querySelector('.textCountNotification');
         const countBackground = document.querySelector('.circleNotification');
+
         const notificationContainer = document.getElementById('notificationContainer');
         document.addEventListener('DOMContentLoaded', function() {
 
@@ -184,7 +185,7 @@
                                 'X-CSRFToken': '{{ csrf_token }}'
                             },
                             body: JSON.stringify({
-                                phone: phone
+                                phone: localStorage.getItem('numberPhone')
                             })
                         })
                         .then(response => response.json())
