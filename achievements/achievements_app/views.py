@@ -392,7 +392,7 @@ def countNotification(request):
         try:
             cursor.execute(
                 "select count(*) from Notification inner join users on users.user_id =  Notification.user_id"
-                " where phone = %s",
+                " where phone = %s and is_read = 'false'",
                 [phone]
             )
             count = cursor.fetchone()[0]

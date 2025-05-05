@@ -150,7 +150,7 @@
                         .then(response => response.json())
                         .then(data => {
                             if (data.success) {
-                                window.location.href = "{% url 'recovery' %}";
+                                window.location.href = "{% url 'mainPage' %}";
                             } else {
                                 showGlobalError(data.message || 'Ошибка регистрации');
                             }
