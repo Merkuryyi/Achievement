@@ -441,18 +441,19 @@ def returnNotification(request):
     except Exception as e:
         return JsonResponse({'error': str(e)}, status=500)
 
-def editStatusNotification(request):
+def createNotification(request):
     try:
         data = json.loads(request.body)
-        id = data.get('id')
-
+        phone = data.get('phone')
+        user_id = get_user_id_by_phone(phone)
+        text = data.get('text')
         with connection.cursor() as cursor:
             cursor.execute(
-                "update notification set is_read = true where id = %s",
-                [id]
+                "insert into notification "
+                "(user_id, created_at, is_read, title) values (%s, now(), false, %s)",
+                [user_id, text]
             )
             return JsonResponse({'success': True})
-
 
     except json.JSONDecodeError:
         return JsonResponse({'error': 'Invalid JSON'}, status=400)
