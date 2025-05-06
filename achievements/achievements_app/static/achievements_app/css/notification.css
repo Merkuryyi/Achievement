@@ -75,7 +75,7 @@
     margin-bottom: 10px; /* Добавляем отступ к последнему элементу */
 }
 .notification-item {
-    height: 100px;
+    height: 166px;
     display: flex;
     align-items: center;
     padding: 0 20px;

@@ -7,10 +7,50 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter&display=swap" rel="stylesheet">
 </head>
 <body>
-   {% include 'achievements_app/panel.html' %}
+    {% include 'achievements_app/panel.html' %}
+<div class="background"></div>
+    <div class="titleAchievement">Все достижения</div>
+    <div class="achievements-container" id="achievementsContainer">
+        <!-- Контент будет генерироваться JavaScript -->
+    </div>
 
     <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const achievements = [
+                {
+                    user: "User123",
+                    name: "Первое достижение",
+                    date: "2023-08-15",
+                    likes: 42,
+                    comments: 15,
+                    photo: "image1.jpg"
+                },
+                // Добавьте дополнительные достижения
+            ];
 
+            function createAchievementCard(data) {
+                const item = document.createElement('div');
+                item.className = 'achievement-item';
+
+                item.innerHTML = `
+                    <div class="photo-achievement"></div>
+                    <div class="text-container">
+                        <div class="login-achievement">${data.user}</div>
+                        <div class="name-achievement">${data.name}</div>
+                        <div class="date-achievement">${new Date(data.date).toLocaleDateString()}</div>
+                    </div>
+                `;
+                return item;
+            }
+
+            function renderAchievements() {
+                const container = document.getElementById('achievementsContainer');
+                achievements.forEach(achievement => {
+                    container.appendChild(createAchievementCard(achievement));
+                });
+            }
+            renderAchievements();
+        });
     </script>
 </body>
 </html>

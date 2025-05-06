@@ -440,6 +440,25 @@ def returnNotification(request):
 
     except Exception as e:
         return JsonResponse({'error': str(e)}, status=500)
+def editStatusNotification(request):
+    try:
+        data = json.loads(request.body)
+        id = data.get('id')
+
+        with connection.cursor() as cursor:
+            cursor.execute(
+                "update notification set is_read = true where id = %s",
+                [id]
+            )
+            return JsonResponse({'success': True})
+
+
+    except json.JSONDecodeError:
+        return JsonResponse({'error': 'Invalid JSON'}, status=400)
+
+
+    except Exception as e:
+        return JsonResponse({'error': str(e)}, status=500)
 
 def createNotification(request):
     try:

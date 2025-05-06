@@ -1,25 +1,98 @@
 body {
     background-color: #E2E5EF;
 }
-.backgroundLeft,
-.backgroundRight
+
+.background
 {
     position: absolute;
-    width: 902px;
-    height: 877px;
-    left: 58px;
-    top: 49px;
+    width: 1813px;
+    height: 2425px;
+    left: 49px;
+    top: 119px;
     background: #FFFFFF;
     border-radius: 5px;
-}
-.backgroundLeft
-{
-    top: 119px;
-    left: 48px;
+
 }
 
-.backgroundRight
+.toggle-background {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background: #CEDDE6;
+  border-radius: 30px;
+  transition: background 0.3s ease;
+}
+.titleAchievement
 {
-    top: 119px;
-    left: 960px;
+    position: absolute;
+    width: 313px;
+    height: 33px;
+    left: 134px;
+    top: 182px;
+    font-family: 'Inter';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 36px;
+    line-height: 44px;
+    color: #878CCD;
+}
+
+body {
+    background-color: #E2E5EF;
+    margin: 0;
+    font-family: 'Inter', sans-serif;
+}
+
+.achievements-container {
+    margin-left: 120px;
+    margin-top: 279px;
+}
+
+.achievement-item {
+    width: 765px;
+    height: 166px;
+    display: flex;
+    align-items: center;
+    margin-bottom: 37px;
+    position: relative;
+    border-radius: 10px; /* Закругление углов */
+
+}
+
+.photo-achievement {
+    width: 160px;
+    height: 166px;
+    background: #D2BAFF;
+    border-radius: 10px;
+    margin-left: 20px; /* Отступ от края карточки */
+    flex-shrink: 0;
+}
+
+.text-container {
+    margin-left: 60px;
+    flex-grow: 1;
+    height: 100%;
+    padding: 20px;
+    position: relative; /* Для позиционирования даты */
+}
+
+.login-achievement {
+    font-size: 32px;
+    color: #878CCD;
+    margin: 0 0 15px 0;
+}
+
+.name-achievement {
+    font-size: 28px;
+    color: #878CCD;
+    margin: 0;
+}
+
+.date-achievement {
+    font-size: 24px;
+    color: #878CCD;
+    position: absolute;
+    bottom: 20px;
+    right: 20px;
+    margin: 0;
 }
