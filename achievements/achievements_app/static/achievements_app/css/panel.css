@@ -21,6 +21,7 @@
     top: 43px;
     background: #ECF2F8;
     border-radius: 5px;
+    cursor pointer;
 }
 
 .container-toggle {
@@ -97,6 +98,7 @@
     height: 19px;
     background: #D2BAFF;
     border-radius: 5px;
+    cursor pointer;
 
 }
 .scores
@@ -116,6 +118,7 @@
     flex: none;
     order: 1;
     flex-grow: 0;
+    cursor pointer;
 
 }
 .buttonSearch:hover{

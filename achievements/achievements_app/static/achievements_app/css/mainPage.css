@@ -46,8 +46,31 @@ body {
 .achievements-container {
     margin-left: 120px;
     margin-top: 279px;
+    display: grid;
+    grid-template-columns: repeat(2, 765px);
+    gap: 40px 120px;
+    width: calc(765px * 2 + 70px);
+}
+.achievement-item:nth-child(even) {
+    margin-right: 0;
+}
+.achievement-item {
+    width: 765px;
+    height: 166px;
+    position: relative;
+    border-radius: 10px;
+    margin-bottom: 0;
+
 }
 
+.achievement-item:nth-child(odd) {
+    justify-self: start;
+}
+
+.achievement-item:nth-child(even) {
+    justify-self: end;
+    margin-right: 70px;
+}
 .achievement-item {
     width: 765px;
     height: 166px;
@@ -55,7 +78,7 @@ body {
     align-items: center;
     margin-bottom: 37px;
     position: relative;
-    border-radius: 10px; /* Закругление углов */
+    border-radius: 10px;
 
 }
 
@@ -64,7 +87,7 @@ body {
     height: 166px;
     background: #D2BAFF;
     border-radius: 10px;
-    margin-left: 20px; /* Отступ от края карточки */
+    margin-left: 20px;
     flex-shrink: 0;
 }
 
@@ -73,7 +96,7 @@ body {
     flex-grow: 1;
     height: 100%;
     padding: 20px;
-    position: relative; /* Для позиционирования даты */
+    position: relative;
 }
 
 .login-achievement {
@@ -98,9 +121,57 @@ body {
 }
 
 .iconLike {
-
     width: 23px;
     bottom: 20px;
-   position: absolute;
+    position: absolute;
+    left: 20px;
 }
 
+.iconComment {
+    width: 23px;
+    bottom: 20px;
+    position: absolute;
+    left: 97px;
+}
+.countLike
+{
+    width: 15px;
+    height: 23px;
+    position: absolute;
+    left: 50px;
+    bottom: 20px;
+    margin: 5px;
+    font-family: 'Inter';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 24px;
+    line-height: 29px;
+
+    color: #878CCD;
+
+    flex: none;
+    order: 1;
+    flex-grow: 0;
+
+}
+.countComment
+{
+    left: 130px;
+    width: 15px;
+    height: 23px;
+    position: absolute;
+    bottom: 20px;
+    margin: 5px;
+    font-family: 'Inter';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 24px;
+    line-height: 29px;
+
+    color: #878CCD;
+
+    flex: none;
+    order: 1;
+    flex-grow: 0;
+
+}

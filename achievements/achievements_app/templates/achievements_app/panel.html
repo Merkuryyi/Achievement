@@ -29,7 +29,8 @@
         {% include 'achievements_app/notification.html' %}
     </div>
     <script>
-
+        const backgroundScores = document.querySelector('.backgroundScores');
+        const scoresIcon = document.querySelector('.scoresIcon');
         const buttons = document.querySelector('.buttonSearch');
         const scores = document.querySelector('.scores');
         const photoProfile = document.querySelector('.photoProfileHigh');
@@ -192,6 +193,13 @@
             }
             notificationText.addEventListener('click', notification);
             iconNext2.addEventListener('click', notification);
+             function mainPage()
+            {
+                 window.location.href = "{% url 'mainPage' %}";
+            }
+            scores.addEventListener('click', mainPage);
+            backgroundScores.addEventListener('click', mainPage);
+            scoresIcon.addEventListener('click', mainPage);
         });
     </script>
 </body>

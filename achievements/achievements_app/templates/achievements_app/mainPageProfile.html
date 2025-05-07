@@ -137,11 +137,11 @@
         const notificationText = document.querySelector('.notificationText');
         const notificationCountText = document.querySelector('.textCountNotification');
         const countBackground = document.querySelector('.circleNotification');
-
+        const phoneNumber = localStorage.getItem('numberPhone');
         const notificationContainer = document.getElementById('notificationContainer');
         document.addEventListener('DOMContentLoaded', function() {
 
-            if (phone !== null) {
+            if (phoneNumber !== null) {
 
                 function deleteProfile()
                 {
