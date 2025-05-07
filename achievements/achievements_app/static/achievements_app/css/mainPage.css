@@ -96,3 +96,11 @@ body {
     right: 20px;
     margin: 0;
 }
+
+.iconLike {
+
+    width: 23px;
+    bottom: 20px;
+   position: absolute;
+}
+
