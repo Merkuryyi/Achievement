@@ -60,9 +60,12 @@ body {
     position: relative;
     border-radius: 10px;
     margin-bottom: 0;
+    transition: transform 0.3s ease;
 
 }
-
+.comment-expanded ~ .achievement-item {
+    transform: translateY(553px);
+}
 .achievement-item:nth-child(odd) {
     justify-self: start;
 }
@@ -120,58 +123,37 @@ body {
     margin: 0;
 }
 
-.iconLike {
-    width: 23px;
-    bottom: 20px;
+.interaction-container {
     position: absolute;
+    bottom: 20px;
     left: 20px;
+    display: flex;
+    align-items: center;
+    gap: 30px;
 }
 
+.like-group,
+.comment-group {
+    display: flex;
+    align-items: center;
+    gap: 10px; /
+}
+
+.iconLike,
 .iconComment {
-    width: 23px;
-    bottom: 20px;
-    position: absolute;
-    left: 97px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 24px;
+    height: 24px;
 }
-.countLike
-{
-    width: 15px;
-    height: 23px;
-    position: absolute;
-    left: 50px;
-    bottom: 20px;
-    margin: 5px;
+
+
+.countLike,
+.countComment {
+    position: static;
     font-family: 'Inter';
-    font-style: normal;
-    font-weight: 400;
     font-size: 24px;
-    line-height: 29px;
-
     color: #878CCD;
-
-    flex: none;
-    order: 1;
-    flex-grow: 0;
-
-}
-.countComment
-{
-    left: 130px;
-    width: 15px;
-    height: 23px;
-    position: absolute;
-    bottom: 20px;
-    margin: 5px;
-    font-family: 'Inter';
-    font-style: normal;
-    font-weight: 400;
-    font-size: 24px;
-    line-height: 29px;
-
-    color: #878CCD;
-
-    flex: none;
-    order: 1;
-    flex-grow: 0;
-
+    margin: 0;
 }
