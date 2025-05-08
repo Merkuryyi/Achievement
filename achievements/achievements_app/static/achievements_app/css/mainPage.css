@@ -60,12 +60,11 @@ body {
     position: relative;
     border-radius: 10px;
     margin-bottom: 0;
+    grid-template-columns: 1fr; /* Одна колонка */
     transition: transform 0.3s ease;
 
 }
-.comment-expanded ~ .achievement-item {
-    transform: translateY(553px);
-}
+
 .achievement-item:nth-child(odd) {
     justify-self: start;
 }
@@ -82,7 +81,7 @@ body {
     margin-bottom: 37px;
     position: relative;
     border-radius: 10px;
-
+grid-template-columns: 1fr;
 }
 
 .photo-achievement {
@@ -156,4 +155,35 @@ body {
     font-size: 24px;
     color: #878CCD;
     margin: 0;
+}
+.filter-container
+{
+    margin-left: 134px;
+    margin-top: 481px;
+    display: grid;
+    grid-template-columns: repeat(2, 765px);
+    gap: 40px 120px;
+    width: calc(765px * 2 + 70px);
+}
+.filter
+{
+
+    width: 286px;
+    height: 22px;
+    font-family: 'Inter';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 24px;
+    line-height: 29px;
+    color: #878CCD;
+    margin: 0;
+}
+.comment-container
+{
+    margin-left: 134px;
+    margin-top: 481px;
+    display: grid;
+    grid-template-columns: repeat(2, 765px);
+    gap: 40px 120px;
+    width: calc(765px * 2 + 70px);
 }
