@@ -78,10 +78,12 @@ body {
     height: 166px;
     display: flex;
     align-items: center;
-    margin-bottom: 37px;
+    margin-bottom: 40px;
     position: relative;
     border-radius: 10px;
-grid-template-columns: 1fr;
+    grid-template-columns: 1fr;
+    transition: all 0.3s ease;
+
 }
 
 .photo-achievement {
@@ -156,34 +158,75 @@ grid-template-columns: 1fr;
     color: #878CCD;
     margin: 0;
 }
-.filter-container
-{
-    margin-left: 134px;
-    margin-top: 481px;
-    display: grid;
-    grid-template-columns: repeat(2, 765px);
-    gap: 40px 120px;
-    width: calc(765px * 2 + 70px);
-}
-.filter
-{
 
-    width: 286px;
-    height: 22px;
-    font-family: 'Inter';
-    font-style: normal;
-    font-weight: 400;
-    font-size: 24px;
-    line-height: 29px;
-    color: #878CCD;
-    margin: 0;
+.interaction-container {
+    position: absolute;
+    bottom: 20px;
+    left: 20px;
+    display: flex;
+    gap: 30px;
 }
-.comment-container
-{
-    margin-left: 134px;
-    margin-top: 481px;
-    display: grid;
-    grid-template-columns: repeat(2, 765px);
-    gap: 40px 120px;
-    width: calc(765px * 2 + 70px);
+
+/* Стили комментариев */
+.comment-expanded {
+    margin-bottom: 600px;
+}
+
+.comments-section {
+    position: absolute;
+    width: 765px;
+    top: calc(100% + 40px);
+    left: 0;
+    background: white;
+    border-radius: 10px;
+    padding: 20px;
+    display: none;
+
+
+
+}
+
+.comment-header {
+    display: flex;
+
+    margin-bottom: 20px;
+}
+
+.filter {
+    font-size: 24px;
+    color: #878CCD;
+    margin-right: 20px;
+}
+
+.icon-down {
+    width: 24px;
+    height: 24px;
+    transform: rotate(90deg);
+    flex-shrink: 0;
+}
+
+/* Иконки взаимодействия */
+.iconComment {
+    cursor: pointer;
+}
+
+.countComment, .countLike {
+    font-size: 24px;
+    color: #878CCD;
+}
+
+.achievement-item.comment-expanded .comments-section {
+    display: block;
+}
+.iconFilter {
+    cursor: pointer;
+    transition: transform 0.3s ease;
+}
+
+.iconFilter svg {
+    transition: transform 0.3s ease;
+}
+
+.iconFilter.rotated svg {
+    transform: rotate(180deg);
 }

@@ -10,26 +10,76 @@
     {% include 'achievements_app/panel.html' %}
     <div class="background"></div>
     <div class="titleAchievement">Все достижения</div>
-    <div class="achievements-container" id="achievementsContainer"></div>
-    <div class="comment-container" id="CommentContainer"></div>
+    <div class="achievements-container" id="achievementsContainer">
+
+    </div>
+    <div class="comment-container" id="commentsContainer"></div>
     <script>
     function toggleComments(icon) {
-        const card = icon.closest('.achievement-item');
-        const wasExpanded = card.classList.contains('comment-expanded');
-        card.classList.toggle('comment-expanded');
-        const cardRect = card.getBoundingClientRect();
-        document.querySelectorAll('.achievement-item').forEach(item => {
-            if (item === card) return;
-            const itemRect = item.getBoundingClientRect();
+            const card = icon.closest('.achievement-item');
+            const wasExpanded = card.classList.contains('comment-expanded');
 
-            if (itemRect.top > cardRect.bottom) {
-                item.style.transform = !wasExpanded
-                    ? `translateY(553px)`
-                    : 'none';
+            // Закрываем все комментарии
+            document.querySelectorAll('.achievement-item').forEach(item => {
+                item.classList.remove('comment-expanded');
+                item.querySelector('.comments-section')?.remove();
+            });
+
+            if(!wasExpanded) {
+                const commentsSection = renderCommentsSection();
+                card.appendChild(commentsSection);
+                card.classList.add('comment-expanded');
             }
-        });
-    }
+            updateCardPositions();
+        }
+
+        function renderCommentsSection() {
+            const commentsSection = document.createElement('div');
+            commentsSection.className = 'comments-section';
+            commentsSection.innerHTML = `
+                <div class="comment-header">
+                    <span class="filter">по алфавиту от а до я</span>
+                    <iconFilter class="iconFilter">
+                        <svg width="45" height="45" viewBox="0 0 45 45" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M31.8104 17.8447L22.5 27.1551L13.1897 17.8447" stroke="#878CCD" stroke-width="2"
+                            stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                    </iconFilter>
+                </div>
+                <div class="comments-list"></div>
+            `;
+
+            // Добавляем обработчик клика
+            const iconFilter = commentsSection.querySelector('.iconFilter');
+            iconFilter.addEventListener('click', function() {
+                this.classList.toggle('rotated');
+            });
+
+            return commentsSection;
+        }
+
+        function updateCardPositions() {
+            const cards = document.querySelectorAll('.achievement-item');
+            cards.forEach(card => {
+                if(card.classList.contains('comment-expanded')) {
+                    card.style.marginBottom = "600px";
+                } else {
+                    card.style.marginBottom = "40px";
+                }
+            });
+        }
     document.addEventListener('DOMContentLoaded', function() {
+         const comments = [
+            {
+                user: "User123",
+                name: "Первое достижение",
+                date: "2023-08-15",
+                likes: 42,
+                comments: 15,
+                photo: "image1.jpg",
+                countLike: 12,
+                countComment: 12,
+            }];
         const achievements = [
             {
                 user: "User123",
@@ -155,6 +205,7 @@
                                     </svg>
                                 </iconComment>
                         <div class="countComment">${data.countComment}</div>
+
                     </div>
                 </div>
 
@@ -170,6 +221,9 @@
             });
         }
         renderAchievements();
+
+
+
     });
 </script>
 </body>
