@@ -100,6 +100,32 @@ body {
     left: 350px;
     top: 742px;
 }
+
+.comment-text[contenteditable="true"] {
+    background: #ECF2F8;
+    border-radius: 5px;
+    padding: 10px;
+    border: 2px solid #D2BAFF;
+    outline: none;
+    cursor: text;
+    white-space: pre-wrap;
+}
+.comment-text[contenteditable="true"] {
+    width: calc(100% - 30px);
+    min-height: 100px;
+    font: inherit;
+    color: #878CCD;
+    margin: 20px 0;
+    resize: vertical;
+    transition: all 0.3s ease;
+}
+.comment-text[contenteditable="true"] {
+    white-space: pre-wrap;
+    overflow-wrap: break-word;
+}
+.comment-text[contenteditable="true"]:focus {
+    box-shadow: 0 0 0 2px rgba(210, 186, 255, 0.2);
+}
 .containerCodePhone {
     width: 242px;
     height: 47px;

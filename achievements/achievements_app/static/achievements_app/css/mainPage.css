@@ -130,7 +130,7 @@ body {
 }
 
 .interaction-container {
-    position: absolute;
+
     bottom: 20px;
     left: 20px;
     display: flex;
@@ -327,21 +327,24 @@ transform: translateY(-4px);
     align-items: center;
     gap: 30px;
     width: 100%;
-    margin-top: 20px; /* Фиксированный отступ */
+    margin-top: 20px;
     justify-content: flex-start;
 }
 
 .iconEditComment,
 .iconDeleteComment {
-    margin-left: auto;
-    order: 2;
+    order: 3; /* Порядок: иконки перед "ответить" */
+    cursor: pointer;
+    color: #878CCD;
 }
 
 .answerComment-label {
     margin-left: auto;
-    order: 3;
+    justify-content: flex-end;
     font-size: 24px;
     color: #878CCD;
+    position: static;
+     cursor: pointer;
 }
 
 .like-groupComment,
@@ -378,4 +381,30 @@ transform: translateY(-4px);
 .comment-reply {
     margin-left: 45px;
     width: 650px;
+}
+.comment-text[contenteditable="true"] {
+    background: #ECF2F8;
+    border-radius: 5px;
+    padding: 10px;
+    border: 2px solid #D2BAFF;
+    outline: none;
+    cursor: text;
+    white-space: pre-wrap;
+}
+
+.comment-text[contenteditable="true"]:focus {
+    box-shadow: 0 0 0 2px rgba(210, 186, 255, 0.2);
+}
+.comment-text[contenteditable="true"] {
+    width: calc(100% - 30px);
+    min-height: 100px;
+    font: inherit;
+    color: #878CCD;
+    margin: 20px 0;
+    resize: vertical;
+    transition: all 0.3s ease;
+}
+.comment-text[contenteditable="true"] {
+    white-space: pre-wrap;
+    overflow-wrap: break-word;
 }

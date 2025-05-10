@@ -22,10 +22,16 @@
             item.classList.remove('comment-expanded');
             const commentsSection = item.querySelector('.comments-section');
             if(commentsSection) {
-                commentsSection.remove();
+
+                 document.querySelectorAll('.achievement-item').forEach(item => {
+                    item.classList.remove('comment-expanded');
+                    item.style.marginBottom = "";
+                    const commentsSection = item.querySelector('.comments-section');
+                    if(commentsSection) commentsSection.remove();
+                });
             }
-            item.style.marginBottom = "20px";
             });
+
 
             const achievementId = parseInt(card.dataset.achievementId);
 
@@ -39,6 +45,9 @@
                     const commentsHeight = commentsSection.offsetHeight;
                     card.style.marginBottom = `${commentsHeight}px`;
                 });
+
+
+
             }
 
         }
@@ -63,6 +72,12 @@
             const filteredComments = comments.filter(comments => comments.id_achievement === achievementId);
             const commentsList = document.createElement('div');
             commentsList.className = 'comments-list';
+            commentsList.addEventListener('click', function(e) {
+            if(e.target.closest('.iconEditComment')) {
+                const commentBlock = e.target.closest('.comment, .comment-reply');
+                toggleEditMode(commentBlock);
+            }
+});
             const hasReplies = filteredComments.some(comment => comment.replay);
 
             commentsList.className = `comments-list${hasReplies ? ' comments-listReplay' : ''}`;
@@ -70,6 +85,7 @@
                 const commentHTML = `
 
                     <div class="${comment.replay ? 'comment-reply' : 'comment'}">
+
                         <div class="user-info">
                             <div class="avatar"></div>
                             <span class="username">${comment.user}</span>
@@ -78,61 +94,9 @@
                                 <span class="comment-date">${new Date(comment.date).toLocaleDateString()}</span>
                             </div>
                         </div>
-                        <div class="comment-text">${comment.text}</div>
+                        <div class="comment-text" contenteditable="false">${comment.text}</div>
                         <div class="interaction-containerComment">
-                        ${comment.user === localStorage.getItem('login') ? `
-                            <iconEdit class="iconEditComment">
-                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                    <path d="M11 4H4C3.46957 4 2.96086 4.21071 2.58579 4.58579C2.21071 4.96086 2 5.46957 2 6V20C2
-                                    20.5304 2.21071 21.0391 2.58579 21.4142C2.96086 21.7893 3.46957 22 4 22H18C18.5304 22 19.0391
-                                    21.7893 19.4142 21.4142C19.7893 21.0391 20 20.5304 20 20V13" stroke="#878CCD" stroke-width="2"
-                                     stroke-linecap="round" stroke-linejoin="round"/>
-                                    <path d="M18.5 2.50023C18.8978 2.1024 19.4374 1.87891 20 1.87891C20.5626 1.87891 21.1022
-                                     2.1024 21.5 2.50023C21.8978 2.89805 22.1213 3.43762 22.1213 4.00023C22.1213 4.56284
-                                     21.8978 5.1024 21.5 5.50023L12 15.0002L8 16.0002L9 12.0002L18.5 2.50023Z"
-                                      stroke="#878CCD" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                                </svg>
-                            </iconEdit>
-                            <iconTrash class="iconDeleteComment">
-                                <svg width="35" height="37" viewBox="0 0 35 37" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                    <path d="M7.20234 10.516H9.37373L10.3845 29.3408C10.3947 29.5294 10.4728
-                                        29.7068 10.6026 29.8365C10.7325 29.9662 10.9044 30.0386 11.0831 30.0386H24.3362C24.515
-                                        30.0386 24.6871 29.9661 24.817 29.8362C24.9469 29.7063 25.0248 29.5288 25.0348
-                                        29.3401L26.0295 10.516H28.2023C28.388 10.516 28.566 10.438 28.6973 10.2992C28.8286
-                                        10.1604 28.9023 9.97222 28.9023 9.77596C28.9023 9.5797 28.8286 9.39147 28.6973
-                                        9.2527C28.566 9.11392 28.388 9.03596 28.2023 9.03596H25.5836C25.5451 9.03596 25.5115 9.05298 25.4744
-                                        9.0589C25.438 9.05298 25.4044 9.03596 25.3673 9.03596H21.6951V7.09938C21.6951 6.90311 21.6214
-                                        6.71489 21.4901 6.57612C21.3588 6.43734 21.1808 6.35938 20.9951 6.35938H14.4088C14.2232
-                                        6.35938 14.0451 6.43734 13.9139 6.57612C13.7826 6.71489 13.7088 6.90311 13.7088
-                                        7.09938V9.03596H10.0352C10.003 9.03596 9.97434 9.0515 9.94284 9.05594C9.91064
-                                        9.05076 9.88194 9.03596 9.84834 9.03596H7.20304C7.11111 9.03591 7.02008 9.055 6.93513
-                                        9.09214C6.85018 9.12929 6.77299 9.18375 6.70796 9.25243C6.64292 9.32112 6.59132 9.40267
-                                        6.5561 9.49243C6.52088 9.58219 6.50273 9.67841 6.50269 9.77559C6.50264 9.87276
-                                        6.5207 9.969 6.55584 10.0588C6.59097 10.1486 6.64249 10.2302 6.70746
-                                        10.299C6.77243 10.3677 6.84957 10.4223 6.93448 10.4595C7.01939 10.4967
-                                        7.11041 10.5159 7.20234 10.516ZM15.1088 7.83938H20.2951V9.03596H15.1088V7.83938ZM24.6274
-                                        10.516L23.674 28.5594H11.7446L10.7758 10.516H24.6274Z" fill="#878CCD"/>
-                                        <path d="M14.236 27.1717L14.2766 27.171C14.3684 27.1655 14.4582 27.141
-                                        14.541 27.0988C14.6238 27.0565 14.6979 26.9975 14.759 26.925C14.8202 26.8525
-                                        14.8673 26.7679 14.8975 26.6762C14.9278 26.5844 14.9406 26.4873 14.9353 26.3903L14.1989
-                                        12.6744C14.1863 12.4793 14.102 12.2971 13.964 12.1668C13.826 12.0366 13.6452 11.9686 13.4604
-                                        11.9773C13.3686 11.9828 13.2788 12.0073 13.196 12.0496C13.1132 12.0918 13.0391 12.1508 12.978
-                                        12.2233C12.9168 12.2958 12.8697 12.3804 12.8395 12.4721C12.8092 12.5639 12.7964 12.661 12.8017
-                                        12.758L13.5381 26.4739C13.5483 26.6624 13.6262 26.8396 13.756 26.9694C13.8857 27.0991 14.0574
-                                        27.1715 14.236 27.1717Z" fill="#878CCD"/>
-                                        <path d="M21.1029 27.171L21.1435 27.1718C21.3221 27.1715 21.4939 27.0991 21.6236 26.9694C21.7533
-                                        26.8397 21.8313 26.6624 21.8414 26.4739L22.5778 12.758C22.5884 12.5622 22.5249 12.3699 22.4014
-                                        12.2236C22.2778 12.0772 22.1044 11.9886 21.9191 11.9773C21.7343 11.9684 21.5534 12.0363 21.4154
-                                        12.1666C21.2773 12.2969 21.1931 12.4792 21.1806 12.6744L20.4442 26.3903C20.4337 26.5862 20.4972
-                                        26.7784 20.6207 26.9248C20.7442 27.0712 20.9177 27.1598 21.1029 27.171Z" fill="#878CCD"/>
-                                        <path d="M17.7022 27.1725C17.8878 27.1725 18.0659 27.0945 18.1972 26.9557C18.3284 26.8169
-                                        18.4022 26.6287 18.4022 26.4325V12.7166C18.4022 12.5203 18.3284 12.3321 18.1972
-                                        12.1933C18.0659 12.0545 17.8878 11.9766 17.7022 11.9766C17.5165 11.9766 17.3385
-                                        12.0545 17.2072 12.1933C17.0759 12.3321 17.0022 12.5203 17.0022 12.7166V26.4325C17.0022
-                                        26.6287 17.0759 26.8169 17.2072 26.9557C17.3385 27.0945 17.5165 27.1725 17.7022
-                                        27.1725Z" fill="#878CCD"/>
-                                </svg>
-                            </iconTrash>` : ''}
+
                             <div class="like-groupComment">
                             <iconLike class="iconLikeComment">
                                 <svg width="23" height="23" viewBox="0 0 23 23" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -202,9 +166,65 @@
                                 </svg>
                             </iconComment>
                         <div class="countCommentAnswer">${comment.countComment}</div>
-                        <div class="answerComment-label">ответить</div>
+
                         </div>
+
+
                     </div>
+                    <div class="answerComment-label">ответить</div>
+                    ${comment.user === localStorage.getItem('login') ? `
+                            <iconEdit class="iconEditComment">
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M11 4H4C3.46957 4 2.96086 4.21071 2.58579 4.58579C2.21071 4.96086 2 5.46957 2 6V20C2
+                                    20.5304 2.21071 21.0391 2.58579 21.4142C2.96086 21.7893 3.46957 22 4 22H18C18.5304 22 19.0391
+                                    21.7893 19.4142 21.4142C19.7893 21.0391 20 20.5304 20 20V13" stroke="#878CCD" stroke-width="2"
+                                     stroke-linecap="round" stroke-linejoin="round"/>
+                                    <path d="M18.5 2.50023C18.8978 2.1024 19.4374 1.87891 20 1.87891C20.5626 1.87891 21.1022
+                                     2.1024 21.5 2.50023C21.8978 2.89805 22.1213 3.43762 22.1213 4.00023C22.1213 4.56284
+                                     21.8978 5.1024 21.5 5.50023L12 15.0002L8 16.0002L9 12.0002L18.5 2.50023Z"
+                                      stroke="#878CCD" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                </svg>
+                            </iconEdit>
+                            <iconTrash class="iconDeleteComment">
+                                <svg width="35" height="37" viewBox="0 0 35 37" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M7.20234 10.516H9.37373L10.3845 29.3408C10.3947 29.5294 10.4728
+                                        29.7068 10.6026 29.8365C10.7325 29.9662 10.9044 30.0386 11.0831 30.0386H24.3362C24.515
+                                        30.0386 24.6871 29.9661 24.817 29.8362C24.9469 29.7063 25.0248 29.5288 25.0348
+                                        29.3401L26.0295 10.516H28.2023C28.388 10.516 28.566 10.438 28.6973 10.2992C28.8286
+                                        10.1604 28.9023 9.97222 28.9023 9.77596C28.9023 9.5797 28.8286 9.39147 28.6973
+                                        9.2527C28.566 9.11392 28.388 9.03596 28.2023 9.03596H25.5836C25.5451 9.03596 25.5115 9.05298 25.4744
+                                        9.0589C25.438 9.05298 25.4044 9.03596 25.3673 9.03596H21.6951V7.09938C21.6951 6.90311 21.6214
+                                        6.71489 21.4901 6.57612C21.3588 6.43734 21.1808 6.35938 20.9951 6.35938H14.4088C14.2232
+                                        6.35938 14.0451 6.43734 13.9139 6.57612C13.7826 6.71489 13.7088 6.90311 13.7088
+                                        7.09938V9.03596H10.0352C10.003 9.03596 9.97434 9.0515 9.94284 9.05594C9.91064
+                                        9.05076 9.88194 9.03596 9.84834 9.03596H7.20304C7.11111 9.03591 7.02008 9.055 6.93513
+                                        9.09214C6.85018 9.12929 6.77299 9.18375 6.70796 9.25243C6.64292 9.32112 6.59132 9.40267
+                                        6.5561 9.49243C6.52088 9.58219 6.50273 9.67841 6.50269 9.77559C6.50264 9.87276
+                                        6.5207 9.969 6.55584 10.0588C6.59097 10.1486 6.64249 10.2302 6.70746
+                                        10.299C6.77243 10.3677 6.84957 10.4223 6.93448 10.4595C7.01939 10.4967
+                                        7.11041 10.5159 7.20234 10.516ZM15.1088 7.83938H20.2951V9.03596H15.1088V7.83938ZM24.6274
+                                        10.516L23.674 28.5594H11.7446L10.7758 10.516H24.6274Z" fill="#878CCD"/>
+                                        <path d="M14.236 27.1717L14.2766 27.171C14.3684 27.1655 14.4582 27.141
+                                        14.541 27.0988C14.6238 27.0565 14.6979 26.9975 14.759 26.925C14.8202 26.8525
+                                        14.8673 26.7679 14.8975 26.6762C14.9278 26.5844 14.9406 26.4873 14.9353 26.3903L14.1989
+                                        12.6744C14.1863 12.4793 14.102 12.2971 13.964 12.1668C13.826 12.0366 13.6452 11.9686 13.4604
+                                        11.9773C13.3686 11.9828 13.2788 12.0073 13.196 12.0496C13.1132 12.0918 13.0391 12.1508 12.978
+                                        12.2233C12.9168 12.2958 12.8697 12.3804 12.8395 12.4721C12.8092 12.5639 12.7964 12.661 12.8017
+                                        12.758L13.5381 26.4739C13.5483 26.6624 13.6262 26.8396 13.756 26.9694C13.8857 27.0991 14.0574
+                                        27.1715 14.236 27.1717Z" fill="#878CCD"/>
+                                        <path d="M21.1029 27.171L21.1435 27.1718C21.3221 27.1715 21.4939 27.0991 21.6236 26.9694C21.7533
+                                        26.8397 21.8313 26.6624 21.8414 26.4739L22.5778 12.758C22.5884 12.5622 22.5249 12.3699 22.4014
+                                        12.2236C22.2778 12.0772 22.1044 11.9886 21.9191 11.9773C21.7343 11.9684 21.5534 12.0363 21.4154
+                                        12.1666C21.2773 12.2969 21.1931 12.4792 21.1806 12.6744L20.4442 26.3903C20.4337 26.5862 20.4972
+                                        26.7784 20.6207 26.9248C20.7442 27.0712 20.9177 27.1598 21.1029 27.171Z" fill="#878CCD"/>
+                                        <path d="M17.7022 27.1725C17.8878 27.1725 18.0659 27.0945 18.1972 26.9557C18.3284 26.8169
+                                        18.4022 26.6287 18.4022 26.4325V12.7166C18.4022 12.5203 18.3284 12.3321 18.1972
+                                        12.1933C18.0659 12.0545 17.8878 11.9766 17.7022 11.9766C17.5165 11.9766 17.3385
+                                        12.0545 17.2072 12.1933C17.0759 12.3321 17.0022 12.5203 17.0022 12.7166V26.4325C17.0022
+                                        26.6287 17.0759 26.8169 17.2072 26.9557C17.3385 27.0945 17.5165 27.1725 17.7022
+                                        27.1725Z" fill="#878CCD"/>
+                                </svg>
+                            </iconTrash>` : ''}
                 `;
                 commentsList.innerHTML += commentHTML;
             });
@@ -216,9 +236,49 @@
             });
             return commentsSection;
         }
+        function toggleEditMode(commentBlock) {
+            const textElement = commentBlock.querySelector('.comment-text');
+            const editIcon = commentBlock.querySelector('.iconEditComment');
+            const newText = textElement.textContent.trim();
+            if (textElement.isContentEditable && newText) {
+                textElement.contentEditable = false;
+
+                editIcon.innerHTML = `<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M11 4H4C3.46957 4 2.96086 4.21071 2.58579 4.58579C2.21071 4.96086 2 5.46957 2 6V20C2
+                                    20.5304 2.21071 21.0391 2.58579 21.4142C2.96086 21.7893 3.46957 22 4 22H18C18.5304 22 19.0391
+                                    21.7893 19.4142 21.4142C19.7893 21.0391 20 20.5304 20 20V13" stroke="#878CCD" stroke-width="2"
+                                     stroke-linecap="round" stroke-linejoin="round"/>
+                                    <path d="M18.5 2.50023C18.8978 2.1024 19.4374 1.87891 20 1.87891C20.5626 1.87891 21.1022
+                                     2.1024 21.5 2.50023C21.8978 2.89805 22.1213 3.43762 22.1213 4.00023C22.1213 4.56284
+                                     21.8978 5.1024 21.5 5.50023L12 15.0002L8 16.0002L9 12.0002L18.5 2.50023Z"
+                                      stroke="#878CCD" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                </svg>`;
+            } else {
+                textElement.contentEditable = true;
+                textElement.focus();
+                editIcon.innerHTML = `<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M20 6L9 17L4 12" stroke="#878CCD" stroke-width="2"
+                    stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>`;
+            }
+        }
         const comments = [
         {
-            id_achievement: 1, user: "qwe534666666666666666666666666666666",
+            id_achievement: 1, user: "qwe",
+            text: "Это пример комментарияаорпппппsdfgfdsgsfdgffffffffffffffffffff" +
+                "пппппппппппппппппппппппппdfgdgdfs" +
+                "gdgddafgggggggggggggggggggggggggggggggggggggggg" +
+                "gggggggggggggggggggggggggппппппппппппппппппппппппппппппппппппппппппппппппппппппппппппппппппппппо" +
+            "пппппппппппппппппппппппппdfgdgdfs" +
+                "gdgddafgggggggggggggggggggggggggggggggggggggggg" +
+                "gggggggggggggggggggggggggппппппппппппппппппппппппппппппппппппппппппппппппппппппппппппппппппппппо",
+            date: "2023-08-15",
+            countLike: 12,
+            countComment: 12,
+            replay: false
+        },
+            {
+            id_achievement: 1, user: "qwesss",
             text: "Это пример комментарияаорпппппsdfgfdsgsfdgffffffffffffffffffff" +
                 "пппппппппппппппппппппппппdfgdgdfs" +
                 "gdgddafgggggggggggggggggggggggggggggggggggggggg" +
