@@ -296,6 +296,7 @@
             iconFilter.addEventListener('click', function() {
                 this.classList.toggle('rotated');
 
+
             });
             return commentsSection;
         }
@@ -325,104 +326,70 @@
                 </svg>`;
             }
         }
-        const comments = [
-        {
-            id_user: 1,
-            id_achievement: 1,
-            user: "qwe",
-            text: "Это пример комментарияаорпппппsdfgfdsgsfdgffffffffffffffffffff" +
-            "пппппппппппппппппппппппппdfgdgdfs" +
-            "gdgddafgggggggggggggggggggggggggggggggggggggggg" +
-            "gggggggggggggggggggggggggппппппппппппппппппппппппппппппппппппппппппппппппппппппппппппппппппппппо" +
-            "пппппппппппппппппппппппппdfgdgdfs" +
-            "gdgddafgggggggggggggggggggggggggggggggggggggggg" +
-            "gggggggggggggggggggggggggппппппппппппппппппппппппппппппппппппппппппппппппппппппппппппппппппппппо",
-            date: "2023-08-15",
-            countLike: 12,
-            countComment: 12,
-            replay: false
-        },
-        {
-            id_user: 2,
-            id_achievement: 1, user: "qwesss",
-            text: "Это пример комментарияаорпппппsdfgfdsgsfdgffffffffffffffffffff" +
-            "пппппппппппппппппппппппппdfgdgdfs" +
-            "gdgddafgggggggggggggggggggggggggggggggggggggggg" +
-            "gggggggggggggggggggggggggппппппппппппппппппппппппппппппппппппппппппппппппппппппппппппппппппппппо" +
-            "пппппппппппппппппппппппппdfgdgdfs" +
-            "gdgddafgggggggggggggggggggggggggggggggggggggggg" +
-            "gggggggggggggggggggggggggппппппппппппппппппппппппппппппппппппппппппппппппппппппппппппппппппппппо",
-            date: "2023-08-15",
-            countLike: 12,
-            countComment: 12,
-            replay: false
-        }];
+        const comments = [];
 
 
     document.addEventListener('DOMContentLoaded', function() {
+
     const filterText = document.querySelector('.filterAchievement');
-    let isAscending = true;
+    let isAscending = false;
     const iconFilter = document.querySelector('.iconAchievement');
+    loadAndRenderAchievements();
     iconFilter.addEventListener('click', function() {
         this.classList.toggle('rotated');
         if (isAscending === false)
         {
             isAscending = true;
+            loadAndRenderAchievements();
         }
         else
         {
             isAscending = true;
+            loadAndRenderAchievements();
         }
 
     });
 
 
+        async function fetchAchievement() {
+            try {
+                const response = await fetch('{% url "returnAchievement" %}', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRFToken': '{{ csrf_token }}'
+                    },
+                    body: JSON.stringify({
+                        isFiltered: isAscending ? 'true' : 'false'
+                    })
+                });
 
-        const achievements = [
-            {
-                id: 1,
-                user: "User123",
-                name: "Первое достижение",
-                date: "2023-08-15",
-                likes: 42,
-                comments: 15,
-                photo: "image1.jpg",
-                countLike: 12,
-                countComment: 120000000,
-            },
-            {
-                id: 6,
-                user: "User",
-                name: "Первое достижение",
-                date: "2023-08-15",
-                likes: 42,
-                comments: 15,
-                photo: "image1.jpg",
-                countLike: 12,
-                countComment: 12,
-            },
-            {
-                id: 7,
-                user: "User1ккк23",
-                name: "Первое достижение",
-                date: "2023-08-15",
-                likes: 42,
-                comments: 15,
-                photo: "image1.jpg",
-                countLike: 12,
-                countComment: 12,
-            },
-            {
-                id: 8,
-                user: "Uпппser123",
-                name: "Первое достижение",
-                date: "2023-08-15",
+                const data = await response.json();
+                    achievements = (data.achievements || []).map(achievements => ({
+                        login: achievements.login,
+                        id_achievement: achievements.id_achievement,
+                        title: achievements.title,
+                        date: achievements.date,
+                        photoLink: achievements.photoLink,
+                        countComment: achievements.countComment,
+                        countLike: achievements.countLike
+                    }));
+                    console.log(achievements);
+                    return achievements;
 
-                photo: "image1.jpg",
-                countLike: 12,
-                countComment: 12,
+
+
             }
-        ];
+            catch (error) {
+                console.error('Error', error)
+                return [];
+            }
+        }
+        async function loadAndRenderAchievements() {
+            const achievements = await fetchAchievement();
+            renderAchievements(achievements);
+            return achievements
+        }
         function createAchievementCard(data) {
             const item = document.createElement('div');
 
@@ -431,12 +398,18 @@
             item.className = 'achievement-item';
             item.innerHTML = `
 
-                <div class="photo-achievement"></div>
+                <div class="photo-achievement">
+                    <img src=${data.photoLink}"
+                     alt="Достижение"
+                     class="achievement-photo">
+                </div>
                 <div class="text-container">
-                <div class="login-achievement">${data.user}</div>
-                <div class="name-achievement">${data.name}</div>
-                <date class="date-achievement">${new Date(data.date).toLocaleDateString()}</date>
+                    <div class="login-achievement">${data.login}</div>
+                    <div class="name-achievement">${data.title}</div>
+                </div>
+
                 <div class="interaction-container">
+                <date class="date-achievement">${new Date(data.date).toLocaleDateString()}</date>
                     <div class="like-group">
                          <iconLike class="iconLike">
                                         <svg width="23" height="23" viewBox="0 0 23 23" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -507,18 +480,17 @@
                                 </svg>
                         </iconComment>
                         <div class="countComment">${data.countComment}</div>
-                    </div>
+
                 </div>
             `;
             return item;
         }
-        function renderAchievements() {
+        function renderAchievements(achievements) {
             const container = document.getElementById('achievementsContainer');
             achievements.forEach(achievement => {
                 container.appendChild(createAchievementCard(achievement));
             });
         }
-        renderAchievements();
 
 
 

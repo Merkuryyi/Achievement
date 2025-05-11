@@ -437,9 +437,9 @@ def returnNotification(request):
     except json.JSONDecodeError:
         return JsonResponse({'error': 'Invalid JSON'}, status=400)
 
-
     except Exception as e:
         return JsonResponse({'error': str(e)}, status=500)
+
 def editStatusNotification(request):
     try:
         data = json.loads(request.body)
@@ -477,6 +477,53 @@ def createNotification(request):
     except json.JSONDecodeError:
         return JsonResponse({'error': 'Invalid JSON'}, status=400)
 
+
+    except Exception as e:
+        return JsonResponse({'error': str(e)}, status=500)
+
+def returnAchievement(request):
+    try:
+        data = json.loads(request.body)
+        isFiltered = data.get('isFiltered')
+
+        with connection.cursor() as cursor:
+            if isFiltered == 'false':
+                cursor.execute(
+                "SELECT "
+                    "users.login, "
+                    "achievement.achievement_id, "
+                    "achievement.title, "
+                    "achievement.date, "
+                    "achievement.photo, "
+                    "COALESCE(comment_counts.count_comment, 0) AS count_comment, "
+                    "COALESCE(like_counts.count_like, 0) AS count_like "
+                "FROM achievement "
+                "INNER JOIN users ON achievement.user_id = users.user_id "
+                "LEFT JOIN (SELECT achievement_id, COUNT(*) AS count_comment FROM comment GROUP BY achievement_id) "
+                "AS comment_counts ON achievement.achievement_id = comment_counts.achievement_id "
+                "LEFT JOIN (SELECT achievement_id, COUNT(*) AS count_like FROM achievement_like GROUP BY achievement_id) "
+                "AS like_counts ON achievement.achievement_id = like_counts.achievement_id "
+                "WHERE now() > achievement.date - interval '1 month' "
+                "ORDER BY achievement.date ASC; ",
+            )
+
+            achievements = cursor.fetchall()
+            result = [
+                {
+                    'login': row[0],
+                    'id_achievement': row[1],
+                    'title': row[2],
+                    'date': row[3],
+                    'photoLink': row[4],
+                    'countComment': row[5],
+                    'countLike': row[6]
+                }
+                for row in achievements
+            ]
+            return JsonResponse({'achievements': result}, safe=False)
+
+    except json.JSONDecodeError:
+        return JsonResponse({'error': 'Invalid JSON'}, status=400)
 
     except Exception as e:
         return JsonResponse({'error': str(e)}, status=500)

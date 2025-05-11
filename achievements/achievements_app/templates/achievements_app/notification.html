@@ -145,16 +145,12 @@
             return groups;
         }, 0);
     }
-
-
         let checkSwitch = false;
         const backgroundSwitch = document.querySelector('.toggle-background');
         const switchPart = document.querySelector('.toggle-switch');
 
         async function switching() {
             if (checkSwitch == true) {
-
-
                 try
                 {
                     const response = await fetch('{% url "editActiveNotification" %}', {
@@ -260,8 +256,6 @@
             }
         }
     });
-
-
 </script>
 </body>
 </html>
