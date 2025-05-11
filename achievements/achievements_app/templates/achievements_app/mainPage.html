@@ -10,11 +10,62 @@
     {% include 'achievements_app/panel.html' %}
     <div class="background"></div>
     <div class="titleAchievement">Все достижения</div>
-    <div class="achievements-container" id="achievementsContainer">
-
-    </div>
+    <div class="achievements-container" id="achievementsContainer"></div>
     <div class="comment-container" id="commentsContainer"></div>
+    <div class="filterForAchievements">
+        <div class="filterAchievement">по алфавиту от а до я</div>
+        <iconFilterAchievement class="iconAchievement">
+            <svg width="45" height="45" viewBox="0 0 45 45" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M31.8104 17.8447L22.5 27.1551L13.1897 17.8447" stroke="#878CCD" stroke-width="2"
+                stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+        </iconFilterAchievement>
+    </div>
     <script>
+        async function sendComment(button) {
+        const wrapper = button.closest('.input-wrapper');
+        const field = wrapper.querySelector('.input-fieldComment');
+        const text = field.innerText.trim();
+
+        if (!text) {
+
+            return;
+        }
+            const newComment = await response.json();
+            addCommentToDOM(newComment);
+            field.innerText = '';
+            button.disabled = true;
+
+
+        }
+
+        function addCommentToDOM(comment) {
+        const commentsList = document.querySelector('.comments-list');
+
+        const commentHTML = `
+            <div class="comment">
+                <div class="user-info">
+                        <div class="avatar"></div>
+                        <span class="username">${comment.user}</span>
+                        <div class="comment-meta">
+                            <span class="comment-date">${new Date(comment.date).toLocaleDateString()}</span>
+                        </div>
+                </div>
+                <div class="comment-text">${comment.text}</div>
+                <div class="interaction-containerComment"></div>
+            </div>
+        `;
+
+        commentsList.insertAdjacentHTML('beforeend', commentHTML);
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+        document.body.addEventListener('click', function(e) {
+                if (e.target.closest('.send-button')) {
+                    sendComment(e.target.closest('.send-button'));
+                }
+            });
+        });
         function toggleComments(icon) {
             const card = icon.closest('.achievement-item');
             const wasExpanded = card.classList.contains('comment-expanded');
@@ -32,10 +83,7 @@
             }
             });
 
-
             const achievementId = parseInt(card.dataset.achievementId);
-
-
             if(!wasExpanded) {
 
                 const commentsSection = renderCommentsSection(achievementId);
@@ -45,11 +93,7 @@
                     const commentsHeight = commentsSection.offsetHeight;
                     card.style.marginBottom = `${commentsHeight}px`;
                 });
-
-
-
             }
-
         }
 
         function renderCommentsSection(achievementId) {
@@ -58,7 +102,7 @@
 
             commentsSection.innerHTML = `
                 <div class="comment-header">
-                    <span class="filter">по алфавиту от а до я</span>
+                    <span class="filter">по дате добавления</span>
                     <iconFilter class="iconFilter">
                         <svg width="45" height="45" viewBox="0 0 45 45" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <path d="M31.8104 17.8447L22.5 27.1551L13.1897 17.8447" stroke="#878CCD" stroke-width="2"
@@ -73,19 +117,17 @@
             const commentsList = document.createElement('div');
             commentsList.className = 'comments-list';
             commentsList.addEventListener('click', function(e) {
-            if(e.target.closest('.iconEditComment')) {
-                const commentBlock = e.target.closest('.comment, .comment-reply');
-                toggleEditMode(commentBlock);
-            }
-});
+                if(e.target.closest('.iconEditComment')) {
+                    const commentBlock = e.target.closest('.comment, .comment-reply');
+                    toggleEditMode(commentBlock);
+                }
+            });
             const hasReplies = filteredComments.some(comment => comment.replay);
 
             commentsList.className = `comments-list${hasReplies ? ' comments-listReplay' : ''}`;
             filteredComments.forEach(comment => {
                 const commentHTML = `
-
                     <div class="${comment.replay ? 'comment-reply' : 'comment'}">
-
                         <div class="user-info">
                             <div class="avatar"></div>
                             <span class="username">${comment.user}</span>
@@ -96,7 +138,6 @@
                         </div>
                         <div class="comment-text" contenteditable="false">${comment.text}</div>
                         <div class="interaction-containerComment">
-
                             <div class="like-groupComment">
                             <iconLike class="iconLikeComment">
                                 <svg width="23" height="23" viewBox="0 0 23 23" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -166,13 +207,10 @@
                                 </svg>
                             </iconComment>
                         <div class="countCommentAnswer">${comment.countComment}</div>
-
                         </div>
-
-
                     </div>
                     <div class="answerComment-label">ответить</div>
-                    ${comment.user === localStorage.getItem('login') ? `
+                    ${comment.user === localStorage.getItem('login') ?`
                             <iconEdit class="iconEditComment">
                                 <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                                     <path d="M11 4H4C3.46957 4 2.96086 4.21071 2.58579 4.58579C2.21071 4.96086 2 5.46957 2 6V20C2
@@ -228,11 +266,36 @@
                 `;
                 commentsList.innerHTML += commentHTML;
             });
+            const inputContainer = document.createElement('div');
+            inputContainer.className = 'comment-input-container';
+            inputContainer.innerHTML = `
+               <div class="comment-input-container">
+                    <div class="comment-input">
+                        <div class="input-wrapper">
+                            <div class="input-fieldComment"
+                                 contenteditable="true"
+                                 placeholder="Напишите комментарий...">
+                            </div>
+                            <div class="send-container">
+                                <div class="send-background"></div>
+                                <button class="send-button" onclick="sendComment(this)">
+                                    <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                        <path d="M20 6L9 17L4 12" stroke="#878CCD" stroke-width="2"
+                                              stroke-linecap="round" stroke-linejoin="round"/>
+                                    </svg>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `;
 
+            commentsSection.appendChild(inputContainer);
             commentsSection.appendChild(commentsList);
             const iconFilter = commentsSection.querySelector('.iconFilter');
             iconFilter.addEventListener('click', function() {
                 this.classList.toggle('rotated');
+
             });
             return commentsSection;
         }
@@ -264,50 +327,56 @@
         }
         const comments = [
         {
-            id_achievement: 1, user: "qwe",
+            id_user: 1,
+            id_achievement: 1,
+            user: "qwe",
             text: "Это пример комментарияаорпппппsdfgfdsgsfdgffffffffffffffffffff" +
-                "пппппппппппппппппппппппппdfgdgdfs" +
-                "gdgddafgggggggggggggggggggggggggggggggggggggggg" +
-                "gggggggggggggggggggggggggппппппппппппппппппппппппппппппппппппппппппппппппппппппппппппппппппппппо" +
             "пппппппппппппппппппппппппdfgdgdfs" +
-                "gdgddafgggggggggggggggggggggggggggggggggggggggg" +
-                "gggggggggggggggggggggggggппппппппппппппппппппппппппппппппппппппппппппппппппппппппппппппппппппппо",
-            date: "2023-08-15",
-            countLike: 12,
-            countComment: 12,
-            replay: false
-        },
-            {
-            id_achievement: 1, user: "qwesss",
-            text: "Это пример комментарияаорпппппsdfgfdsgsfdgffffffffffffffffffff" +
-                "пппппппппппппппппппппппппdfgdgdfs" +
-                "gdgddafgggggggggggggggggggggggggggggggggggggggg" +
-                "gggggggggggggggggggggggggппппппппппппппппппппппппппппппппппппппппппппппппппппппппппппппппппппппо" +
+            "gdgddafgggggggggggggggggggggggggggggggggggggggg" +
+            "gggggggggggggggggggggggggппппппппппппппппппппппппппппппппппппппппппппппппппппппппппппппппппппппо" +
             "пппппппппппппппппппппппппdfgdgdfs" +
-                "gdgddafgggggggggggggggggggggggggggggggggggggggg" +
-                "gggggggggggggggggggggggggппппппппппппппппппппппппппппппппппппппппппппппппппппппппппппппппппппппо",
+            "gdgddafgggggggggggggggggggggggggggggggggggggggg" +
+            "gggggggggggggggggggggggggппппппппппппппппппппппппппппппппппппппппппппппппппппппппппппппппппппппо",
             date: "2023-08-15",
             countLike: 12,
             countComment: 12,
             replay: false
         },
         {
-            id_achievement: 1, user: "qwe534666666666666666666666666666666",
+            id_user: 2,
+            id_achievement: 1, user: "qwesss",
             text: "Это пример комментарияаорпппппsdfgfdsgsfdgffffffffffffffffffff" +
-                "пппппппппппппппппппппппппdfgdgdfs" +
-                "gdgddafgggggggggggggggggggggggggggggggggggggggg" +
-                "gggggggggggggggggggggggggппппппппппппппппппппппппппппппппппппппппппппппппппппппппппппппппппппппо" +
             "пппппппппппппппппппппппппdfgdgdfs" +
-                "gdgddafgggggggggggggggggggggggggggggggggggggggg" +
-                "gggggggggggggggggggggggggппппппппппппппппппппппппппппппппппппппппппппппппппппппппппппппппппппппо",
+            "gdgddafgggggggggggggggggggggggggggggggggggggggg" +
+            "gggggggggggggggggggggggggппппппппппппппппппппппппппппппппппппппппппппппппппппппппппппппппппппппо" +
+            "пппппппппппппппппппппппппdfgdgdfs" +
+            "gdgddafgggggggggggggggggggggggggggggggggggggggg" +
+            "gggggggggggggggggggggggggппппппппппппппппппппппппппппппппппппппппппппппппппппппппппппппппппппппо",
             date: "2023-08-15",
             countLike: 12,
             countComment: 12,
-            replay: true
+            replay: false
         }];
 
 
     document.addEventListener('DOMContentLoaded', function() {
+    const filterText = document.querySelector('.filterAchievement');
+    let isAscending = true;
+    const iconFilter = document.querySelector('.iconAchievement');
+    iconFilter.addEventListener('click', function() {
+        this.classList.toggle('rotated');
+        if (isAscending === false)
+        {
+            isAscending = true;
+        }
+        else
+        {
+            isAscending = true;
+        }
+
+    });
+
+
 
         const achievements = [
             {

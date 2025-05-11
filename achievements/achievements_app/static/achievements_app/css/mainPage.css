@@ -215,7 +215,11 @@ body {
     margin-right: 20px;
     cursor: pointer;
 }
+.iconFilter {
+    cursor: pointer;
+    transition: transform 0.3s ease;
 
+}
 
 .countComment, .countLike {
     font-size: 24px;
@@ -225,15 +229,11 @@ body {
 .achievement-item.comment-expanded .comments-section {
     display: block;
 }
-.iconFilter {
-    cursor: pointer;
-    transition: transform 0.3s ease;
 
-}
 
 .iconFilter svg {
     transition: transform 0.3s ease;
-transform: translateY(-4px);
+    transform: translateY(-4px);
 }
 
 .iconFilter.rotated svg {
@@ -265,7 +265,6 @@ transform: translateY(-4px);
     align-items: center;
     flex: 1;
     min-width: 0;
-    margin-right: 20px;
     margin-top: 40px;
     max-width: 100%;
 }
@@ -376,8 +375,6 @@ transform: translateY(-4px);
     margin: 0;
 }
 
-
-
 .comment-reply {
     margin-left: 45px;
     width: 650px;
@@ -398,7 +395,7 @@ transform: translateY(-4px);
 .comment-text[contenteditable="true"] {
     width: calc(100% - 30px);
     min-height: 100px;
-    font: inherit;
+    font-family: 'Inter';
     color: #878CCD;
     margin: 20px 0;
     resize: vertical;
@@ -407,4 +404,132 @@ transform: translateY(-4px);
 .comment-text[contenteditable="true"] {
     white-space: pre-wrap;
     overflow-wrap: break-word;
+}
+
+.comment-input-container {
+    position: sticky;
+    bottom: 0;
+    background: #FFFFFF;
+    width: 700px;
+    z-index: 1;
+}
+
+.comment-input {
+    display: flex;
+    gap: 15px;
+    align-items: flex-start;
+    width: 100%;
+}
+
+.input-fieldComment {
+    width: 100%;
+    min-height: 100px;
+    background: #ECF2F8;
+    border: 2px solid #D2BAFF;
+    border-radius: 5px;
+    padding: 15px;
+    font-family: 'Inter';
+    font-size: 20px;
+    color: #878CCD;
+    resize: vertical;
+    transition: all 0.3s ease;
+    box-sizing: border-box;
+}
+
+.input-fieldComment::placeholder {
+    color: #878CCD;
+    opacity: 0.7;
+}
+
+.input-fieldComment:focus {
+    border: 2px solid #B39DDB;
+    box-shadow: 0 0 0 3px rgba(179, 157, 219, 0.2);
+    outline: none;
+}
+
+.send-container {
+    position: relative;
+    display: inline-block;
+}
+
+.send-background {
+    width: 35px;
+    height: 35px;
+    border-radius: 50%;
+    background: #FFFFFF;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.send {
+    width: 35px;
+    height: 35px;
+    border-radius: 50%;
+    background: #FFFFFF;
+    margin-right: 20px;
+
+}
+
+.input-wrapper {
+    position: relative;
+    width: 100%;
+}
+.send-container {
+    position: absolute;
+    bottom: 15px;
+    right: 15px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+
+.send-button {
+    position: relative;
+    z-index: 1;
+    width: 20px;
+    height: 20px;
+    border: none;
+    background: transparent;
+    cursor: pointer;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    &:hover {
+        transform: scale(1.1);
+    }
+    & svg {
+        width: 100%;
+        height: 100%;
+    }
+
+}
+.filterAchievement {
+    margin-right: 20px;
+    cursor: pointer;
+    position: absolute;
+    width: 258px;
+    height: 22px;
+    left: 1510px;
+    top: 203px;
+    font-style: normal;
+    font-weight: 400;
+    font-size: 24px;
+    line-height: 29px;
+    color: #878CCD;
+}
+.iconAchievement {
+    cursor: pointer;
+    transition: transform 0.3s ease;
+    position: absolute;
+    left: 1773px;
+    top: 199px;
+
+}
+.iconAchievement.rotated {
+    transform: translateY(-4px) rotate(180deg);
 }
