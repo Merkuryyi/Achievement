@@ -571,3 +571,22 @@ def deleteLike(request):
 
     except Exception as e:
         return JsonResponse({'error': str(e)}, status=500)
+
+
+
+def check_Like(request):
+    if request.method == 'POST':
+        data = json.loads(request.body)
+        phone = data.get('phone')
+        user_id = get_user_id_by_phone(phone)
+        achievement_id = data.get('achievement_id')
+
+        with connection.cursor() as cursor:
+            cursor.execute(
+                "select * from achievement_like WHERE user_id = %s AND achievement_id = %s",
+                [user_id, achievement_id]
+            )
+
+        return JsonResponse({'exists': True})
+
+    return JsonResponse({'exists': False})

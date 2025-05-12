@@ -42,4 +42,5 @@ urlpatterns = [
     path('returnAchievement/', views.returnAchievement, name = 'returnAchievement'),
     path('newLike/', views.newLike, name = 'newLike'),
     path('deleteLike/', views.deleteLike, name = 'deleteLike'),
+path('check_Like/', views.check_Like, name = 'check_Like'),
 ]

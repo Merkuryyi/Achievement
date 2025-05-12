@@ -374,7 +374,6 @@
                         countComment: achievements.countComment,
                         countLike: achievements.countLike
                     }));
-                    console.log(achievements);
                     return achievements;
 
 
@@ -408,6 +407,46 @@
             catch (error) {
                 console.error('Error', error)
             }
+        }
+        async function deleteLike(achievement_id) {
+            try {
+                const response = await fetch('{% url "deleteLike" %}', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRFToken': '{{ csrf_token }}'
+                    },
+                    body: JSON.stringify({
+                        phone: localStorage.getItem('numberPhone'),
+                        achievement_id: achievement_id
+                    })
+                });
+                if (response.success) {
+                    const countElement = document.querySelector(`[data-id-achievement="${achievement_id}"] .countLike`);
+                    countElement.textContent = parseInt(countElement.textContent) - 1;
+                }
+
+            }
+            catch (error) {
+                console.error('Error', error)
+            }
+        }
+        async function checkLike(achievement_id) {
+            const response = await fetch('{% url "check_Like" %}',{
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': '{{ csrf_token }}'
+                },
+                body: JSON.stringify({
+                    phone: localStorage.getItem('numberPhone'),
+                    achievement_id: achievement_id
+                })
+            })
+            const data = await response.json();
+            console.log("fff", data.exists)
+            return data.exists;
+
         }
         async function loadAndRenderAchievements() {
             const achievements = await fetchAchievement();
@@ -507,19 +546,10 @@
 
                 </div>
             `;
-            document.addEventListener('click', function(e) {
-            const likeIcon = e.target.closest('.iconLike');
-            if (likeIcon) {
-                const achievementCard = likeIcon.closest('.achievement-item');
-                if (achievementCard) {
-                    const achievementId = achievementCard.dataset.achievementId;
-                    console.log('ID достижения:', achievementId);
-                    newLike(achievementId);
-                } else {
-                    console.error('Не найден элемент с достижением');
-                }
-            }
-        });
+
+
+
+
 
             return item;
         }
@@ -528,10 +558,24 @@
             achievements.forEach(achievement => {
                 container.appendChild(createAchievementCard(achievement));
             });
+             document.querySelectorAll('.iconLike').forEach(iconLike => {
+                iconLike.addEventListener('click', async function() {
+                    const card = this.closest('.achievement-item');
+                    const achievementId = card.dataset.achievementId;
+                    let isLiked = await checkLike(achievementId).value;
+                    console.log("dddd", isLiked)
+                    if (isLiked)
+                    {
+                        await deleteLike(achievementId);
+                    } else if (!isLiked)
+                    {
+                        await newLike(achievementId);
+                    }
+
+
+                });
+            });
         }
-
-
-
     });
 </script>
 </body>
