@@ -385,6 +385,30 @@
                 return [];
             }
         }
+
+        async function newLike(achievement_id) {
+            try {
+                const response = await fetch('{% url "newLike" %}', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRFToken': '{{ csrf_token }}'
+                    },
+                    body: JSON.stringify({
+                        phone: localStorage.getItem('numberPhone'),
+                        achievement_id: achievement_id
+                    })
+                });
+                if (response.success) {
+                    const countElement = document.querySelector(`[data-id-achievement="${achievement_id}"] .countLike`);
+                    countElement.textContent = parseInt(countElement.textContent) + 1;
+                }
+
+            }
+            catch (error) {
+                console.error('Error', error)
+            }
+        }
         async function loadAndRenderAchievements() {
             const achievements = await fetchAchievement();
             renderAchievements(achievements);
@@ -394,7 +418,7 @@
             const item = document.createElement('div');
 
             item.className = 'achievement-item';
-            item.dataset.achievementId = data.id;
+            item.dataset.achievementId = data.id_achievement;
             item.className = 'achievement-item';
             item.innerHTML = `
 
@@ -483,6 +507,20 @@
 
                 </div>
             `;
+            document.addEventListener('click', function(e) {
+            const likeIcon = e.target.closest('.iconLike');
+            if (likeIcon) {
+                const achievementCard = likeIcon.closest('.achievement-item');
+                if (achievementCard) {
+                    const achievementId = achievementCard.dataset.achievementId;
+                    console.log('ID достижения:', achievementId);
+                    newLike(achievementId);
+                } else {
+                    console.error('Не найден элемент с достижением');
+                }
+            }
+        });
+
             return item;
         }
         function renderAchievements(achievements) {

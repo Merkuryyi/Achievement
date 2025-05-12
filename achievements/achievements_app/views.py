@@ -527,3 +527,47 @@ def returnAchievement(request):
 
     except Exception as e:
         return JsonResponse({'error': str(e)}, status=500)
+
+def newLike(request):
+    try:
+        data = json.loads(request.body)
+        phone = data.get('phone')
+        user_id = get_user_id_by_phone(phone)
+        achievement_id = data.get('achievement_id')
+        print(achievement_id)
+
+        with connection.cursor() as cursor:
+            cursor.execute(
+                "insert into achievement_like (achievement_id, user_id) values (%s, %s)",
+                [achievement_id, user_id]
+            )
+            return JsonResponse({'success': True})
+
+
+    except json.JSONDecodeError:
+        return JsonResponse({'error': 'Invalid JSON'}, status=400)
+
+
+    except Exception as e:
+        return JsonResponse({'error': str(e)}, status=500)
+
+
+def deleteLike(request):
+    try:
+        data = json.loads(request.body)
+        phone = data.get('phone')
+        user_id = get_user_id_by_phone(phone)
+        achievement_id = data.get('achievement_id')
+
+        with connection.cursor() as cursor:
+            cursor.execute(
+                "delete from achievement_like where achievement_id = %s and user_id = %s",
+                [achievement_id, user_id]
+            )
+            return JsonResponse({'success': True})
+
+    except json.JSONDecodeError:
+        return JsonResponse({'error': 'Invalid JSON'}, status=400)
+
+    except Exception as e:
+        return JsonResponse({'error': str(e)}, status=500)

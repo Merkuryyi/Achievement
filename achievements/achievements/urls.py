@@ -40,4 +40,6 @@ urlpatterns = [
     path('returnNotification/', views.returnNotification, name = 'returnNotification'),
     path('editStatusNotification/', views.editStatusNotification, name = 'editStatusNotification'),
     path('returnAchievement/', views.returnAchievement, name = 'returnAchievement'),
+    path('newLike/', views.newLike, name = 'newLike'),
+    path('deleteLike/', views.deleteLike, name = 'deleteLike'),
 ]
