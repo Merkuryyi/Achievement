@@ -42,6 +42,10 @@
                 const re = /^\+7\s\(\d{3}\)\s\d{3}-\d{2}-\d{2}$/;
                 return re.test(phone);
             }
+            function isValidPassword(password) {
+                return /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/.test(password);
+            }
+
             button.addEventListener('click', function () {
                  let hasEror = true;
                  let phoneEmpty;
@@ -81,6 +85,11 @@
                 }
                 if (!passwordInput.value.trim()) {
                     error3.textContent = '*обязательно';
+                    error3.style.display = 'block';
+                    error3.style.opacity = '1';
+                    hasEror = true;
+                } else if (!isValidPassword(passwordInput.value.trim())) {
+                    error3.textContent = '*минимум 8 символов, буквы и цифры';
                     error3.style.display = 'block';
                     error3.style.opacity = '1';
                     hasEror = true;

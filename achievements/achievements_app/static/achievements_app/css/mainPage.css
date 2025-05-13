@@ -425,6 +425,7 @@ body {
 .input-fieldComment {
     width: 745px;
     min-height: 100px;
+    max-height: 100px;
     background: #ECF2F8;
     border: 2px solid #D2BAFF;
     border-radius: 5px;

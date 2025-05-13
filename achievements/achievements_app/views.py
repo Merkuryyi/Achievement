@@ -213,8 +213,6 @@ def editUserInformation(request):
     except Exception as e:
         return JsonResponse({'error': str(e)}, status=500)
 
-
-
 def scoreUser(request):
     try:
         data = json.loads(request.body)

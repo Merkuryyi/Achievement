@@ -19,6 +19,7 @@
     <div class="eror2" style="display: none;">*ошибка</div>
     <div class="eror3" style="display: none;">*ошибка</div>
     <div class="eror4" style="display: none;">*ошибка</div>
+    <div class="eror5" style="display: none;">*ошибка</div>
     <div class="containerLogin container-toggle">
     <div id="containerLogin"></div>
         <input type="text" class="input-field" maxlength="30" placeholder="Логин">
@@ -46,16 +47,20 @@
             const loginInput = document.querySelector('.containerLogin input');
             const nameInput = document.querySelector('.containerName input');
             const lNameInput = document.querySelector('.containerLName input');
-            const patronymiInput = document.querySelector('.containerPatronymic input');
+            const patronymiсInput = document.querySelector('.containerPatronymic input');
             const button = document.querySelector('.button');
             const error1 = document.querySelector('.eror1');
             const error2 = document.querySelector('.eror2');
             const error3 = document.querySelector('.eror3');
             const error4 = document.querySelector('.eror4');
+            const error5 = document.querySelector('.eror5');
+            const link = document.querySelector('.containerURL input');
             const login = document.querySelector('.login');
+
             login.textContent = localStorage.getItem('login');
-            let hasEror = true;
+            let hasError = true;
             let loginStringEmpty = false;
+            let phoneForEditInformation = localStorage.getItem('numberPhone');
             button.addEventListener('click', function ()
             {
                 if (!loginInput.value.trim())
@@ -63,14 +68,21 @@
                     error1.textContent = '*обязательно';
                     error1.style.display = 'block';
                     error1.style.opacity = '1';
-                    hasEror = true;
+                    hasError = true;
                     loginStringEmpty = true;
+                }
+                else if (loginInput.value.length < 5) {
+                    error1.textContent = '*минимум 5 символов';
+                    error1.style.display = 'block';
+                    error1.style.opacity = '1';
+                    hasError = true;
+                    loginStringEmpty = false;
                 }
                 else
                 {
                     error1.style.display = 'none';
                     error1.style.opacity = '0';
-                    hasEror = false;
+                    hasError = false;
                     loginStringEmpty = false;
                 }
                 if (!nameInput.value.trim())
@@ -78,41 +90,75 @@
                     error2.textContent = '*обязательно';
                     error2.style.display = 'block';
                     error2.style.opacity = '1';
-                    hasEror = true;
+                    hasError = true;
+                }
+                else if (nameInput.value.length < 2) {
+                    error2.textContent = '*минимум 2 символов';
+                    error2.style.display = 'block';
+                    error2.style.opacity = '1';
+                    hasError = true;
+                    loginStringEmpty = false;
                 }
                 else
                 {
                     error2.style.display = 'none';
                     error2.style.opacity = '0';
-                    hasEror = false;
+                    hasError = false;
                 }
                 if (!lNameInput.value.trim())
                 {
                     error3.textContent = '*обязательно';
                     error3.style.display = 'block';
                     error3.style.opacity = '1';
-                    hasEror = true;
+                    hasError = true;
+                }
+                else if (lNameInput.value.length < 5) {
+                    error3.textContent = '*минимум 5 символов';
+                    error3.style.display = 'block';
+                    error3.style.opacity = '1';
+                    hasError = true;
+                    loginStringEmpty = false;
                 }
                 else
                 {
                     error3.style.display = 'none';
                     error3.style.opacity = '0';
-                    hasEror = false;
+                    hasError = false;
                 }
-                if (!patronymiInput.value.trim())
+                if (!patronymiсInput.value.trim())
                 {
                     error4.textContent = '*обязательно';
                     error4.style.display = 'block';
                     error4.style.opacity = '1';
-                    hasEror = true;
+                    hasError = true;
+                }
+                else if (patronymiсInput.value.length < 5) {
+                    error4.textContent = '*минимум 5 символов';
+                    error4.style.display = 'block';
+                    error4.style.opacity = '1';
+                    hasError = true;
+                    loginStringEmpty = false;
                 }
                 else
                 {
                     error4.style.display = 'none';
                     error4.style.opacity = '0';
-                    hasEror = false;
+                    hasError = false;
                 }
-                if (!loginStringEmpty) {
+                if (!link.value.trim())
+                {
+                    error5.textContent = '*обязательно';
+                    error5.style.display = 'block';
+                    error5.style.opacity = '1';
+                    hasError = true;
+                }
+                else
+                {
+                    error5.style.display = 'none';
+                    error5.style.opacity = '0';
+                    hasError = false;
+                }
+                if (!loginStringEmpty && !hasError) {
                 fetch('{% url "check_login" %}', {
                     method: 'POST',
                     headers: {
@@ -142,34 +188,34 @@
                 });
 
                 }
-                  if (!hasEror) {
-                    const userData = {
-                        login: loginInput.value.trim(),
-                        firstName: nameInput.value.trim(),
-                        lastName: lNameInput.value.trim(),
-                        patronymic: patronymiInput.value.trim(),
-                        phone: localStorage.getItem('numberPhone')
-                    };
-                    fetch('{% url "editUserInformation" %}', {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json',
-                            'X-CSRFToken': '{{ csrf_token }}'
-                        },
-                        body: JSON.stringify(userData)
+                if (!hasError && phoneForEditInformation !== null && phoneForEditInformation.trim() !== '') {
+                const userData = {
+                    login: loginInput.value.trim(),
+                    firstName: nameInput.value.trim(),
+                    lastName: lNameInput.value.trim(),
+                    patronymic: patronymiсInput.value.trim(),
+                    phone: phoneForEditInformation
+                };
+                fetch('{% url "editUserInformation" %}', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRFToken': '{{ csrf_token }}'
+                    },
+                    body: JSON.stringify(userData)
+                })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.success) {
+                            localStorage.setItem('login', loginInput.value.trim());
+                            window.location.href = "{% url 'mainPage' %}";
+                        } else {
+                             console.error('Error:');
+                        }
                     })
-                        .then(response => response.json())
-                        .then(data => {
-                            if (data.success) {
-                                localStorage.setItem('login', loginInput.value.trim());
-                                window.location.href = "{% url 'mainPage' %}";
-                            } else {
-                                showGlobalError(data.message || 'Ошибка');
-                            }
-                        })
-                        .catch(error => {
-                            console.error('Error:', error);
-                        })
+                    .catch(error => {
+                        console.error('Error:', error);
+                    })
                 }
             });
 
