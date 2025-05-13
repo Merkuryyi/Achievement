@@ -87,6 +87,8 @@
     top: 144px;
     background: #878CCD;
     border-radius: 50%;
+    flex-shrink: 0;
+    overflow: hidden;
 }
 .icon {
     position: absolute;

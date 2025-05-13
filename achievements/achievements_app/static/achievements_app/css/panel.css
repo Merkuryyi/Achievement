@@ -71,6 +71,8 @@
     width: 42px;
     height: 42px;
     cursor: pointer;
+    flex-shrink: 0;
+    overflow: hidden;
 
 }
 .buttonSearch

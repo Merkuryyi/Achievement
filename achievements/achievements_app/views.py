@@ -159,11 +159,12 @@ def registerUser(request):
             lastname = data.get('lastName')
             firstname = data.get('firstName')
             patronymic = data.get('patronymic')
-            id = get_user_id_by_phone(phone)
-            with connection.cursor() as cursor:
-                cursor.execute("insert into users (login, password, phone, email) values (%s, %s, %s, %s)",
-                [login, password, phone, email])
+            photoLink = data.get('photoLink')
 
+            with connection.cursor() as cursor:
+                cursor.execute("insert into users (login, password, phone, email, photo) values (%s, %s, %s, %s, %s)",
+                [login, password, phone, email, photoLink])
+            id = get_user_id_by_phone(phone)
             with connection.cursor() as cursor:
                 cursor.execute("insert into status_users (user_id, status, date) values (%s, %s, now())",
                                [id, status])
@@ -183,35 +184,79 @@ def get_user_id_by_phone(phone):
         return result[0] if result else None
 
 
+
 def editUserInformation(request):
-    if request.method == 'POST':
-        data = json.loads(request.body)
-        phone = data.get('phone')
-        login = data.get('login')
-        lastname = data.get('lastName')
-        firstname = data.get('firstName')
-        patronymic = data.get('patronymic')
+    if request.method != 'POST':
+        return JsonResponse({'error': 'Invalid method'}, status=405)
+
     try:
         data = json.loads(request.body)
-        phone = data.get('phone')
+        login = (data.get('login') or '').strip()
+        lastname = (data.get('lastName') or '').strip()
+        firstname = (data.get('firstName') or '').strip()
+        patronymic = (data.get('patronymic') or '').strip()
+        photo = (data.get('photo') or '').strip()
+        phone = (data.get('phone') or '').strip()
+
         user_id = get_user_id_by_phone(phone)
+        if not user_id:
+            return JsonResponse({'error': 'User not found'}, status=404)
 
         with connection.cursor() as cursor:
-            cursor.execute(
-                "UPDATE users SET login = %s WHERE user_id = %s",
-                [login, user_id]
-            )
-
-            cursor.execute(
-                "UPDATE additional_information_users "
-                "SET lastname = %s, firstname = %s, patronymic = %s WHERE user_id = %s",
-                [lastname, firstname, patronymic]
-            )
+            if login:
+                cursor.execute(
+                    "UPDATE users SET login = %s WHERE user_id = %s",
+                    [login, user_id]
+                )
+            if photo:
+                cursor.execute(
+                    "UPDATE users SET photo = %s WHERE user_id = %s",
+                    [photo, user_id]
+                )
+            if lastname:
+                cursor.execute(
+                    "UPDATE additional_information_users SET lastname = %s WHERE user_id = %s",
+                    [lastname, user_id]
+                )
+            if firstname:
+                cursor.execute(
+                    "UPDATE additional_information_users SET firstname = %s WHERE user_id = %s",
+                    [firstname, user_id]
+                )
+            if patronymic:
+                cursor.execute(
+                    "UPDATE additional_information_users SET patronymic = %s WHERE user_id = %s",
+                    [patronymic, user_id]
+                )
 
         return JsonResponse({'success': True})
 
     except Exception as e:
         return JsonResponse({'error': str(e)}, status=500)
+
+def editLogin(request):
+    if request.method == 'POST':
+        data = json.loads(request.body)
+        login = data.get('login')
+        phone = data.get('phone')
+    try:
+        data = json.loads(request.body)
+
+        user_id = get_user_id_by_phone(phone)
+        if not data['login'].strip():
+            with connection.cursor() as cursor:
+                cursor.execute(
+                    "UPDATE users SET login = %s WHERE user_id = %s",
+                    [login, user_id]
+                )
+
+        return JsonResponse({'success': True})
+
+    except Exception as e:
+        return JsonResponse({'error': str(e)}, status=500)
+
+
+
 
 def scoreUser(request):
     try:
@@ -594,4 +639,25 @@ def check_Like(request):
             return JsonResponse({'exists': False})
 
     return JsonResponse({'exists': False})
+
+
+def photoUser(request):
+    try:
+        data = json.loads(request.body)
+        phone = data.get('phone')
+        cursor = connection.cursor()
+        try:
+            cursor.execute(
+                "select photo from users WHERE phone = %s",
+                [phone]
+            )
+            link = cursor.fetchone()[0]
+            return JsonResponse({'photo': link})
+        finally:
+            cursor.close()
+
+    except json.JSONDecodeError:
+        return JsonResponse({'error': 'Invalid JSON'}, status=400)
+    except Exception as e:
+        return JsonResponse({'error': str(e)}, status=500)
 

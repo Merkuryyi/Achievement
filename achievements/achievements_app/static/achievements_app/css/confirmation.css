@@ -21,6 +21,8 @@ body {
     border-radius: 50%;
     width: 106px;
     height: 106px;
+    flex-shrink: 0;
+    overflow: hidden;
 }
 .login
 {
@@ -48,7 +50,6 @@ body {
     background: #FFFFFF;
     border-radius: 5px;
 }
-
 
 .container-toggle {
     position: absolute;

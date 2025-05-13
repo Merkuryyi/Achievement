@@ -12,7 +12,7 @@
     <div class="containerSearch container-toggle">
         <input type="text" class="input-field" maxlength="30" placeholder="Поиск">
     </div>
-    <photo class="photoProfileHigh"></photo>
+    <img class="photoProfileHigh" id="photoProfileHigh" src="" alt="photoProfileHigh">
     <buttonSearch class="buttonSearch"></buttonSearch>
     <scoresIcon class="scoresIcon"></scoresIcon>
     <scores class="scores">1</scores>
@@ -33,13 +33,34 @@
         const scoresIcon = document.querySelector('.scoresIcon');
         const buttons = document.querySelector('.buttonSearch');
         const scores = document.querySelector('.scores');
-        const photoProfile = document.querySelector('.photoProfileHigh');
         const modal = document.createElement('div');
         modal.className = 'custom-modal';
         const phone = localStorage.getItem('numberPhone');
+        const photoProfileHigh = document.getElementById('photoProfileHigh');
         document.addEventListener('DOMContentLoaded', function()
         {
             if (phone !== null) {
+                fetch('{% url "photoUser" %}', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRFToken': '{{ csrf_token }}'
+                    },
+                    body: JSON.stringify({
+                        phone: localStorage.getItem('numberPhone')
+                    })
+                })
+                .then(response => response.json())
+                    .then(data => {
+                        if (data.photo) {
+                            photoProfileHigh.src = data.photo;
+                            photoProfileHigh.style.backgroundImage = `url(${data.photo})`;
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error:', error);
+                    });
+
                 fetch('{% url "check_status" %}', {
                     method: 'POST',
                     headers: {
@@ -174,7 +195,7 @@
             .catch(error => {
                 console.error('Error:', error);
             })
-            photoProfile.addEventListener('click', function ()
+            photoProfileHigh.addEventListener('click', function ()
             {
                 pageName = 'initial';
                 openModal();

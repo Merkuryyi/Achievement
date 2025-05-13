@@ -11,7 +11,7 @@
 
 <div>
     <login class="loginUser">username</login>
-    <photo class="photoProfile"></photo>
+    <img class="photoProfile" id="profilePhoto" src="" alt="Profile Photo">
     <icon class="icon">
         <svg  viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
             <path d="M11 4H4C3.46957 4 2.96086 4.21071 2.58579 4.58579C2.21071 4.96086 2 5.46957 2 6V20C2 20.5304
@@ -124,6 +124,7 @@
     <div class="deleteProfile">Удаление профиля</div>
 
     <script>
+        const photoElement = document.getElementById('profilePhoto');
         const loginUser = document.querySelector('.loginUser');
         const icon = document.querySelector('.icon');
         const iconExit = document.querySelector('.iconExit');
@@ -139,32 +140,39 @@
         const countBackground = document.querySelector('.circleNotification');
         const phoneNumber = localStorage.getItem('numberPhone');
         const notificationContainer = document.getElementById('notificationContainer');
+
         document.addEventListener('DOMContentLoaded', function() {
-
             if (phoneNumber !== null) {
-
                 function deleteProfile()
                 {
                     window.location.href = "{% url 'confirmation' %}";
                 }
                 deleteIcon.addEventListener('click', deleteProfile);
                 deleteText.addEventListener('click', deleteProfile);
+                 fetch('{% url "photoUser" %}', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRFToken': '{{ csrf_token }}'
+                    },
+                    body: JSON.stringify({
+                        phone: localStorage.getItem('numberPhone')
+                    })
+                })
+                .then(response => response.json())
+                    .then(data => {
+                        if (data.photo) {
+                            photoElement.src = data.photo;
+                            photoElement.style.backgroundImage = `url(${data.photo})`;
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error:', error);
+                    });
 
-                icon.addEventListener('click', function ()
-                {
-                    window.location.href = "{% url 'userInformation' %}";
-                });
 
-                 function exit()
-                {
-                    localStorage.removeItem('numberPhone');
-                    localStorage.removeItem('status');
-                    localStorage.removeItem('login');
-                    window.location.href = "{% url 'mainPage' %}";
-                }
-                iconExit.addEventListener('click', exit);
-                exitText.addEventListener('click', exit);
-                fetch('{% url "check_isActiveNotification" %}', {
+
+                    fetch('{% url "check_isActiveNotification" %}', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',

@@ -47,7 +47,7 @@
             }
 
             button.addEventListener('click', function () {
-                 let hasEror = true;
+                 let hasError = true;
                  let phoneEmpty;
                  let emailEmpty;
                    if (!emailInput.value.trim()) {
@@ -87,16 +87,16 @@
                     error3.textContent = '*обязательно';
                     error3.style.display = 'block';
                     error3.style.opacity = '1';
-                    hasEror = true;
+                    hasError = true;
                 } else if (!isValidPassword(passwordInput.value.trim())) {
                     error3.textContent = '*минимум 8 символов, буквы и цифры';
                     error3.style.display = 'block';
                     error3.style.opacity = '1';
-                    hasEror = true;
+                    hasError = true;
                 } else {
                     error3.style.display = 'none';
                     error3.style.opacity = '0';
-                    hasEror = false;
+                    hasError = false;
                 }
                 if (!emailEmpty && !phoneEmpty) {
                     validateAndRedirect();
@@ -134,7 +134,7 @@
                                 error1.style.display = 'block';
                                 return;
                             }
-                            if (!emailEmpty && !phoneEmpty) {
+                            if (!emailEmpty && !phoneEmpty && !hasError) {
                                 window.location.href = "{% url 'information' %}";
                                 localStorage.setItem('numberPhone', phoneInput.value.trim());
                                 localStorage.setItem('email', emailInput.value.trim());

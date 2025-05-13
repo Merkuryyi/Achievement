@@ -182,7 +182,8 @@
                             patronymic: patronymiсInput.value.trim(),
                             email: email,
                             password: password,
-                            phone: numberPhone
+                            phone: numberPhone,
+                            photoLink: link.value.trim()
                             };
                             fetch('{% url "registerUser" %}', {
                                 method: 'POST',
@@ -195,6 +196,7 @@
                             .then(response => response.json())
                             .then(data => {
                                 if (data.success) {
+                                    localStorage.setItem('login', loginInput.value.trim());
                                     window.location.href = "{% url 'mainPage' %}";
                                 } else {
                                    console.log('Ошибка регистрации');

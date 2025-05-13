@@ -39,7 +39,9 @@
     <div class="button"></div>
     <div class="buttonText">Сохранить</div>
     <a href="{% url 'mainPage' %}" class="backText">отмена</a>
-    <div class="photo">
+
+    <div class="photo-container">
+        <img class="photo" id="photo" src="" alt="photo">
         <div class="login">username</div>
     </div>
     <script>
@@ -63,161 +65,142 @@
             let phoneForEditInformation = localStorage.getItem('numberPhone');
             button.addEventListener('click', function ()
             {
-                if (!loginInput.value.trim())
+
+                if (!link.value.trim() && !patronymiсInput.value.trim() && !lNameInput.value.trim()
+                && !nameInput.value.trim() && !loginInput.value.trim())
                 {
-                    error1.textContent = '*обязательно';
+                    error1.textContent = '*обязательно одно поле';
                     error1.style.display = 'block';
                     error1.style.opacity = '1';
                     hasError = true;
                     loginStringEmpty = true;
                 }
-                else if (loginInput.value.length < 5) {
+
+                else if (loginInput.value.trim() && loginInput.value.length < 5) {
                     error1.textContent = '*минимум 5 символов';
                     error1.style.display = 'block';
                     error1.style.opacity = '1';
                     hasError = true;
-                    loginStringEmpty = false;
+
                 }
-                else
-                {
-                    error1.style.display = 'none';
-                    error1.style.opacity = '0';
-                    hasError = false;
-                    loginStringEmpty = false;
-                }
-                if (!nameInput.value.trim())
-                {
-                    error2.textContent = '*обязательно';
-                    error2.style.display = 'block';
-                    error2.style.opacity = '1';
-                    hasError = true;
-                }
-                else if (nameInput.value.length < 2) {
+
+                else if (nameInput.value.trim() && nameInput.value.length < 2) {
                     error2.textContent = '*минимум 2 символов';
                     error2.style.display = 'block';
                     error2.style.opacity = '1';
                     hasError = true;
-                    loginStringEmpty = false;
+                    loginStringEmpty = true;
                 }
-                else
-                {
-                    error2.style.display = 'none';
-                    error2.style.opacity = '0';
-                    hasError = false;
-                }
-                if (!lNameInput.value.trim())
-                {
-                    error3.textContent = '*обязательно';
-                    error3.style.display = 'block';
-                    error3.style.opacity = '1';
-                    hasError = true;
-                }
-                else if (lNameInput.value.length < 5) {
+
+                 else if (lNameInput.value.trim() && lNameInput.value.length < 5) {
                     error3.textContent = '*минимум 5 символов';
                     error3.style.display = 'block';
                     error3.style.opacity = '1';
                     hasError = true;
-                    loginStringEmpty = false;
-                }
-                else
-                {
-                    error3.style.display = 'none';
-                    error3.style.opacity = '0';
-                    hasError = false;
-                }
-                if (!patronymiсInput.value.trim())
-                {
-                    error4.textContent = '*обязательно';
-                    error4.style.display = 'block';
-                    error4.style.opacity = '1';
-                    hasError = true;
-                }
-                else if (patronymiсInput.value.length < 5) {
+                    loginStringEmpty = true;
+                 }
+
+                 else if (patronymiсInput.value.trim() && patronymiсInput.value.length < 5) {
                     error4.textContent = '*минимум 5 символов';
                     error4.style.display = 'block';
                     error4.style.opacity = '1';
                     hasError = true;
-                    loginStringEmpty = false;
-                }
-                else
+                    loginStringEmpty = true;
+                 }
+                 else
                 {
+                    error1.style.display = 'none';
+                    error1.style.opacity = '0';
+                    error2.style.display = 'none';
+                    error3.style.display = 'none';
+                    error3.style.opacity = '0';
                     error4.style.display = 'none';
                     error4.style.opacity = '0';
                     hasError = false;
+
                 }
-                if (!link.value.trim())
-                {
-                    error5.textContent = '*обязательно';
-                    error5.style.display = 'block';
-                    error5.style.opacity = '1';
-                    hasError = true;
+
+                 if (!loginStringEmpty) {
+                    fetch('{% url "check_login" %}', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'X-CSRFToken': '{{ csrf_token }}'
+                        },
+                        body: JSON.stringify({
+                            login: loginInput.value.trim(),
+                        })
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.exists) {
+                            error1.textContent = '*логин существует';
+                            error1.style.display = 'block';
+                            error1.style.opacity = '1';
+                            hasError = true;
+                        } else if (!data.exists) {
+                            error1.style.display = 'none';
+                            error1.style.opacity = '0';
+                            hasError = false;
+                        }
+                        if (!hasError && phoneForEditInformation !== null && phoneForEditInformation.trim() !== '') {
+                            const userData = {
+                                login: loginInput.value.trim() || null,
+                                firstName: nameInput.value.trim() || null,
+                                lastName: lNameInput.value.trim() || null,
+                                patronymic: patronymiсInput.value.trim() || null,
+                                phone: phoneForEditInformation,
+                                photo: link.value.trim() || null
+                            };
+                            fetch('{% url "editUserInformation" %}', {
+                                method: 'POST',
+                                headers: {
+                                    'Content-Type': 'application/json',
+                                    'X-CSRFToken': '{{ csrf_token }}'
+                                },
+                                body: JSON.stringify(userData)
+                            })
+                            .then(response => response.json())
+                            .then(data => {
+                                if (data.success) {
+                                    localStorage.setItem('login', loginInput.value.trim());
+                                    window.location.href = "{% url 'mainPage' %}";
+                                } else {
+                                    console.error('Error:');
+                                }
+                            })
+                            .catch(error => {
+                                console.error('Error:', error);
+                            });
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error:', error);
+                    });
                 }
-                else
-                {
-                    error5.style.display = 'none';
-                    error5.style.opacity = '0';
-                    hasError = false;
-                }
-                if (!loginStringEmpty && !hasError) {
-                fetch('{% url "check_login" %}', {
+
+                 console.log(hasError)
+            });
+            fetch('{% url "photoUser" %}', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
                         'X-CSRFToken': '{{ csrf_token }}'
                     },
                     body: JSON.stringify({
-                        login: loginInput.value.trim(),
+                        phone: localStorage.getItem('numberPhone')
                     })
                 })
                 .then(response => response.json())
-                .then(data =>
-                {
-                    if (data.exists)
-                    {
-                        error1.textContent = '*логин существует';
-                        error1.style.display = 'block';
-                        error1.style.opacity = '1';
-                    } else
-                    {
-                        error1.style.display = 'none';
-                        error1.style.opacity = '0';
-                    }
-                })
-                .catch(error => {
-                    console.error('Error:', error);
-                });
-
-                }
-                if (!hasError && phoneForEditInformation !== null && phoneForEditInformation.trim() !== '') {
-                const userData = {
-                    login: loginInput.value.trim(),
-                    firstName: nameInput.value.trim(),
-                    lastName: lNameInput.value.trim(),
-                    patronymic: patronymiсInput.value.trim(),
-                    phone: phoneForEditInformation
-                };
-                fetch('{% url "editUserInformation" %}', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'X-CSRFToken': '{{ csrf_token }}'
-                    },
-                    body: JSON.stringify(userData)
-                })
-                    .then(response => response.json())
                     .then(data => {
-                        if (data.success) {
-                            localStorage.setItem('login', loginInput.value.trim());
-                            window.location.href = "{% url 'mainPage' %}";
-                        } else {
-                             console.error('Error:');
+                        if (data.photo) {
+                            photo.src = data.photo;
+                            photo.style.backgroundImage = `url(${data.photo})`;
                         }
                     })
                     .catch(error => {
                         console.error('Error:', error);
-                    })
-                }
-            });
+                    });
 
 
 

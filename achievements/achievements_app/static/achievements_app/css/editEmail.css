@@ -21,6 +21,8 @@ body {
     border-radius: 50%;
     width: 106px;
     height: 106px;
+    flex-shrink: 0;
+    overflow: hidden;
 }
 .login
 {
@@ -170,7 +172,7 @@ body {
 }
 .button,
 .buttonSmall
- {
+{
     position: absolute;
     background: #D2BAFF;
     border-radius: 5px;
@@ -183,7 +185,6 @@ body {
     height: 47px;
     left: 350px;
     top: 869px;
-
 }
 
 .button:hover,
@@ -203,7 +204,6 @@ body {
     height: 23px;
     left: 410px;
     top: 878px;
-
     font-family: 'Inter';
     font-style: normal;
     font-weight: 400;
@@ -212,7 +212,6 @@ body {
     text-align: center;
     color: #FFFFFF;
 }
-
 .eror,
 .eror2,
 .eror3{
@@ -224,7 +223,6 @@ body {
     transition: opacity 0.3s ease;
     opacity: 0;
 }
-
 .eror {
     width: 300px;
     height: 19px;
