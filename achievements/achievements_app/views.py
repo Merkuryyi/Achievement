@@ -79,12 +79,14 @@ def check_user(request):
                 "SELECT phone FROM users WHERE login = %s AND password = %s",
                 [login, password]
             )
-            phone = cursor.fetchone()[0]
+            row = cursor.fetchone()
 
-        return JsonResponse({'exists': phone})
+        if row:
+            return JsonResponse({'exists': row})
+        else:
+            return JsonResponse({'exists': False})
 
     return JsonResponse({'exists': False})
-
 
 def check_login(request):
     if request.method == 'POST':
@@ -586,7 +588,12 @@ def check_Like(request):
                 "select * from achievement_like WHERE user_id = %s AND achievement_id = %s",
                 [user_id, achievement_id]
             )
+            row = cursor.fetchone()
 
-        return JsonResponse({'exists': True})
+        if row:
+            return JsonResponse({'exists': True})
+        else:
+            return JsonResponse({'exists': False})
 
     return JsonResponse({'exists': False})
+
