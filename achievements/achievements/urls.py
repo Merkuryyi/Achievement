@@ -44,4 +44,5 @@ urlpatterns = [
     path('deleteLike/', views.deleteLike, name = 'deleteLike'),
 path('check_Like/', views.check_Like, name = 'check_Like'),
 path('photoUser/', views.photoUser, name = 'photoUser'),
+path('returnComments/', views.returnComments, name = 'returnComments'),
 ]

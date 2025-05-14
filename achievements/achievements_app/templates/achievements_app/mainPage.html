@@ -109,7 +109,7 @@
 
 
             `;
-            const filteredComments = comments.filter(comments => comments.id_achievement === achievementId);
+            const filteredComments = comments.filter(comment => comment.id_achievement === achievementId);
             const commentsList = document.createElement('div');
             commentsList.className = 'comments-list';
             commentsList.addEventListener('click', function(e) {
@@ -122,11 +122,15 @@
 
             commentsList.className = `comments-list${hasReplies ? ' comments-listReplay' : ''}`;
             filteredComments.forEach(comment => {
+                const replyUserHTML = comment.replay && comment.replyToUser
+                    ? `<span class="reply-username">${comment.replyToUser}</span>`
+                    : '';
                 const commentHTML = `
                     <div class="${comment.replay ? 'comment-reply' : 'comment'}">
                         <div class="user-info">
                             <div class="avatar"></div>
                             <span class="username">${comment.user}</span>
+                            ${replyUserHTML}
                             <div class="comment-meta">
                                 <span class="edit-label">изм.</span>
                                 <span class="comment-date">${new Date(comment.date).toLocaleDateString()}</span>
@@ -322,7 +326,41 @@
                 </svg>`;
             }
         }
-        const comments = [];
+        const comments = [
+            {
+                id_user: 1,
+                id_achievement: 11,
+                user: "qwe",
+                text: "Это пример комментарияаорпппппsdfgfdsgsfdgffffffffffffffffffff" +
+                "пппппппппппппппппппппппппdfgdgdfs" +
+                "gdgddafgggggggggggggggggggggggggggggggggggggggg" +
+                "gggggggggggggggggggggggggппппппппппппппппппппппппппппппппппппппппппппппппппппппппппппппппппппппо" +
+                "пппппппппппппппппппппппппdfgdgdfs" +
+                "gdgddafgggggggggggggggggggggggggggggggggggggggg" +
+                "gggggggggggggggggggggggggппппппппппппппппппппппппппппппппппппппппппппппппппппппппппппппппппппппо",
+                date: "2023-08-15",
+                countLike: 12,
+                countComment: 12,
+                replay: false,
+
+            },
+        {
+                id_user: 1,
+                id_achievement: 11,
+                user: "qwe",
+                text: "Это пример комментарияаорпппппsdfgfdsgsfdgffffffffffffffffffff" +
+                "пппппппппппппппппппппппппdfgdgdfs" +
+                "gdgddafgggggggggggggggggggggggggggggggggggggggg" +
+                "gggggggggggggggggggggggggппппппппппппппппппппппппппппппппппппппппппппппппппппппппппппппппппппппо" +
+                "пппппппппппппппппппппппппdfgdgdfs" +
+                "gdgddafgggggggggggggggggggggggggggggggggggggggg" +
+                "gggggggggggggggggggggggggппппппппппппппппппппппппппппппппппппппппппппппппппппппппппппппппппппппо",
+                date: "2023-08-15",
+                countLike: 12,
+                countComment: 12,
+                replay: true,
+            replyToUser: "Владелец"
+            }];
         document.addEventListener('DOMContentLoaded', function() {
         const filterText = document.querySelector('.filterAchievement');
         let isAscending = false;
@@ -337,10 +375,9 @@
             }
             else
             {
-                isAscending = true;
+                isAscending = false;
                 loadAndRenderAchievements();
             }
-
         });
         async function fetchAchievement() {
             try {

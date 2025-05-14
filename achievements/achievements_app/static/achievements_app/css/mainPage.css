@@ -276,7 +276,7 @@ body {
     border-radius: 50%;
     background: #878CCD;
     margin-right: 20px;
-
+    flex-shrink: 0;
 }
 
 .username {
@@ -380,6 +380,19 @@ body {
     margin-left: 45px;
     width: 650px;
 }
+.reply-username {
+    font-size: 20px;
+    color: #878CCD;
+    margin-left: 20px;
+    font-weight: 400;
+    max-width: 200px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+
+
 .comment-text[contenteditable="true"] {
     background: #ECF2F8;
     border-radius: 5px;

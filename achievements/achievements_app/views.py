@@ -548,9 +548,28 @@ def returnAchievement(request):
                 "AS comment_counts ON achievement.achievement_id = comment_counts.achievement_id "
                 "LEFT JOIN (SELECT achievement_id, COUNT(*) AS count_like FROM achievement_like GROUP BY achievement_id) "
                 "AS like_counts ON achievement.achievement_id = like_counts.achievement_id "
-                "WHERE now() > achievement.date - interval '1 month' "
+                "WHERE now() > achievement.date - interval '1 month' and isVisible = true "
                 "ORDER BY achievement.date ASC; ",
             )
+            else: cursor.execute(
+                "SELECT "
+                    "users.login, "
+                    "achievement.achievement_id, "
+                    "achievement.title, "
+                    "achievement.date, "
+                    "achievement.photo, "
+                    "COALESCE(comment_counts.count_comment, 0) AS count_comment, "
+                    "COALESCE(like_counts.count_like, 0) AS count_like "
+                "FROM achievement "
+                "INNER JOIN users ON achievement.user_id = users.user_id "
+                "LEFT JOIN (SELECT achievement_id, COUNT(*) AS count_comment FROM comment GROUP BY achievement_id) "
+                "AS comment_counts ON achievement.achievement_id = comment_counts.achievement_id "
+                "LEFT JOIN (SELECT achievement_id, COUNT(*) AS count_like FROM achievement_like GROUP BY achievement_id) "
+                "AS like_counts ON achievement.achievement_id = like_counts.achievement_id "
+                "WHERE now() > achievement.date - interval '1 month' and isVisible = true "
+                "ORDER BY achievement.date DESC; ",
+            )
+
 
             achievements = cursor.fetchall()
             result = [
@@ -572,7 +591,74 @@ def returnAchievement(request):
 
     except Exception as e:
         return JsonResponse({'error': str(e)}, status=500)
+def returnComments(request):
+    try:
+        data = json.loads(request.body)
+        isFiltered = data.get('isFiltered')
 
+        with connection.cursor() as cursor:
+            if isFiltered == 'false':
+                cursor.execute(
+                "WITH RECURSIVE comment_tree AS ( "
+                    "SELECT c.comment_id, c.user_id, "
+                        "c.achievement_id, c.text, "
+                        "GREATEST(c.created_at, c.updated_at) AS latest_date, "
+                        "TRUE AS is_main, ARRAY[c.comment_id] AS path, "
+                        "GREATEST(c.created_at, c.updated_at) AS sort_date "
+                    "FROM comment c WHERE NOT EXISTS (SELECT 1 FROM answers a  "
+                        "WHERE a.answers_comment_id = c.comment_id) "
+                    "UNION ALL "
+                    "SELECT c.comment_id, c.user_id, c.achievement_id, c.text, "
+                        "GREATEST(c.created_at, c.updated_at) AS latest_date, "
+                        "FALSE AS is_main, ct.path || c.comment_id, "
+                        "GREATEST(c.created_at, c.updated_at) "
+                    "FROM comment c "
+                    "INNER JOIN answers a ON c.comment_id = a.answers_comment_id "
+                    "INNER JOIN comment_tree ct ON a.comment_id = ct.comment_id) "
+                "SELECT comment_id, user_id, achievement_id, text, latest_date, is_main "
+                "FROM comment_tree "
+                "ORDER BY (CASE WHEN is_main THEN latest_date ELSE NULL END) ASC NULLS LAST, path[1], latest_date ASC; ",
+            )
+            else: cursor.execute(
+                "SELECT "
+                    "users.login, "
+                    "achievement.achievement_id, "
+                    "achievement.title, "
+                    "achievement.date, "
+                    "achievement.photo, "
+                    "COALESCE(comment_counts.count_comment, 0) AS count_comment, "
+                    "COALESCE(like_counts.count_like, 0) AS count_like "
+                "FROM achievement "
+                "INNER JOIN users ON achievement.user_id = users.user_id "
+                "LEFT JOIN (SELECT achievement_id, COUNT(*) AS count_comment FROM comment GROUP BY achievement_id) "
+                "AS comment_counts ON achievement.achievement_id = comment_counts.achievement_id "
+                "LEFT JOIN (SELECT achievement_id, COUNT(*) AS count_like FROM achievement_like GROUP BY achievement_id) "
+                "AS like_counts ON achievement.achievement_id = like_counts.achievement_id "
+                "WHERE now() > achievement.date - interval '1 month' and isVisible = true "
+                "ORDER BY achievement.date DESC; ",
+            )
+
+
+            achievements = cursor.fetchall()
+            result = [
+                {
+                    'login': row[0],
+                    'id_achievement': row[1],
+                    'title': row[2],
+                    'date': row[3],
+                    'photoLink': row[4],
+                    'countComment': row[5],
+                    'countLike': row[6]
+                }
+                for row in achievements
+            ]
+            return JsonResponse({'achievements': result}, safe=False)
+
+    except json.JSONDecodeError:
+        return JsonResponse({'error': 'Invalid JSON'}, status=400)
+
+    except Exception as e:
+        return JsonResponse({'error': str(e)}, status=500)
 def newLike(request):
     try:
         data = json.loads(request.body)
