@@ -38,10 +38,11 @@ body {
     color: #878CCD;
 }
 .photo-container {
-    position: relative;
+    position: absolute;
+    top: 390px;
+    left: 1363px;
     width: 106px;
     height: 106px;
-    margin: 20px auto;
 }
 
 .photo {
@@ -50,19 +51,20 @@ body {
     border-radius: 50%;
     object-fit: cover;
     display: block;
+    background: #878CCD;
 }
 
 .login {
     position: absolute;
-    width: 200px;
+    width: max-content;
     left: 50%;
     top: 110%;
     transform: translateX(-50%);
     font-family: 'Inter', sans-serif;
     font-size: 24px;
-    text-align: center;
     color: #878CCD;
     white-space: nowrap;
+    text-align: center;
 }
 .miniTitleRightHigh,
 .miniTitleLeftHigh,
