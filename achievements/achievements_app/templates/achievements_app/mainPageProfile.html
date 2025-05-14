@@ -143,12 +143,23 @@
 
         document.addEventListener('DOMContentLoaded', function() {
             if (phoneNumber !== null) {
+                function editProfile()
+                {
+                    window.location.href = "{% url 'userInformation' %}";
+                }
+                icon.addEventListener('click', editProfile);
                 function deleteProfile()
                 {
                     window.location.href = "{% url 'confirmation' %}";
                 }
                 deleteIcon.addEventListener('click', deleteProfile);
                 deleteText.addEventListener('click', deleteProfile);
+                function exitProfile()
+                {
+                    window.location.href = "{% url 'mainPage' %}";
+                }
+                iconExit.addEventListener('click', exitProfile);
+                exitText.addEventListener('click', exitProfile);
                  fetch('{% url "photoUser" %}', {
                     method: 'POST',
                     headers: {
@@ -169,8 +180,6 @@
                     .catch(error => {
                         console.error('Error:', error);
                     });
-
-
 
                     fetch('{% url "check_isActiveNotification" %}', {
                     method: 'POST',

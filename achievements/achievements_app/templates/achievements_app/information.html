@@ -54,9 +54,10 @@
             const email = localStorage.getItem('email');
             const password = localStorage.getItem('password');
             const numberPhone = localStorage.getItem('numberPhone');
-            let hasError = true;
+            let hasError = false;
             let loginStringEmpty = false;
             button.addEventListener('click', function () {
+                hasError = false;
                 if (!loginInput.value.trim()) {
                     error1.textContent = '*обязательно';
                     error1.style.display = 'block';
@@ -74,7 +75,6 @@
                 else {
                     error1.style.display = 'none';
                     error1.style.opacity = '0';
-                    hasError = false;
                     loginStringEmpty = false;
                 }
                 if (!nameInput.value.trim()) {
@@ -88,12 +88,11 @@
                     error2.style.display = 'block';
                     error2.style.opacity = '1';
                     hasError = true;
-                    loginStringEmpty = false;
+
                 }
                 else {
                     error2.style.display = 'none';
                     error2.style.opacity = '0';
-                    hasError = false;
                 }
                 if (!lNameInput.value.trim()) {
                     error3.textContent = '*обязательно';
@@ -106,7 +105,7 @@
                     error3.style.display = 'block';
                     error3.style.opacity = '1';
                     hasError = true;
-                    loginStringEmpty = false;
+
                 }
                 else {
                     error3.style.display = 'none';
@@ -124,12 +123,10 @@
                     error4.style.display = 'block';
                     error4.style.opacity = '1';
                     hasError = true;
-                    loginStringEmpty = false;
                 }
                 else {
                     error4.style.display = 'none';
                     error4.style.opacity = '0';
-                    hasError = false;
                 }
                 if (!link.value.trim())
                 {
@@ -142,7 +139,6 @@
                 {
                     error5.style.display = 'none';
                     error5.style.opacity = '0';
-                    hasError = false;
                 }
                 if (!loginStringEmpty && !hasError) {
                     fetch('{% url "check_login" %}', {
@@ -170,6 +166,9 @@
                     .catch(error => {
                         console.error('Error:', error);
                     });
+
+
+
                     if (!hasError)
                     {
                         if (email !== null && email.trim() !== '' &&

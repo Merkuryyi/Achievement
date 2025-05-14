@@ -31,14 +31,35 @@
     <div class="buttonText">Сохранить</div>
     <div class="buttonSmall"></div>
     <div class="buttonSmallText">код</div>
-    <div class="photo">
+    <div class="photo-container">
+        <img class="photo" id="photo" src="" alt="photo">
         <div class="login">username</div>
     </div>
     <a href="{% url 'mainPage' %}" class="backText">отмена</a>
     <script>
 
         document.addEventListener('DOMContentLoaded', function() {
-            const photo = document.getElementById('photo');
+        const photo = document.getElementById('photo');
+            fetch('{% url "photoUser" %}', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRFToken': '{{ csrf_token }}'
+                    },
+                    body: JSON.stringify({
+                        phone: localStorage.getItem('numberPhone')
+                    })
+                })
+                .then(response => response.json())
+                    .then(data => {
+                        if (data.photo) {
+                            photo.src = data.photo;
+                            photo.style.backgroundImage = `url(${data.photo})`;
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error:', error);
+                    });
             const button = document.querySelector('.button');
             const newPhoneInput = document.querySelector('.containerNewPhone input');
             const phoneCodeInput = document.querySelector('.containerCodePhone input');
