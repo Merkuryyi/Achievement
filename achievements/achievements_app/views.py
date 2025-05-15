@@ -595,60 +595,72 @@ def returnComments(request):
     try:
         data = json.loads(request.body)
         isFiltered = data.get('isFiltered')
+        achievementId = data.get('achievementId')
 
         with connection.cursor() as cursor:
             if isFiltered == 'false':
                 cursor.execute(
-                "WITH RECURSIVE comment_tree AS ( "
-                    "SELECT c.comment_id, c.user_id, "
-                        "c.achievement_id, c.text, "
-                        "GREATEST(c.created_at, c.updated_at) AS latest_date, "
-                        "TRUE AS is_main, ARRAY[c.comment_id] AS path, "
-                        "GREATEST(c.created_at, c.updated_at) AS sort_date "
-                    "FROM comment c WHERE NOT EXISTS (SELECT 1 FROM answers a  "
-                        "WHERE a.answers_comment_id = c.comment_id) "
-                    "UNION ALL "
-                    "SELECT c.comment_id, c.user_id, c.achievement_id, c.text, "
-                        "GREATEST(c.created_at, c.updated_at) AS latest_date, "
-                        "FALSE AS is_main, ct.path || c.comment_id, "
-                        "GREATEST(c.created_at, c.updated_at) "
-                    "FROM comment c "
-                    "INNER JOIN answers a ON c.comment_id = a.answers_comment_id "
-                    "INNER JOIN comment_tree ct ON a.comment_id = ct.comment_id) "
-                "SELECT comment_id, user_id, achievement_id, text, latest_date, is_main "
-                "FROM comment_tree "
-                "ORDER BY (CASE WHEN is_main THEN latest_date ELSE NULL END) ASC NULLS LAST, path[1], latest_date ASC; ",
+                "WITH RECURSIVE comment_tree AS ( SELECT "
+                    "c.comment_id, c.user_id, u.login AS login, "
+                    "NULL::text AS parent_login, c.achievement_id, c.text, "
+                    "GREATEST(c.created_at, c.updated_at) AS latest_date, "
+                    "TRUE AS is_main, ARRAY[c.comment_id] AS hierarchy_path, "
+                    "GREATEST(c.created_at, c.updated_at) AS root_date, "
+                    "(SELECT COUNT(*) FROM comment_like cl WHERE cl.comment_id = c.comment_id) AS count_like, "
+                    "(SELECT COUNT(*) FROM answers a WHERE a.comment_id = c.comment_id) AS count_comments "
+                "FROM comment c JOIN users u ON u.user_id = c.user_id "
+                "WHERE NOT EXISTS (SELECT 1 FROM answers a WHERE a.answers_comment_id = c.comment_id) "
+                "UNION ALL   SELECT c.comment_id, c.user_id, u.login AS login, ct.login AS parent_login, "
+                    "c.achievement_id, c.text, GREATEST(c.created_at, c.updated_at), "
+                    "FALSE AS is_main, ct.hierarchy_path || c.comment_id, ct.root_date,  "
+                    "(SELECT COUNT(*) FROM comment_like cl WHERE cl.comment_id = c.comment_id), "
+                    "(SELECT COUNT(*) FROM answers a WHERE a.comment_id = c.comment_id) "
+                "FROM comment c  JOIN users u ON u.user_id = c.user_id "
+                "INNER JOIN answers a ON c.comment_id = a.answers_comment_id "
+                "INNER JOIN comment_tree ct ON a.comment_id = ct.comment_id)  "
+            "SELECT  comment_id, user_id, login, parent_login, achievement_id, text, "
+                "latest_date, is_main, count_like, count_comments FROM comment_tree "
+            "ORDER BY root_date DESC,  hierarchy_path, latest_date DESC; ",
             )
             else: cursor.execute(
-                "SELECT "
-                    "users.login, "
-                    "achievement.achievement_id, "
-                    "achievement.title, "
-                    "achievement.date, "
-                    "achievement.photo, "
-                    "COALESCE(comment_counts.count_comment, 0) AS count_comment, "
-                    "COALESCE(like_counts.count_like, 0) AS count_like "
-                "FROM achievement "
-                "INNER JOIN users ON achievement.user_id = users.user_id "
-                "LEFT JOIN (SELECT achievement_id, COUNT(*) AS count_comment FROM comment GROUP BY achievement_id) "
-                "AS comment_counts ON achievement.achievement_id = comment_counts.achievement_id "
-                "LEFT JOIN (SELECT achievement_id, COUNT(*) AS count_like FROM achievement_like GROUP BY achievement_id) "
-                "AS like_counts ON achievement.achievement_id = like_counts.achievement_id "
-                "WHERE now() > achievement.date - interval '1 month' and isVisible = true "
-                "ORDER BY achievement.date DESC; ",
+                "WITH RECURSIVE comment_tree AS ( SELECT "
+                    "c.comment_id, c.user_id, u.login AS login, "
+                    "NULL::text AS parent_login, c.achievement_id, c.text, "
+                    "GREATEST(c.created_at, c.updated_at) AS latest_date, "
+                    "TRUE AS is_main, ARRAY[c.comment_id] AS hierarchy_path, "
+                    "GREATEST(c.created_at, c.updated_at) AS root_date, "
+                    "(SELECT COUNT(*) FROM comment_like cl WHERE cl.comment_id = c.comment_id) AS count_like, "
+                    "(SELECT COUNT(*) FROM answers a WHERE a.comment_id = c.comment_id) AS count_comments "
+                "FROM comment c JOIN users u ON u.user_id = c.user_id "
+                "WHERE NOT EXISTS (SELECT 1 FROM answers a WHERE a.answers_comment_id = c.comment_id) "
+                "UNION ALL   SELECT c.comment_id, c.user_id, u.login AS login, ct.login AS parent_login, "
+                    "c.achievement_id, c.text, GREATEST(c.created_at, c.updated_at), "
+                    "FALSE AS is_main, ct.hierarchy_path || c.comment_id, ct.root_date,  "
+                    "(SELECT COUNT(*) FROM comment_like cl WHERE cl.comment_id = c.comment_id), "
+                    "(SELECT COUNT(*) FROM answers a WHERE a.comment_id = c.comment_id) "
+                "FROM comment c  JOIN users u ON u.user_id = c.user_id "
+                "INNER JOIN answers a ON c.comment_id = a.answers_comment_id "
+                "INNER JOIN comment_tree ct ON a.comment_id = ct.comment_id)  "
+            "SELECT  comment_id, user_id, login, parent_login, achievement_id, text, "
+                "latest_date, is_main, count_like, count_comments FROM comment_tree "
+            "ORDER BY root_date ASC,  hierarchy_path, latest_date ASC; ",
             )
 
 
             achievements = cursor.fetchall()
             result = [
                 {
-                    'login': row[0],
-                    'id_achievement': row[1],
-                    'title': row[2],
-                    'date': row[3],
-                    'photoLink': row[4],
-                    'countComment': row[5],
-                    'countLike': row[6]
+                    'comment_id': row[0],
+                    'user_id': row[1],
+                    'login': row[2],
+                    'parent_login': row[3],
+                    'achievement_id': row[4],
+                    'text': row[5],
+                    'latest_day': row[6],
+                    'is_main': row[8],
+                    'countComment': row[9],
+                    'countLike': row[10]
+
                 }
                 for row in achievements
             ]
@@ -659,6 +671,7 @@ def returnComments(request):
 
     except Exception as e:
         return JsonResponse({'error': str(e)}, status=500)
+
 def newLike(request):
     try:
         data = json.loads(request.body)
@@ -673,7 +686,6 @@ def newLike(request):
                 [achievement_id, user_id]
             )
             return JsonResponse({'success': True})
-
 
     except json.JSONDecodeError:
         return JsonResponse({'error': 'Invalid JSON'}, status=400)

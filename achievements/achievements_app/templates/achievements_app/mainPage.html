@@ -62,7 +62,7 @@
                 }
             });
         });
-        function toggleComments(icon) {
+        async function toggleComments(icon) {
             const card = icon.closest('.achievement-item');
             const wasExpanded = card.classList.contains('comment-expanded');
             document.querySelectorAll('.achievement-item').forEach(item => {
@@ -78,11 +78,11 @@
                 });
             }
             });
-
             const achievementId = parseInt(card.dataset.achievementId);
+            const comments = await fetchComment(achievementId);
+            const commentsSection = renderCommentsSection(achievementId, comments);
             if(!wasExpanded) {
 
-                const commentsSection = renderCommentsSection(achievementId);
                 card.appendChild(commentsSection);
                 card.classList.add('comment-expanded');
                 requestAnimationFrame(() => {
@@ -92,7 +92,7 @@
             }
         }
 
-        function renderCommentsSection(achievementId) {
+        function renderCommentsSection(achievementId, comments) {
             const commentsSection = document.createElement('div');
             commentsSection.className = 'comments-section';
 
@@ -118,15 +118,15 @@
                     toggleEditMode(commentBlock);
                 }
             });
-            const hasReplies = filteredComments.some(comment => comment.replay);
+            const hasReplies = filteredComments.some(comment => comment.is_main);
 
             commentsList.className = `comments-list${hasReplies ? ' comments-listReplay' : ''}`;
             filteredComments.forEach(comment => {
-                const replyUserHTML = comment.replay && comment.replyToUser
-                    ? `<span class="reply-username">${comment.replyToUser}</span>`
+                const replyUserHTML = comment.is_main && comment.parent_login
+                    ? `<span class="reply-username">${comment.parent_login}</span>`
                     : '';
                 const commentHTML = `
-                    <div class="${comment.replay ? 'comment-reply' : 'comment'}">
+                    <div class="${comment.is_main ? 'comment-reply' : 'comment'}">
                         <div class="user-info">
                             <div class="avatar"></div>
                             <span class="username">${comment.user}</span>
@@ -292,14 +292,56 @@
 
             commentsSection.appendChild(inputContainer);
             commentsSection.appendChild(commentsList);
+
+            return commentsSection;
+        }
+        async function refreshComments() {
             const iconFilter = commentsSection.querySelector('.iconFilter');
+            const achievementId = parseInt(card.dataset.achievementId);
+            const comments = await fetchComment(achievementId);
             iconFilter.addEventListener('click', function() {
                 this.classList.toggle('rotated');
+                renderCommentsSection(achievementId, comments);
+
+
 
 
             });
-            return commentsSection;
         }
+        async function fetchComment(achievementId) {
+            try {
+                const response = await fetch('{% url "returnComments" %}', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRFToken': '{{ csrf_token }}'
+                    },
+                    body: JSON.stringify({
+                        achievement_id: achievementId  // Убираем isFiltered из этого запроса
+                    })
+                });
+
+                if (!response.ok) throw new Error('Network error');
+
+                const data = await response.json();
+                return data.comments.map(comment => ({
+                    comment_id: comment.comment_id,
+                    user_id: comment.user_id,
+                    login: comment.login,
+                    parent_login: comment.parent_login,
+                    id_achievement: comment.achievement_id,
+                    text: comment.text,
+                    date: comment.latest_day,
+                    is_main: comment.is_main,
+                    countComment: comment.count_comments,  // Исправляем название поля
+                    countLike: comment.count_like        // Исправляем название поля
+                }));
+            } catch (error) {
+                console.error('Fetch error:', error);
+                return [];
+            }
+        }
+
         function toggleEditMode(commentBlock) {
             const textElement = commentBlock.querySelector('.comment-text');
             const editIcon = commentBlock.querySelector('.iconEditComment');
@@ -326,41 +368,7 @@
                 </svg>`;
             }
         }
-        const comments = [
-            {
-                id_user: 1,
-                id_achievement: 11,
-                user: "qwe",
-                text: "Это пример комментарияаорпппппsdfgfdsgsfdgffffffffffffffffffff" +
-                "пппппппппппппппппппппппппdfgdgdfs" +
-                "gdgddafgggggggggggggggggggggggggggggggggggggggg" +
-                "gggggggggggggggggggggggggппппппппппппппппппппппппппппппппппппппппппппппппппппппппппппппппппппппо" +
-                "пппппппппппппппппппппппппdfgdgdfs" +
-                "gdgddafgggggggggggggggggggggggggggggggggggggggg" +
-                "gggggggggggggggggggggggggппппппппппппппппппппппппппппппппппппппппппппппппппппппппппппппппппппппо",
-                date: "2023-08-15",
-                countLike: 12,
-                countComment: 12,
-                replay: false,
 
-            },
-        {
-                id_user: 1,
-                id_achievement: 11,
-                user: "qwe",
-                text: "Это пример комментарияаорпппппsdfgfdsgsfdgffffffffffffffffffff" +
-                "пппппппппппппппппппппппппdfgdgdfs" +
-                "gdgddafgggggggggggggggggggggggggggggggggggggggg" +
-                "gggggggggggggggggggggggggппппппппппппппппппппппппппппппппппппппппппппппппппппппппппппппппппппппо" +
-                "пппппппппппппппппппппппппdfgdgdfs" +
-                "gdgddafgggggggggggggggggggggggggggggggggggggggg" +
-                "gggggggggggggggggggggggggппппппппппппппппппппппппппппппппппппппппппппппппппппппппппппппппппппппо",
-                date: "2023-08-15",
-                countLike: 12,
-                countComment: 12,
-                replay: true,
-            replyToUser: "Владелец"
-            }];
         document.addEventListener('DOMContentLoaded', function() {
         const filterText = document.querySelector('.filterAchievement');
         let isAscending = false;
@@ -410,6 +418,7 @@
                 return [];
             }
         }
+
         async function newLike(achievement_id) {
             try {
                 const response = await fetch('{% url "newLike" %}', {
