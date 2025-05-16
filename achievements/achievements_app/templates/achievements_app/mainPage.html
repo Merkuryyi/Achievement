@@ -70,7 +70,10 @@
             });
         });
         async function toggleComments(icon) {
-            const card = icon.closest('.achievement-item');
+           const card = icon.closest('.achievement-item');
+            if (!card) return; // Защита от ошибок
+
+            // Остальная логика функции остается без изменений
             const wasExpanded = card.classList.contains('comment-expanded');
             document.querySelectorAll('.achievement-item').forEach(item => {
             item.classList.remove('comment-expanded');
@@ -101,16 +104,12 @@
 
 
             iconFilter.addEventListener('click', function() {
-                this.classList.toggle('rotated');
-                renderCommentsSection(achievementId, comments);
-                if (isFileterdComments)
-                {
-                    isFileterdComments = false;
-                }
-                else
-                {
-                    isFileterdComments = true;
-                }
+                iconFilter.addEventListener('click', async function() {
+                    this.classList.toggle('rotated');
+                    isFilteredComments = !isFilteredComments; // Упрощенная логика переключения
+                    const updatedComments = await fetchComment(achievementId);
+                    commentsSection.replaceWith(renderCommentsSection(achievementId, updatedComments));
+                });
 
 
 
@@ -132,8 +131,6 @@
                         </svg>
                     </iconFilter>
                 </div>
-
-
             `;
             const filteredComments = comments.filter(comment => comment.id_achievement === achievementId);
             const commentsList = document.createElement('div');
@@ -304,8 +301,9 @@
                                 </svg>
                             </iconTrash>` : ''}
                 `;
-                commentsList.innerHTML += commentHTML;
+                commentsList.insertAdjacentHTML('beforeend', commentHTML);
             });
+
             commentsList.querySelectorAll('.answerComment-label').forEach(label => {
     label.addEventListener('click', function() {
         const parentLogin = this.dataset.parentLogin;
@@ -374,14 +372,11 @@
                 });
             });
 
-            commentsSection.appendChild(inputContainer);
-            commentsSection.appendChild(commentsList);
-
                     commentsSection.appendChild(inputContainer);
                     commentsSection.appendChild(commentsList);
 
                     return commentsSection;
-                }
+        }
 
 
         async function fetchComment(achievementId) {
@@ -452,6 +447,12 @@
         const filterText = document.querySelector('.filterAchievement');
         let isAscending = false;
         const iconFilter = document.querySelector('.iconAchievement');
+        document.getElementById('achievementsContainer').addEventListener('click', (e) => {
+        const iconComment = e.target.closest('.iconComment');
+        if (iconComment) {
+            toggleComments(iconComment);
+        }
+    });
         loadAndRenderAchievements();
         iconFilter.addEventListener('click', function() {
             this.classList.toggle('rotated');
@@ -566,6 +567,7 @@
         }
         function createAchievementCard(data) {
             const item = document.createElement('div');
+
             item.className = 'achievement-item';
             item.dataset.achievementId = data.id_achievement;
             item.className = 'achievement-item';
@@ -590,7 +592,7 @@
                         <div class="countLike">${data.countLike}</div>
                     </div>
                     <div class="comment-group">
-                        <iconComment class="iconComment" onclick="toggleComments(this)">
+                        <iconComment class="iconComment">
                                 <svg width="23" height="23" viewBox="0 0 23 23" fill="none" xmlns="http://www.w3.org/2000/svg">
                                     <g clip-path="url(#clip0_666_1413)">
                                     <path d="M10.2678 11.5C10.2678 11.8268 10.3976 12.1402 10.6286 12.3713C10.8597 12.6023
@@ -639,6 +641,7 @@
                 </div>
             `;
             return item;
+
         }
         async function renderAchievements(achievements) {
             const container = document.getElementById('achievementsContainer');
