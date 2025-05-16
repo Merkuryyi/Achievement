@@ -186,7 +186,7 @@ body {
     padding: 20px;
     display: none;
 
-    max-height: 529px;
+    max-height: 534px;
     overflow-y: auto;
     box-sizing: border-box;
     overflow-x: hidden;
@@ -277,6 +277,15 @@ body {
     background: #878CCD;
     margin-right: 20px;
     flex-shrink: 0;
+}
+.circle{
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: #878CCD;
+    margin-right: 20px;
+    flex-shrink: 0;
+    transform: translate(0%, 200%);
 }
 
 .username {
@@ -544,7 +553,7 @@ body {
 .iconAchievement.rotated {
     transform: translateY(-4px) rotate(180deg);
 }
-/* Добавьте в конец вашего CSS */
+
 .expand-replies-button {
     margin: 20px 0;
     text-align: center;
@@ -569,5 +578,5 @@ body {
 }
 
 .replies-container.visible {
-    max-height: 1000px; /* Достаточно большое значение для анимации */
+    max-height: 1000px;
 }

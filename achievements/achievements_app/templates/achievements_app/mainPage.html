@@ -37,6 +37,8 @@
             button.disabled = true;
         }
         let isFileterdComments = false;
+
+
         function addCommentToDOM(comment) {
             const commentsList = document.querySelector('.comments-list');
 
@@ -91,7 +93,7 @@
                 });
             }
             const iconFilter = commentsSection.querySelector('.iconFilter');
-           
+
 
             iconFilter.addEventListener('click', function() {
                 this.classList.toggle('rotated');
@@ -137,12 +139,16 @@
                     toggleEditMode(commentBlock);
                 }
             });
+
             const hasReplies = filteredComments.some(comment => comment.is_main);
 
             commentsList.className = `comments-list${hasReplies ? ' comments-listReplay' : ''}`;
             filteredComments.forEach(comment => {
-                const replyUserHTML = comment.is_main && comment.parent_login
-                    ? `<span class="reply-username">${comment.parent_login}</span>`
+                const replyUserHTML = !comment.is_main && comment.parent_login
+                    ? `<div class="reply-user-container">
+                          <div class="circle"></div>
+                          <span class="reply-username">${comment.parent_login}</span>
+                       </div>`
                     : '';
                 const commentHTML = `
                                 <div class="${comment.is_main ? 'comment' : 'comment-reply'}">
