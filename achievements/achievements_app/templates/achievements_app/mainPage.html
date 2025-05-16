@@ -36,7 +36,7 @@
             field.innerText = '';
             button.disabled = true;
         }
-
+        let isFileterdComments = false;
         function addCommentToDOM(comment) {
             const commentsList = document.querySelector('.comments-list');
 
@@ -90,6 +90,25 @@
                     card.style.marginBottom = `${commentsHeight}px`;
                 });
             }
+            const iconFilter = commentsSection.querySelector('.iconFilter');
+           
+
+            iconFilter.addEventListener('click', function() {
+                this.classList.toggle('rotated');
+                renderCommentsSection(achievementId, comments);
+                if (isFileterdComments)
+                {
+                    isFileterdComments = false;
+                }
+                else
+                {
+                    isFileterdComments = true;
+                }
+
+
+
+
+            });
         }
 
         function renderCommentsSection(achievementId, comments) {
@@ -126,10 +145,15 @@
                     ? `<span class="reply-username">${comment.parent_login}</span>`
                     : '';
                 const commentHTML = `
-                    <div class="${comment.is_main ? 'comment-reply' : 'comment'}">
-                        <div class="user-info">
-                            <div class="avatar"></div>
-                            <span class="username">${comment.user}</span>
+                                <div class="${comment.is_main ? 'comment' : 'comment-reply'}">
+                                    <div class="user-info">
+                                    <div class="avatar">
+                                        <img src=${comment.photo_comment}"
+                                         alt="Коммен"
+                                         class="avatar">
+                                    </div>
+
+                            <span class="username">${comment.login}</span>
                             ${replyUserHTML}
                             <div class="comment-meta">
                                 <span class="edit-label">изм.</span>
@@ -160,7 +184,7 @@
                                      6.30353 20.0671 9.06853C20.0671 14.528 11.0013 20.7173 11.0013 20.7173Z" fill="#9483B5"/>
                                 </svg>
                             </iconLike>
-                            <div class="countLikeComment">${comment.countLike}</div>
+                            <div class="countLikeComment">${comment.count_like}</div>
                             <div class="comment-group">
                             <iconComment class="iconCommentAnswer" >
                                 <svg width="23" height="23" viewBox="0 0 23 23" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -206,7 +230,7 @@
                                     </defs>
                                 </svg>
                             </iconComment>
-                        <div class="countCommentAnswer">${comment.countComment}</div>
+                        <div class="countCommentAnswer">${comment.count_comments}</div>
                         </div>
                     </div>
                     <div class="answerComment-label">ответить</div>
@@ -295,19 +319,7 @@
 
             return commentsSection;
         }
-        async function refreshComments() {
-            const iconFilter = commentsSection.querySelector('.iconFilter');
-            const achievementId = parseInt(card.dataset.achievementId);
-            const comments = await fetchComment(achievementId);
-            iconFilter.addEventListener('click', function() {
-                this.classList.toggle('rotated');
-                renderCommentsSection(achievementId, comments);
 
-
-
-
-            });
-        }
         async function fetchComment(achievementId) {
             try {
                 const response = await fetch('{% url "returnComments" %}', {
@@ -317,7 +329,8 @@
                         'X-CSRFToken': '{{ csrf_token }}'
                     },
                     body: JSON.stringify({
-                        achievement_id: achievementId  // Убираем isFiltered из этого запроса
+                        achievement_id: achievementId,
+                        isFiltered: isFileterdComments ? 'true' : 'false'
                     })
                 });
 
@@ -328,13 +341,14 @@
                     comment_id: comment.comment_id,
                     user_id: comment.user_id,
                     login: comment.login,
+                    photo_comment: comment.photo_comment,
                     parent_login: comment.parent_login,
                     id_achievement: comment.achievement_id,
                     text: comment.text,
                     date: comment.latest_day,
                     is_main: comment.is_main,
-                    countComment: comment.count_comments,  // Исправляем название поля
-                    countLike: comment.count_like        // Исправляем название поля
+                    count_comments: comment.count_comments,
+                    count_like: comment.count_like
                 }));
             } catch (error) {
                 console.error('Fetch error:', error);

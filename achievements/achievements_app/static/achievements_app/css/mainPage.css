@@ -544,3 +544,30 @@ body {
 .iconAchievement.rotated {
     transform: translateY(-4px) rotate(180deg);
 }
+/* Добавьте в конец вашего CSS */
+.expand-replies-button {
+    margin: 20px 0;
+    text-align: center;
+    color: #878CCD;
+    cursor: pointer;
+    font-size: 20px;
+    padding: 10px;
+    background: #ECF2F8;
+    border-radius: 5px;
+    transition: background 0.3s ease;
+}
+
+.expand-replies-button:hover {
+    background: #D2BAFF;
+}
+
+.replies-container {
+    margin-left: 45px;
+    overflow: hidden;
+    transition: max-height 0.3s ease;
+    max-height: 0;
+}
+
+.replies-container.visible {
+    max-height: 1000px; /* Достаточно большое значение для анимации */
+}
