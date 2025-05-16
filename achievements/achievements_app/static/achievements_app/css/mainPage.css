@@ -580,3 +580,34 @@ body {
 .replies-container.visible {
     max-height: 1000px;
 }
+.reply-to {
+    display: none;
+    padding: 5px 10px;
+    background: #ECF2F8;
+    border-radius: 5px;
+    margin-bottom: 8px;
+    align-items: center;
+    font-size: 14px;
+    WIDTH: 725px;
+    color: #878CCD;
+}
+
+.reply-usernames {
+    color: #878CCD;
+    font-weight: 600;
+    margin: 0 5px;
+}
+
+.cancel-reply {
+    background: none;
+    border: none;
+    color: #878CCD;
+    cursor: pointer;
+    padding: 2px 5px;
+    border-radius: 50%;
+
+}
+
+.cancel-reply:hover {
+    background: #e0e0e0;
+}

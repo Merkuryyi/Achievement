@@ -44,6 +44,11 @@
 
             const commentHTML = `
                 <div class="comment">
+                <div class="answerComment-label"
+                     data-parent-login="${comment.login}"
+                     data-parent-id="${comment.comment_id}">
+                    ответить
+                </div>
                     <div class="user-info">
                             <div class="avatar"></div>
                             <span class="username">${comment.user}</span>
@@ -152,6 +157,7 @@
                     : '';
                 const commentHTML = `
                                 <div class="${comment.is_main ? 'comment' : 'comment-reply'}">
+
                                     <div class="user-info">
                                     <div class="avatar">
                                         <img src=${comment.photo_comment}"
@@ -239,7 +245,11 @@
                         <div class="countCommentAnswer">${comment.count_comments}</div>
                         </div>
                     </div>
-                    <div class="answerComment-label">ответить</div>
+                     <div class="answerComment-label"
+                         data-parent-login="${comment.login}"
+                         data-parent-id="${comment.comment_id}">
+                        ответить
+                    </div>
                     ${comment.user === localStorage.getItem('login') ?`
                             <iconEdit class="iconEditComment">
                                 <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -296,10 +306,31 @@
                 `;
                 commentsList.innerHTML += commentHTML;
             });
+            commentsList.querySelectorAll('.answerComment-label').forEach(label => {
+    label.addEventListener('click', function() {
+        const parentLogin = this.dataset.parentLogin;
+        const parentId = this.dataset.parentId;
+
+        // Проверка данных перед использованием
+        if (parentLogin && parentId) {
+            replyUsername.textContent = `@${parentLogin}`;
+            replyTo.style.display = 'flex';
+            inputContainer.dataset.parentId = parentId;
+            inputContainer.dataset.parentLogin = parentLogin;
+        } else {
+            console.error('Данные пользователя отсутствуют');
+        }
+    });
+});
             const inputContainer = document.createElement('div');
             inputContainer.className = 'comment-input-container';
+
             inputContainer.innerHTML = `
                <div class="comment-input-container">
+                   <div class="reply-to">
+                        Ответ <span class="reply-username"></span>
+                        <button class="cancel-reply">×</button>
+                    </div>
                     <div class="comment-input" maxlength="150">
                         <div class="input-wrapper">
                             <textarea class="input-fieldComment" maxlength="150"
@@ -319,14 +350,42 @@
                     </div>
                 </div>
             `;
+            const replyTo = inputContainer.querySelector('.reply-to');
+            const cancelBtn = inputContainer.querySelector('.cancel-reply');
+            const replyUsername = inputContainer.querySelector('.reply-username');
+
+            // Назначаем обработчики после добавления в DOM
+            cancelBtn.addEventListener('click', () => {
+                replyTo.style.display = 'none';
+                inputContainer.dataset.parentId = '';
+                inputContainer.dataset.parentLogin = '';
+            });
+
+            // Обработчик для кнопок "ответить"
+            commentsList.querySelectorAll('.answerComment-label').forEach(label => {
+                label.addEventListener('click', function() {
+                    const parentLogin = this.dataset.parentLogin;
+                    const parentId = this.dataset.parentId;
+
+                    replyTo.style.display = 'flex';
+                    replyUsername.textContent = `@${parentLogin}`;
+                    inputContainer.dataset.parentId = parentId;
+                    inputContainer.dataset.parentLogin = parentLogin;
+                });
+            });
 
             commentsSection.appendChild(inputContainer);
             commentsSection.appendChild(commentsList);
 
-            return commentsSection;
-        }
+                    commentsSection.appendChild(inputContainer);
+                    commentsSection.appendChild(commentsList);
+
+                    return commentsSection;
+                }
+
 
         async function fetchComment(achievementId) {
+
             try {
                 const response = await fetch('{% url "returnComments" %}', {
                     method: 'POST',
