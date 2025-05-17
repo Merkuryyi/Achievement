@@ -42,7 +42,10 @@ urlpatterns = [
     path('returnAchievement/', views.returnAchievement, name = 'returnAchievement'),
     path('newLike/', views.newLike, name = 'newLike'),
     path('deleteLike/', views.deleteLike, name = 'deleteLike'),
-path('check_Like/', views.check_Like, name = 'check_Like'),
-path('photoUser/', views.photoUser, name = 'photoUser'),
-path('returnComments/', views.returnComments, name = 'returnComments'),
+    path('check_Like/', views.check_Like, name = 'check_Like'),
+    path('photoUser/', views.photoUser, name = 'photoUser'),
+    path('returnComments/', views.returnComments, name = 'returnComments'),
+    path('newLikeComment/', views.newLikeComment, name = 'newLikeComment'),
+    path('deleteLikeComment/', views.deleteLike, name = 'deleteLikeComment'),
+    path('check_Like/', views.check_LikeComment, name = 'check_LikeComment'),
 ]

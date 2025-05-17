@@ -5,6 +5,7 @@
     {% load static %}
     <link rel="stylesheet" href="{% static 'achievements_app/css/mainPage.css' %}">
     <link href="https://fonts.googleapis.com/css2?family=Inter&display=swap" rel="stylesheet">
+
 </head>
 <body>
     {% include 'achievements_app/panel.html' %}
@@ -21,22 +22,23 @@
             </svg>
         </iconFilterAchievement>
     </div>
+
+
     <script>
         async function sendComment(button) {
-        const wrapper = button.closest('.input-wrapper');
-        const field = wrapper.querySelector('.input-fieldComment');
-        const text = field.innerText.trim();
+            const wrapper = button.closest('.input-wrapper');
+            const field = wrapper.querySelector('.input-fieldComment');
+            const text = field.innerText.trim();
+            if (!text)
+            {
+                return;
+            }
+                const newComment = await response.json();
+                addCommentToDOM(newComment);
+                field.innerText = '';
+                button.disabled = true;
+        }
 
-        if (!text)
-        {
-            return;
-        }
-            const newComment = await response.json();
-            addCommentToDOM(newComment);
-            field.innerText = '';
-            button.disabled = true;
-        }
-        let isFileterdComments = false;
 
 
         function addCommentToDOM(comment) {
@@ -69,6 +71,7 @@
                 }
             });
         });
+
         async function toggleComments(icon) {
            const card = icon.closest('.achievement-item');
             if (!card) return;
@@ -98,19 +101,9 @@
                     card.style.marginBottom = `${commentsHeight}px`;
                 });
             }
-            const iconFilter = commentsSection.querySelector('.iconFilter');
 
-
-            iconFilter.addEventListener('click', function() {
-                iconFilter.addEventListener('click', async function() {
-                    this.classList.toggle('rotated');
-                    isFilteredComments = !isFilteredComments;
-                    const updatedComments = await fetchComment(achievementId);
-                    commentsSection.replaceWith(renderCommentsSection(achievementId, updatedComments));
-                });
-
-            });
         }
+         let isFilteredComments = false;
 
         function renderCommentsSection(achievementId, comments) {
             const commentsSection = document.createElement('div');
@@ -293,16 +286,12 @@
                             </svg>
                         </iconTrash>` : ''}
                 `;
-                commentsList.insertAdjacentHTML('beforeend', commentHTML);
+                 commentsList.insertAdjacentHTML('beforeend', commentHTML);
                  const commentElement = commentsList.lastElementChild;
-
-
-                const iconLike = commentElement.querySelector('.iconLikeComment');
-                const countLike = commentElement.querySelector('.countLikeComment');
+                 const iconLike = commentElement.querySelector('.iconLikeComment');
+                 const countLike = commentElement.querySelector('.countLikeComment');
                  let isLiked = false;
-
-                countLike.textContent = comment.count_like;
-
+                 countLike.textContent = comment.count_like;
                  iconLike.addEventListener('click', async () => {
 
                      isLiked = !isLiked;
@@ -379,6 +368,24 @@
                     });
                 });
 
+
+                const iconFilter = commentsSection.querySelector('.iconFilter');
+                iconFilter.addEventListener('click', async function() {
+                    isFilteredComments = !isFilteredComments;
+                    this.classList.toggle('rotated');
+
+                    await new Promise(resolve => {
+                        this.addEventListener('transitionend', resolve, { once: true });
+                        setTimeout(resolve, 350);
+                    });
+                    const updatedComments = await fetchComment(achievementId, isFilteredComments);
+                    const newSection = renderCommentsSection(achievementId, updatedComments);
+                    commentsSection.replaceWith(newSection);
+                    const newIconFilter = newSection.querySelector('.iconFilter');
+                    if (isFilteredComments) {
+                        newIconFilter.classList.add('rotated');
+                    }
+                });
                 commentsSection.appendChild(inputContainer);
                 commentsSection.appendChild(commentsList);
 
@@ -430,7 +437,7 @@
                     },
                     body: JSON.stringify({
                         achievement_id: achievementId,
-                        isFiltered: isFileterdComments ? 'true' : 'false'
+                        isFiltered: isFilteredComments ? 'true' : 'false'
                     })
                 });
 
@@ -454,6 +461,59 @@
                 console.error('Fetch error:', error);
                 return [];
             }
+        }
+        async function newLikeComment(comment_id) {
+            try {
+                const response = await fetch('{% url "newLikeComment" %}', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRFToken': '{{ csrf_token }}'
+                    },
+                    body: JSON.stringify({
+                        phone: localStorage.getItem('numberPhone'),
+                        comment_id: comment_id
+                    })
+                });
+            }
+            catch (error) {
+                console.error('Error', error)
+            }
+        }
+        async function deleteLikeComment(comment_id) {
+            try {
+                const response = await fetch('{% url "deleteLikeComment" %}', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRFToken': '{{ csrf_token }}'
+                    },
+                    body: JSON.stringify({
+                        phone: localStorage.getItem('numberPhone'),
+                        comment_id: comment_id
+                    })
+                });
+
+
+            }
+            catch (error) {
+                console.error('Error', error)
+            }
+        }
+        async function checkLikeComment(comment_id) {
+            const response = await fetch('{% url "check_LikeComment" %}',{
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': '{{ csrf_token }}'
+                },
+                body: JSON.stringify({
+                    phone: localStorage.getItem('numberPhone'),
+                    comment_id: comment_id
+                })
+            })
+            const data = await response.json();
+            return data.exists;
         }
 
         function toggleEditMode(commentBlock) {
@@ -551,10 +611,7 @@
                         achievement_id: achievement_id
                     })
                 });
-                if (response.success) {
-                    const countElement = document.querySelector(`[data-id-achievement="${achievement_id}"] .countLike`);
-                    countElement.textContent = parseInt(countElement.textContent) + 1;
-                }
+
             }
             catch (error) {
                 console.error('Error', error)
@@ -573,11 +630,7 @@
                         achievement_id: achievement_id
                     })
                 });
-                if (response.success) {
-                    const countElement =
-                        document.querySelector(`[data-id-achievement="${achievement_id}"] .countLike`);
-                    countElement.textContent = parseInt(countElement.textContent) - 1;
-                }
+
 
             }
             catch (error) {

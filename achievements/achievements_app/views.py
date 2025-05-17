@@ -660,7 +660,6 @@ def returnComments(request):
                     "SELECT comment_id, user_id, login, photo, parent_login, achievement_id, text, "
                            "latest_date, is_main, count_like, count_comments "
                     "FROM comment_tree "
-                    
                     "ORDER BY root_date ASC, hierarchy_path, latest_date ASC;"
                 )
 
@@ -779,3 +778,69 @@ def photoUser(request):
     except Exception as e:
         return JsonResponse({'error': str(e)}, status=500)
 
+
+def newLikeComment(request):
+    try:
+        data = json.loads(request.body)
+        phone = data.get('phone')
+        user_id = get_user_id_by_phone(phone)
+        comment_id = data.get('comment_id')
+
+
+        with connection.cursor() as cursor:
+            cursor.execute(
+                "insert into comment_like (comment_id, user_id) values (%s, %s)",
+                [comment_id, user_id]
+            )
+            return JsonResponse({'success': True})
+
+    except json.JSONDecodeError:
+        return JsonResponse({'error': 'Invalid JSON'}, status=400)
+
+
+    except Exception as e:
+        return JsonResponse({'error': str(e)}, status=500)
+
+
+def deleteLikeComment(request):
+    try:
+        data = json.loads(request.body)
+        phone = data.get('phone')
+        user_id = get_user_id_by_phone(phone)
+        comment_id = data.get('comment_id')
+
+        with connection.cursor() as cursor:
+            cursor.execute(
+                "delete from comment_like where comment_id = %s and user_id = %s",
+                [comment_id, user_id]
+            )
+            return JsonResponse({'success': True})
+
+    except json.JSONDecodeError:
+        return JsonResponse({'error': 'Invalid JSON'}, status=400)
+
+    except Exception as e:
+        return JsonResponse({'error': str(e)}, status=500)
+
+
+
+def check_LikeComment(request):
+    if request.method == 'POST':
+        data = json.loads(request.body)
+        phone = data.get('phone')
+        user_id = get_user_id_by_phone(phone)
+        comment_id = data.get('comment_id')
+
+        with connection.cursor() as cursor:
+            cursor.execute(
+                "select * from comment_like WHERE user_id = %s AND comment_id = %s",
+                [user_id, comment_id]
+            )
+            row = cursor.fetchone()
+
+        if row:
+            return JsonResponse({'exists': True})
+        else:
+            return JsonResponse({'exists': False})
+
+    return JsonResponse({'exists': False})
