@@ -29,41 +29,18 @@
             const wrapper = button.closest('.input-wrapper');
             const field = wrapper.querySelector('.input-fieldComment');
             const text = field.innerText.trim();
+            const inputContainer = button.closest('.comment-input-container');
+            const parentId = inputContainer.dataset.parentId;
+            const parentLogin = inputContainer.dataset.parentLogin
             if (!text)
             {
                 return;
             }
-                const newComment = await response.json();
-                addCommentToDOM(newComment);
-                field.innerText = '';
-                button.disabled = true;
+
         }
 
 
 
-        function addCommentToDOM(comment) {
-            const commentsList = document.querySelector('.comments-list');
-
-            const commentHTML = `
-                <div class="comment">
-                <div class="answerComment-label"
-                     data-parent-login="${comment.login}"
-                     data-parent-id="${comment.comment_id}">
-                    ответить
-                </div>
-                    <div class="user-info">
-                            <div class="avatar"></div>
-                            <span class="username">${comment.user}</span>
-                            <div class="comment-meta">
-                                <span class="comment-date">${new Date(comment.date).toLocaleDateString()}</span>
-                            </div>
-                    </div>
-                    <div class="comment-text">${comment.text}</div>
-                    <div class="interaction-containerComment"></div>
-                </div>
-            `;
-            commentsList.insertAdjacentHTML('beforeend', commentHTML);
-        }
         document.addEventListener('DOMContentLoaded', () => {
         document.body.addEventListener('click', function(e) {
                 if (e.target.closest('.send-button')) {

@@ -844,3 +844,32 @@ def check_LikeComment(request):
             return JsonResponse({'exists': False})
 
     return JsonResponse({'exists': False})
+
+
+def addComment(request):
+    if request.method == 'POST':
+        data = json.loads(request.body)
+        achievement_id = data.get('achievement_id')
+        text = data.get('text')
+        phone = data.get('phone')
+        user_id = get_user_id_by_phone(phone)
+        answers_id = data.get('answers_id')
+
+        parent_id = data.get('parent_id')
+        comment_id
+        if (answers_id != none):
+            is_main = true
+        else:
+            is_main = false
+        with connection.cursor() as cursor:
+
+            cursor.execute("insert into comment "
+                           "(user_id, achievement_id, text, created_at, updated_at) "
+                           "values (%s, %s, %s, now(), now()) RETURNING comment_id",
+                           [user_id, achievement_id, text])
+            comment_id = cursor.fetchone()[0]
+            if is_main == false:
+                cursor.execute("insert into answers (comment_id, answers_id, is_main) (%s, %s, %s)",
+                           [parent_id, comment_id, is_main])
+
+    return JsonResponse({'success': True})
