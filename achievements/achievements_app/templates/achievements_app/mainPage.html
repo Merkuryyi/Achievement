@@ -417,8 +417,6 @@
                 const comment_id = iconLike.dataset.commentId;
                 const countLike = iconLike.parentElement.querySelector('.countLikeComment');
                 let isLiked = await checkLikeComment(comment_id);
-                console.log(isLiked)
-
                 iconLike.isLiked = isLiked;
 
                 iconLike.addEventListener('click', async () => {
@@ -442,13 +440,7 @@
                 iconLike.innerHTML = isLiked ? liked : unliked;
             }
         }
-
-
-
-
-
         async function fetchComment(achievementId) {
-
             try {
                 const response = await fetch('{% url "returnComments" %}', {
                     method: 'POST',
@@ -522,7 +514,7 @@
             }
         }
         async function checkLikeComment(comment_id) {
-             console.log(comment_id)
+
             const response = await fetch('{% url "check_LikeComment" %}',{
                 method: 'POST',
                 headers: {

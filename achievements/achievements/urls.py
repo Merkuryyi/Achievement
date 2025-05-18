@@ -46,6 +46,6 @@ urlpatterns = [
     path('photoUser/', views.photoUser, name = 'photoUser'),
     path('returnComments/', views.returnComments, name = 'returnComments'),
     path('newLikeComment/', views.newLikeComment, name = 'newLikeComment'),
-    path('deleteLikeComment/', views.deleteLike, name = 'deleteLikeComment'),
-    path('check_Like/', views.check_LikeComment, name = 'check_LikeComment'),
+    path('deleteLikeComment/', views.deleteLikeComment, name = 'deleteLikeComment'),
+    path('check_LikeComment/', views.check_LikeComment, name = 'check_LikeComment'),
 ]
