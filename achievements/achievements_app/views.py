@@ -854,18 +854,18 @@ def addComment(request):
         phone = data.get('phone')
         user_id = get_user_id_by_phone(phone)
 
-        parent_id = data.get('parent_id')
+        parent_id = int(data.get('parent_id'))
 
         is_main = parent_id is None
         with connection.cursor() as cursor:
 
             cursor.execute("insert into comment "
                            "(user_id, achievement_id, text, created_at, updated_at) "
-                           "values (%s, %s, %s, now(), now()) RETURNING comment_id",
+                           "values (%s, %s, %s, now(), now()) RETURNING comment_id;",
                            [user_id, achievement_id, text])
             comment_id = cursor.fetchone()[0]
             if not is_main:
-                cursor.execute("insert into answers (comment_id, answers_id, is_main) (%s, %s, %s)",
+                cursor.execute("insert into answers (comment_id, answers_comment_id, is_main) values (%s, %s, %s);",
                            [parent_id, comment_id, is_main])
 
     return JsonResponse({'success': True})
