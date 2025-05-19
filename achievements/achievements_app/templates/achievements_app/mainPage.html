@@ -25,21 +25,54 @@
 
 
     <script>
+
+        async function addComment(achievementId, text, parent_id) {
+            try {
+                const response = await fetch('{% url "addComment" %}', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRFToken': '{{ csrf_token }}'
+                    },
+                    body: JSON.stringify({
+                        achievement_id: achievementId,
+                        text: text,
+                        phone: localStorage.getItem('numberPhone'),
+                        parent_id: parent_id || null
+
+                    })
+                });
+
+            } catch (error) {
+                console.error('Fetch error:', error);
+                return [];
+            }
+        }
+
+
+
+
         async function sendComment(button) {
             const wrapper = button.closest('.input-wrapper');
             const field = wrapper.querySelector('.input-fieldComment');
             const text = field.innerText.trim();
             const inputContainer = button.closest('.comment-input-container');
             const parentId = inputContainer.dataset.parentId;
-            const parentLogin = inputContainer.dataset.parentLogin
-            if (!text)
-            {
+            const parentLogin = inputContainer.dataset.parentLogin;
+
+            // Получаем achievement-item через ближайший родительский элемент
+            const card = inputContainer.closest('.achievement-item');
+            if (!card) {
+                console.error('Achievement item not found');
                 return;
             }
 
+            const achievementId = parseInt(card.dataset.achievementId);
+            if (!text) {
+                return;
+            }
+            await addComment(achievementId, text, parentId); // Исправлен порядок аргументов
         }
-
-
 
         document.addEventListener('DOMContentLoaded', () => {
         document.body.addEventListener('click', function(e) {
@@ -171,6 +204,7 @@
                             <iconLike class="iconLikeComment" data-comment-id="${comment.comment_id}">
                                 ${comment.is_liked ? liked : unliked}
                             </iconLike>
+
                             <div class="countLikeComment">${comment.count_like}</div>
                             <div class="comment-group">
                             <iconComment class="iconCommentAnswer" >
@@ -219,7 +253,8 @@
                             </iconComment>
                         <div class="countCommentAnswer">${comment.count_comments}</div>
                         </div>
-                    </div>
+                        </div>
+
                      <div class="answerComment-label"
                          data-parent-login="${comment.login}"
                          data-parent-id="${comment.comment_id}">
@@ -280,12 +315,7 @@
                         </iconTrash>` : ''}
                 `;
                     commentsList.insertAdjacentHTML('beforeend', commentHTML);
-                    const commentElement = commentsList.lastElementChild;
-                    const countLikeElement = commentElement.querySelector('.countLikeComment');
-                    const commentId = comment.comment_id;
 
-
-                    const iconLike = commentsList.lastElementChild.querySelector('.iconLikeComment');
 
 
 

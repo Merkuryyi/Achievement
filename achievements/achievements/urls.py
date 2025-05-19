@@ -48,4 +48,6 @@ urlpatterns = [
     path('newLikeComment/', views.newLikeComment, name = 'newLikeComment'),
     path('deleteLikeComment/', views.deleteLikeComment, name = 'deleteLikeComment'),
     path('check_LikeComment/', views.check_LikeComment, name = 'check_LikeComment'),
+path('addComment/', views.addComment, name = 'addComment'),
+path('updateComment/', views.updateComment, name = 'updateComment'),
 ]

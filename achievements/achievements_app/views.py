@@ -853,14 +853,10 @@ def addComment(request):
         text = data.get('text')
         phone = data.get('phone')
         user_id = get_user_id_by_phone(phone)
-        answers_id = data.get('answers_id')
 
         parent_id = data.get('parent_id')
-        comment_id
-        if (answers_id != none):
-            is_main = true
-        else:
-            is_main = false
+
+        is_main = parent_id is None
         with connection.cursor() as cursor:
 
             cursor.execute("insert into comment "
@@ -868,8 +864,34 @@ def addComment(request):
                            "values (%s, %s, %s, now(), now()) RETURNING comment_id",
                            [user_id, achievement_id, text])
             comment_id = cursor.fetchone()[0]
-            if is_main == false:
+            if not is_main:
                 cursor.execute("insert into answers (comment_id, answers_id, is_main) (%s, %s, %s)",
                            [parent_id, comment_id, is_main])
 
     return JsonResponse({'success': True})
+
+def updateComment(request):
+    if request.method == 'POST':
+        data = json.loads(request.body)
+        comment_id = data.get('comment_id')
+        text = data.get('text')
+        with connection.cursor() as cursor:
+
+            cursor.execute("update comment set text = %s and updated_at = now() where comment_id;",
+                           [text, comment_id])
+
+    return JsonResponse({'success': True})
+
+
+def deleteComment(request):
+    if request.method == 'POST':
+        data = json.loads(request.body)
+        comment_id = data.get('comment_id')
+        text = data.get('text')
+        with connection.cursor() as cursor:
+
+            cursor.execute("update comment set text = %s and updated_at = now() where comment_id;",
+                           [text, comment_id])
+
+    return JsonResponse({'success': True})
+
