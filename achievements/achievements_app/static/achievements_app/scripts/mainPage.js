@@ -1,28 +1,3 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Achievements</title>
-    {% load static %}
-    <link rel="stylesheet" href="{% static 'achievements_app/css/mainPage.css' %}">
-    <link href="https://fonts.googleapis.com/css2?family=Inter&display=swap" rel="stylesheet">
-</head>
-<body>
-    {% include 'achievements_app/panel.html' %}
-    <div class="background"></div>
-    <div class="titleAchievement">Все достижения</div>
-    <div class="achievements-container" id="achievementsContainer"></div>
-    <div class="comment-container" id="commentsContainer"></div>
-    <div class="filterForAchievements">
-        <div class="filterAchievement">по алфавиту от а до я</div>
-        <iconFilterAchievement class="iconAchievement">
-            <svg width="45" height="45" viewBox="0 0 45 45" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M31.8104 17.8447L22.5 27.1551L13.1897 17.8447" stroke="#878CCD" stroke-width="2"
-                stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"/>
-            </svg>
-        </iconFilterAchievement>
-    </div>
-    <div class="emptyMyAchievement" style="display: none;">Пусто</div>
-<script>
     async function addComment(achievementId, text, parent_id) {
         try {
             const response = await fetch('{% url "addComment" %}', {
@@ -43,8 +18,6 @@
             return [];
         }
     }
-
-
     async function sendComment(button) {
         const wrapper = button.closest('.input-wrapper');
         const field = wrapper.querySelector('.input-fieldComment');
@@ -56,6 +29,7 @@
             return;
         }
         const parentId = commentContainer.dataset.parentId;
+        const parentLogin = commentContainer.dataset.parentLogin;
 
         const card = commentContainer.closest('.achievement-item');
         if (!card) {
@@ -689,17 +663,6 @@
         }
         async function loadAndRenderAchievements() {
             const achievements = await fetchAchievement();
-            const emptyTitle = document.querySelector('.emptyMyAchievement');
-            if (achievements.length == 0)
-            {
-                emptyTitle.style.display = 'block';
-                emptyTitle.style.opacity = '1';
-            }
-            else
-            {
-                emptyTitle.style.display = 'none';
-                emptyTitle.style.opacity = '0';
-            }
             renderAchievements(achievements);
             return achievements
         }
@@ -822,6 +785,3 @@
             }
         }
     });
-</script>
-</body>
-</html>

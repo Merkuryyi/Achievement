@@ -7,24 +7,18 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter&display=swap" rel="stylesheet">
 </head>
 <body>
-
-<div class="backgroundProfileNotification" id="notificationContainer">
-
-  <div class="notifications-list" id="notificationsList">
-  </div>
-
-</div>
-<div class="backgroundTitleNotification"></div>
-<label class="toggle-container">
-  <input type="checkbox" class="toggle-input">
-  <div class="toggle-background"></div>
-  <div class="toggle-switch"></div>
-</label>
-
-<div class="titleNotification">Уведомления</div>
-<div class="noNotification" style="display: none;">Уведомлений нет</div>
+    <div class="backgroundProfileNotification" id="notificationContainer">
+    <div class="notifications-list" id="notificationsList"></div>
+    </div>
+    <div class="backgroundTitleNotification"></div>
+    <label class="toggle-container">
+        <input type="checkbox" class="toggle-input">
+        <div class="toggle-background"></div>
+        <div class="toggle-switch"></div>
+    </label>
+    <div class="titleNotification">Уведомления</div>
+    <div class="noNotification" style="display: none;">Уведомлений нет</div>
 <script>
-
     document.addEventListener('DOMContentLoaded', function() {
         async function updateNotificationStatus(notificationId) {
             try {
@@ -76,75 +70,56 @@
                 {
                     renderNotifications();
                 }
-
-
             }
             catch (error) {
                 console.error('Error', error)
             }
         }
+        renderNotifications();
+        function renderNotifications() {
+            const container = document.getElementById('notificationsList');
+            const notificationContainer = document.getElementById('notificationContainer');
+            container.innerHTML = '';
 
-
-    renderNotifications();
-    function renderNotifications() {
-        const container = document.getElementById('notificationsList');
-        const notificationContainer = document.getElementById('notificationContainer');
-        container.innerHTML = '';
-
-        notifications.forEach((notification, index) => {
-            if (index > 0 && notifications[index].date !== notifications[index - 1].date) {
-                container.appendChild(document.createElement('div')).className = 'notification-spacer';
-            }
-
-            const item = document.createElement('div');
-            item.className = 'notification-item';
-            item.innerHTML = `
-                <div class="notification-content">
-                    <div class="notification-text-container">
-                        <div class="notification-title">${notification.title}</div>
-                        <div class="notification-date">${notification.created_at}</div>
+            notifications.forEach((notification, index) => {
+                if (index > 0 && notifications[index].date !== notifications[index - 1].date) {
+                    container.appendChild(document.createElement('div')).className = 'notification-spacer';
+                }
+                const item = document.createElement('div');
+                item.className = 'notification-item';
+                item.innerHTML = `
+                    <div class="notification-content">
+                        <div class="notification-text-container">
+                            <div class="notification-title">${notification.title}</div>
+                            <div class="notification-date">${notification.created_at}</div>
+                        </div>
+                        <label class="custom-checkbox">
+                            <input type="checkbox" class="notification-checkbox" data-id="${notification.id}">
+                            <span class="checkmark"></span>
+                        </label>
                     </div>
-                    <label class="custom-checkbox">
-                        <input type="checkbox" class="notification-checkbox" data-id="${notification.id}">
-                        <span class="checkmark"></span>
-                    </label>
-                </div>
-            `;
+                `;
+                container.appendChild(item);
+            });
+            document.querySelectorAll('.notification-checkbox').forEach(checkbox => {
+                checkbox.addEventListener('change', function() {
+                    const notificationId = this.dataset.id;
+                    updateNotificationStatus(notificationId);
+                });
+            });
 
-            container.appendChild(item);
-        });
-        document.querySelectorAll('.notification-checkbox').forEach(checkbox => {
-        checkbox.addEventListener('change', function() {
-            const notificationId = this.dataset.id;
-            updateNotificationStatus(notificationId);
-        });
-    });
+            if (notifications.length > 0)
+            {
+                const itemHeight = 85;
+                const marginBetween = 37;
+                const baseHeight = 187;
+                const bottomPadding = 40;
 
-
-
-        if (notifications.length > 0) {
-            const itemHeight = 85;
-            const marginBetween = 37;
-            const baseHeight = 187;
-            const bottomPadding = 40;
-
-            const totalHeight = baseHeight +
-                (notifications.length * itemHeight) +
-                ((notifications.length - 1) * marginBetween) +
-                bottomPadding;
-
-            notificationContainer.style.height = `${totalHeight}px`;
+                const totalHeight = baseHeight + (notifications.length * itemHeight) +
+                    ((notifications.length - 1) * marginBetween) + bottomPadding;
+                notificationContainer.style.height = `${totalHeight}px`;
+            }
         }
-
-
-    }
-
-    function countDateGroups(notifications) {
-        return notifications.reduce((groups, notification, i) => {
-            if (i === 0 || notification.date !== notifications[i - 1].date) groups++;
-            return groups;
-        }, 0);
-    }
         let checkSwitch = false;
         const backgroundSwitch = document.querySelector('.toggle-background');
         const switchPart = document.querySelector('.toggle-switch');
@@ -182,9 +157,8 @@
                     updateSwitchUI(checkSwitch);
                 }
             }
-           else if (checkSwitch == false)
-           {
-
+            else if (checkSwitch == false)
+            {
                 try
                 {
                     const response = await fetch('{% url "editActiveNotification" %}', {
@@ -214,8 +188,7 @@
                     checkSwitch = false;
                     updateSwitchUI(checkSwitch);
                 }
-           }
-           console.log(checkSwitch);
+            }
         }
         backgroundSwitch.addEventListener('click', switching);
         switchPart.addEventListener('click', switching);
@@ -237,9 +210,7 @@
                 checkSwitch = true;
             }
             if (data.notification == false)
-            {
-                 checkSwitch = false;
-            }
+            { checkSwitch = false; }
         })
         .catch(error => {
             console.error('Error:', error);

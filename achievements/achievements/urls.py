@@ -16,6 +16,7 @@ urlpatterns = [
     path('check_email/', views.check_email, name = 'check_email'),
     path('editUserInformation/', views.editUserInformation, name = 'editUserInformation'),
     path('', views.mainPage, name = 'mainPage'),
+    path('myAchievement/', views.myAchievement, name = 'myAchievement'),
     path('userInformation/', views.userInformation, name = 'userInformation'),
     path('panel/', views.panel, name = 'panel'),
     path('editPassword/', views.editPassword, name = 'editPassword'),
@@ -50,4 +51,6 @@ urlpatterns = [
     path('check_LikeComment/', views.check_LikeComment, name = 'check_LikeComment'),
     path('addComment/', views.addComment, name = 'addComment'),
     path('updateComment/', views.updateComment, name = 'updateComment'),
+    path('deleteComment/', views.deleteComment, name = 'deleteComment'),
+    path('returnMyAchievement/', views.returnMyAchievement, name = 'returnMyAchievement'),
 ]

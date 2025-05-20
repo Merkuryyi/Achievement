@@ -3,6 +3,7 @@ from .models import Achievement
 from django.http import JsonResponse
 from django.db import connection
 import json
+
 def autorization(request):
     achievements = Achievement.objects.all()
     return render(request, 'achievements_app/autorization.html',
@@ -39,7 +40,6 @@ def mainPageProfile(request):
     achievements = Achievement.objects.all()
     return render(request, 'achievements_app/mainPageProfile.html',
                  {'achievements': achievements})
-
 def noProfile(request):
     achievements = Achievement.objects.all()
     return render(request, 'achievements_app/noProfile.html',
@@ -67,6 +67,10 @@ def confirmation(request):
 def notification(request):
     achievements = Achievement.objects.all()
     return render(request, 'achievements_app/notification.html',
+                 {'achievements': achievements})
+def myAchievement(request):
+    achievements = Achievement.objects.all()
+    return render(request, 'achievements_app/myAchievement.html',
                  {'achievements': achievements})
 def check_user(request):
     if request.method == 'POST':
@@ -757,7 +761,6 @@ def check_Like(request):
 
     return JsonResponse({'exists': False})
 
-
 def photoUser(request):
     try:
         data = json.loads(request.body)
@@ -786,7 +789,6 @@ def newLikeComment(request):
         user_id = get_user_id_by_phone(phone)
         comment_id = data.get('comment_id')
 
-
         with connection.cursor() as cursor:
             cursor.execute(
                 "insert into comment_like (comment_id, user_id) values (%s, %s)",
@@ -796,7 +798,6 @@ def newLikeComment(request):
 
     except json.JSONDecodeError:
         return JsonResponse({'error': 'Invalid JSON'}, status=400)
-
 
     except Exception as e:
         return JsonResponse({'error': str(e)}, status=500)
@@ -823,7 +824,6 @@ def deleteLikeComment(request):
         return JsonResponse({'error': str(e)}, status=500)
 
 
-
 def check_LikeComment(request):
     if request.method == 'POST':
         data = json.loads(request.body)
@@ -845,7 +845,6 @@ def check_LikeComment(request):
 
     return JsonResponse({'exists': False})
 
-
 def addComment(request):
     if request.method == 'POST':
         data = json.loads(request.body)
@@ -853,20 +852,18 @@ def addComment(request):
         text = data.get('text')
         phone = data.get('phone')
         user_id = get_user_id_by_phone(phone)
-
         parent_id = data.get('parent_id')
-
         is_main = parent_id is None
         with connection.cursor() as cursor:
 
             cursor.execute("insert into comment "
-                           "(user_id, achievement_id, text, created_at, updated_at) "
-                           "values (%s, %s, %s, now(), now()) RETURNING comment_id;",
-                           [user_id, achievement_id, text])
+            "(user_id, achievement_id, text, created_at, updated_at) "
+            "values (%s, %s, %s, now(), now()) RETURNING comment_id;",
+            [user_id, achievement_id, text])
             comment_id = cursor.fetchone()[0]
             if not is_main:
                 cursor.execute("insert into answers (comment_id, answers_comment_id, is_main) values (%s, %s, %s);",
-                           [parent_id, comment_id, is_main])
+                [parent_id, comment_id, is_main])
 
     return JsonResponse({'success': True})
 
@@ -878,27 +875,92 @@ def updateComment(request):
         with connection.cursor() as cursor:
 
             cursor.execute("update comment set text = %s, updated_at = now() where comment_id = %s;",
-                           [text, comment_id])
+            [text, comment_id])
 
     return JsonResponse({'success': True})
-
 
 def deleteComment(request):
     if request.method == 'POST':
         data = json.loads(request.body)
         comment_id = data.get('comment_id')
-        text = data.get('text')
         with connection.cursor() as cursor:
 
             cursor.execute("WITH RECURSIVE CommentHierarchy AS ( "
-                            "SELECT c.comment_id, a.answers_comment_id From comment c "
-                            "LEFT JOIN answers a ON c.comment_id = a.Comment_id "
-                            "WHERE  c.comment_id = %s UNION ALL "
-                            "SELECT c.comment_id, a.answers_comment_id FROM answers a "
-                            "INNER JOIN CommentHierarchy ch ON a.Comment_id = ch.answers_comment_id "
-                            "INNER JOIN  comment c ON a.answers_comment_id = c.comment_id) "
-                            "DELETE FROM comment WHERE comment_id IN (SELECT comment_id FROM CommentHierarchy);",
-                           [comment_id])
+                "SELECT c.comment_id, a.answers_comment_id From comment c "
+                "LEFT JOIN answers a ON c.comment_id = a.Comment_id "
+                "WHERE  c.comment_id = %s UNION ALL "
+                "SELECT c.comment_id, a.answers_comment_id FROM answers a "
+                "INNER JOIN CommentHierarchy ch ON a.Comment_id = ch.answers_comment_id "
+                "INNER JOIN  comment c ON a.answers_comment_id = c.comment_id) "
+                "DELETE FROM comment WHERE comment_id IN (SELECT comment_id FROM CommentHierarchy);",
+            [comment_id])
 
     return JsonResponse({'success': True})
 
+def returnMyAchievement(request):
+    try:
+        data = json.loads(request.body)
+        isFiltered = data.get('isFiltered')
+        login = data.get('login')
+
+        with connection.cursor() as cursor:
+            if isFiltered == 'false':
+                cursor.execute(
+                "SELECT "
+                    "users.login, "
+                    "achievement.achievement_id, "
+                    "achievement.title, "
+                    "achievement.date, "
+                    "achievement.photo, "
+                    "COALESCE(comment_counts.count_comment, 0) AS count_comment, "
+                    "COALESCE(like_counts.count_like, 0) AS count_like, "
+                    "achievement.isVisible "
+                "FROM achievement "
+                "INNER JOIN users ON achievement.user_id = users.user_id "
+                "LEFT JOIN (SELECT achievement_id, COUNT(*) AS count_comment FROM comment GROUP BY achievement_id) "
+                "AS comment_counts ON achievement.achievement_id = comment_counts.achievement_id "
+                "LEFT JOIN (SELECT achievement_id, COUNT(*) AS count_like FROM achievement_like GROUP BY achievement_id) "
+                "AS like_counts ON achievement.achievement_id = like_counts.achievement_id "
+                "WHERE now() > achievement.date - interval '1 month' and login = %s "
+                "ORDER BY achievement.date ASC; ",
+                    [login])
+            else: cursor.execute(
+                "SELECT "
+                    "users.login, "
+                    "achievement.achievement_id, "
+                    "achievement.title, "
+                    "achievement.date, "
+                    "achievement.photo, "
+                    "COALESCE(comment_counts.count_comment, 0) AS count_comment, "
+                    "COALESCE(like_counts.count_like, 0) AS count_like, "
+                    "achievement.isVisible "
+                "FROM achievement "
+                "INNER JOIN users ON achievement.user_id = users.user_id "
+                "LEFT JOIN (SELECT achievement_id, COUNT(*) AS count_comment FROM comment GROUP BY achievement_id) "
+                "AS comment_counts ON achievement.achievement_id = comment_counts.achievement_id "
+                "LEFT JOIN (SELECT achievement_id, COUNT(*) AS count_like FROM achievement_like GROUP BY achievement_id) "
+                "AS like_counts ON achievement.achievement_id = like_counts.achievement_id "
+                "WHERE now() > achievement.date - interval '1 month' and login = %s "
+                "ORDER BY achievement.date DESC; ",
+                [login])
+            achievements = cursor.fetchall()
+            result = [
+                {
+                    'login': row[0],
+                    'id_achievement': row[1],
+                    'title': row[2],
+                    'date': row[3],
+                    'photoLink': row[4],
+                    'countComment': row[5],
+                    'countLike': row[6],
+                    'isVisible': row[7]
+                }
+                for row in achievements
+            ]
+            return JsonResponse({'achievements': result}, safe=False)
+
+    except json.JSONDecodeError:
+        return JsonResponse({'error': 'Invalid JSON'}, status=400)
+
+    except Exception as e:
+        return JsonResponse({'error': str(e)}, status=500)

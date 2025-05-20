@@ -7,236 +7,225 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter&display=swap" rel="stylesheet">
 </head>
 <body>
-<div class="backgroundProfile"></div>
-
-<div>
-    <login class="loginUser">username</login>
-    <img class="photoProfile" id="profilePhoto" src="" alt="Profile Photo">
-    <icon class="icon">
-        <svg  viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M11 4H4C3.46957 4 2.96086 4.21071 2.58579 4.58579C2.21071 4.96086 2 5.46957 2 6V20C2 20.5304
-                2.21071 21.0391 2.58579 21.4142C2.96086 21.7893 3.46957 22 4 22H18C18.5304 22 19.0391 21.7893 19.4142
-                21.4142C19.7893 21.0391 20 20.5304 20 20V13" stroke="#878CCD" stroke-width="2" stroke-linecap="round"
-                stroke-linejoin="round"/>
-            <path d="M18.5 2.50023C18.8978 2.1024 19.4374
-                1.87891 20 1.87891C20.5626 1.87891 21.1022 2.1024 21.5 2.50023C21.8978 2.89805 22.1213 3.43762 22.1213
-                4.00023C22.1213 4.56284 21.8978 5.1024 21.5 5.50023L12 15.0002L8 16.0002L9 12.0002L18.5 2.50023Z"
-                stroke="#878CCD" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-        </svg>
-    </icon>
-</div>
-<div>
-    <security  class="securityText">Безопасность</security>
-    <iconNext class="iconNext1">
-        <svg width="11" height="21" viewBox="0 0 11 21" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M0.21256 0.214867C-0.0708535 0.504303 -0.0708535 0.974636 0.21256 1.26407L9.26409
-            10.4899L0.21256 19.7337C-0.0708535 20.0232 -0.0708535 20.4935 0.21256 20.7829C0.495974 21.0724
-            0.956522 21.0724 1.23994 20.7829L10.7874 11.0325C10.9291 10.8878 11 10.7069 11 10.5079C11 10.327
-            10.9291 10.1281 10.7874 9.98334L1.23994 0.232958C0.956522 -0.0745681 0.495974 -0.0745695 0.21256
-            0.214867Z" fill="#878CCD"/>
-        </svg>
-
-    </iconNext>
-</div>
-<div id="notificationContainer" style="display: none;">
-    <backgroundCount class="circleNotification"></backgroundCount>
-    <textCount class="textCountNotification">0</textCount>
-</div>
-<div>
-    <notification class="notificationText">Уведомления</notification>
-
-    <iconNext class="iconNext2">
-        <svg width="11" height="21" viewBox="0 0 11 21" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M0.21256 0.214867C-0.0708535 0.504303 -0.0708535 0.974636 0.21256 1.26407L9.26409
-            10.4899L0.21256 19.7337C-0.0708535 20.0232 -0.0708535 20.4935 0.21256 20.7829C0.495974 21.0724 0.956522
-            21.0724 1.23994 20.7829L10.7874 11.0325C10.9291 10.8878 11 10.7069 11 10.5079C11 10.327 10.9291 10.1281
-            10.7874 9.98334L1.23994 0.232958C0.956522 -0.0745681 0.495974 -0.0745695 0.21256 0.214867Z" fill="#878CCD"/>
-        </svg>
-    </iconNext>
-</div>
-<div>
-    <achievements class="achievementsText">Мои достижения</achievements>
-    <iconNext class="iconNext3">
-        <svg width="11" height="21" viewBox="0 0 11 21" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M0.21256 0.214867C-0.0708535 0.504303 -0.0708535 0.974636 0.21256 1.26407L9.26409
-            10.4899L0.21256 19.7337C-0.0708535 20.0232 -0.0708535 20.4935 0.21256 20.7829C0.495974 21.0724 0.956522
-            21.0724 1.23994 20.7829L10.7874 11.0325C10.9291 10.8878 11 10.7069 11 10.5079C11 10.327 10.9291 10.1281
-            10.7874 9.98334L1.23994 0.232958C0.956522 -0.0745681 0.495974 -0.0745695 0.21256 0.214867Z" fill="#878CCD"/>
-        </svg>
-    </iconNext>
-</div>
-<div>
-    <exit  class="exitText">Выход из профиля</exit>
-    <iconExit class="iconExit">
-        <svg width="22" height="25" viewBox="0 0 22 25" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M10.9448 12.5H19.8823" stroke="#878CCD" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-            <path d="M16.4517 19.5312V21.875H5.45166V3.125H16.4517V5.46875H17.8267V2.34375C17.8267 2.13655
-            17.7542 1.93784 17.6253 1.79132C17.4964 1.64481 17.3215 1.5625 17.1392 1.5625H4.76416C4.58182
-            1.5625 4.40696 1.64481 4.27802 1.79132C4.14909 1.93784 4.07666 2.13655 4.07666 2.34375V22.6562C4.07666
-            22.8635 4.14909 23.0622 4.27802 23.2087C4.40696 23.3552 4.58182 23.4375 4.76416 23.4375H17.1392C17.3215
-            23.4375 17.4964 23.3552 17.6253 23.2087C17.7542 23.0622 17.8267 22.8635 17.8267 22.6562V19.5312H16.4517Z" fill="#878CCD"/>
-            <path d="M19.8823 12.5L17.1323 15.625" stroke="#878CCD" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-            <path d="M19.8823 12.5L17.1323 9.375" stroke="#878CCD" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-            <path d="M17.1323 6.32031V4.75781" stroke="#878CCD" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-            <path d="M17.1323 20.3125V18.75" stroke="#878CCD" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-        </svg>
-    </iconExit>
-</div>
-
-<div>
-    <iconDelete class="iconDelete">
-        <svg width="35" height="37" viewBox="0 0 35 37" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M7.20209 10.516H9.37349L10.3843 29.3408C10.3945 29.5294 10.4725 29.7068 10.6024 29.8365C10.7323
-            29.9662 10.9042 30.0386 11.0829 30.0386H24.336C24.5148 30.0386 24.6868 29.9661 24.8167 29.8362C24.9466
-            29.7063 25.0246 29.5288 25.0346 29.3401L26.0293 10.516H28.2021C28.3877 10.516 28.5658 10.438 28.6971
-            10.2992C28.8283 10.1604 28.9021 9.97222 28.9021 9.77596C28.9021 9.5797 28.8283 9.39147 28.6971 9.2527C28.5658
-            9.11392 28.3877 9.03596 28.2021 9.03596H25.5834C25.5449 9.03596 25.5113 9.05298 25.4742 9.0589C25.4378
-            9.05298 25.4042 9.03596 25.3671 9.03596H21.6949V7.09938C21.6949 6.90311 21.6211 6.71489 21.4899
-             6.57612C21.3586 6.43734 21.1805 6.35938 20.9949 6.35938H14.4086C14.2229 6.35938 14.0449 6.43734 13.9136
-             6.57612C13.7823 6.71489 13.7086 6.90311 13.7086 7.09938V9.03596H10.035C10.0028 9.03596 9.97409 9.0515
-             9.94259 9.05594C9.91039 9.05076 9.88169 9.03596 9.84809 9.03596H7.20279C7.11087 9.03591 7.01983 9.055
-             6.93489 9.09214C6.84994 9.12929 6.77275 9.18375 6.70771 9.25243C6.64268 9.32112 6.59108 9.40267 6.55586
-             9.49243C6.52064 9.58219 6.50249 9.67841 6.50244 9.77559C6.5024 9.87276 6.52046 9.969 6.55559 10.0588C6.59073
-             10.1486 6.64225 10.2302 6.70722 10.299C6.77219 10.3677 6.84933 10.4223 6.93424 10.4595C7.01915 10.4967 7.11017
-             10.5159 7.20209 10.516ZM15.1086 7.83938H20.2949V9.03596H15.1086V7.83938ZM24.6272 10.516L23.6738
-             28.5594H11.7444L10.7756 10.516H24.6272Z" fill="#CD8787"/>
-            <path d="M14.2358 27.1717L14.2764 27.171C14.3681 27.1655 14.458 27.141 14.5407 27.0988C14.6235 27.0565
-            14.6976 26.9975 14.7588 26.925C14.82 26.8525 14.867 26.7679 14.8973 26.6762C14.9275 26.5844 14.9404 26.4873
-             14.9351 26.3903L14.1987 12.6744C14.186 12.4793 14.1017 12.2971 13.9637 12.1668C13.8257 12.0366 13.645 11.9686
-             13.4602 11.9773C13.3684 11.9828 13.2786 12.0073 13.1958 12.0496C13.113 12.0918 13.0389 12.1508 12.9777
-              12.2233C12.9165 12.2958 12.8695 12.3804 12.8392 12.4721C12.809 12.5639 12.7962 12.661 12.8015
-              12.758L13.5379 26.4739C13.548 26.6624 13.626 26.8396 13.7557 26.9694C13.8854 27.0991 14.0572 27.1715
-              14.2358 27.1717Z" fill="#CD8787"/>
-            <path d="M21.1027 27.171L21.1433 27.1718C21.3219 27.1715 21.4936 27.0991 21.6233 26.9694C21.7531 26.8397
-             21.831 26.6624 21.8412 26.4739L22.5776 12.758C22.5881 12.5622 22.5246 12.3699 22.4011 12.2236C22.2776
-             12.0772 22.1042 11.9886 21.9189 11.9773C21.734 11.9684 21.5532 12.0363 21.4151 12.1666C21.2771 12.2969
-             21.1928 12.4792 21.1804 12.6744L20.444 26.3903C20.4335 26.5862 20.497 26.7784 20.6205 26.9248C20.744
-             27.0712 20.9174 27.1598 21.1027 27.171Z" fill="#CD8787"/>
-            <path d="M17.7024 27.1725C17.8881 27.1725 18.0661 27.0945 18.1974 26.9557C18.3287 26.8169 18.4024 26.6287
-            18.4024 26.4325V12.7166C18.4024 12.5203 18.3287 12.3321 18.1974 12.1933C18.0661 12.0545 17.8881 11.9766
-            17.7024 11.9766C17.5168 11.9766 17.3387 12.0545 17.2075 12.1933C17.0762 12.3321 17.0024 12.5203 17.0024
-            12.7166V26.4325C17.0024 26.6287 17.0762 26.8169 17.2075 26.9557C17.3387 27.0945 17.5168
-            27.1725 17.7024 27.1725Z" fill="#CD8787"/>
-        </svg>
-
-    </iconDelete>
-</div>
+    <div class="backgroundProfile"></div>
+    <div>
+        <login class="loginUser">username</login>
+        <img class="photoProfile" id="profilePhoto" src="" alt="Profile Photo">
+        <icon class="icon">
+            <svg  viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M11 4H4C3.46957 4 2.96086 4.21071 2.58579 4.58579C2.21071 4.96086 2 5.46957 2 6V20C2 20.5304
+                    2.21071 21.0391 2.58579 21.4142C2.96086 21.7893 3.46957 22 4 22H18C18.5304 22 19.0391 21.7893 19.4142
+                    21.4142C19.7893 21.0391 20 20.5304 20 20V13" stroke="#878CCD" stroke-width="2" stroke-linecap="round"
+                    stroke-linejoin="round"/>
+                <path d="M18.5 2.50023C18.8978 2.1024 19.4374
+                    1.87891 20 1.87891C20.5626 1.87891 21.1022 2.1024 21.5 2.50023C21.8978 2.89805 22.1213 3.43762 22.1213
+                    4.00023C22.1213 4.56284 21.8978 5.1024 21.5 5.50023L12 15.0002L8 16.0002L9 12.0002L18.5 2.50023Z"
+                    stroke="#878CCD" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+        </icon>
+    </div>
+    <div>
+        <security  class="securityText">Безопасность</security>
+        <iconNext class="iconNext1">
+            <svg width="11" height="21" viewBox="0 0 11 21" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M0.21256 0.214867C-0.0708535 0.504303 -0.0708535 0.974636 0.21256 1.26407L9.26409
+                10.4899L0.21256 19.7337C-0.0708535 20.0232 -0.0708535 20.4935 0.21256 20.7829C0.495974 21.0724
+                0.956522 21.0724 1.23994 20.7829L10.7874 11.0325C10.9291 10.8878 11 10.7069 11 10.5079C11 10.327
+                10.9291 10.1281 10.7874 9.98334L1.23994 0.232958C0.956522 -0.0745681 0.495974 -0.0745695 0.21256
+                0.214867Z" fill="#878CCD"/>
+            </svg>
+        </iconNext>
+    </div>
+    <div id="notificationContainer" style="display: none;">
+        <backgroundCount class="circleNotification"></backgroundCount>
+        <textCount class="textCountNotification">0</textCount>
+    </div>
+    <div>
+        <notification class="notificationText">Уведомления</notification>
+        <iconNext class="iconNext2">
+            <svg width="11" height="21" viewBox="0 0 11 21" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M0.21256 0.214867C-0.0708535 0.504303 -0.0708535 0.974636 0.21256 1.26407L9.26409
+                10.4899L0.21256 19.7337C-0.0708535 20.0232 -0.0708535 20.4935 0.21256 20.7829C0.495974 21.0724 0.956522
+                21.0724 1.23994 20.7829L10.7874 11.0325C10.9291 10.8878 11 10.7069 11 10.5079C11 10.327 10.9291 10.1281
+                10.7874 9.98334L1.23994 0.232958C0.956522 -0.0745681 0.495974 -0.0745695 0.21256 0.214867Z" fill="#878CCD"/>
+            </svg>
+        </iconNext>
+    </div>
+    <div>
+        <achievements class="achievementsText">Мои достижения</achievements>
+        <iconNext class="iconNext3">
+            <svg width="11" height="21" viewBox="0 0 11 21" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M0.21256 0.214867C-0.0708535 0.504303 -0.0708535 0.974636 0.21256 1.26407L9.26409
+                10.4899L0.21256 19.7337C-0.0708535 20.0232 -0.0708535 20.4935 0.21256 20.7829C0.495974 21.0724 0.956522
+                21.0724 1.23994 20.7829L10.7874 11.0325C10.9291 10.8878 11 10.7069 11 10.5079C11 10.327 10.9291 10.1281
+                10.7874 9.98334L1.23994 0.232958C0.956522 -0.0745681 0.495974 -0.0745695 0.21256 0.214867Z" fill="#878CCD"/>
+            </svg>
+        </iconNext>
+    </div>
+    <div>
+        <exit  class="exitText">Выход из профиля</exit>
+        <iconExit class="iconExit">
+            <svg width="22" height="25" viewBox="0 0 22 25" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M10.9448 12.5H19.8823" stroke="#878CCD" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M16.4517 19.5312V21.875H5.45166V3.125H16.4517V5.46875H17.8267V2.34375C17.8267 2.13655
+                17.7542 1.93784 17.6253 1.79132C17.4964 1.64481 17.3215 1.5625 17.1392 1.5625H4.76416C4.58182
+                1.5625 4.40696 1.64481 4.27802 1.79132C4.14909 1.93784 4.07666 2.13655 4.07666 2.34375V22.6562C4.07666
+                22.8635 4.14909 23.0622 4.27802 23.2087C4.40696 23.3552 4.58182 23.4375 4.76416 23.4375H17.1392C17.3215
+                23.4375 17.4964 23.3552 17.6253 23.2087C17.7542 23.0622 17.8267 22.8635 17.8267 22.6562V19.5312H16.4517Z" fill="#878CCD"/>
+                <path d="M19.8823 12.5L17.1323 15.625" stroke="#878CCD" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M19.8823 12.5L17.1323 9.375" stroke="#878CCD" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M17.1323 6.32031V4.75781" stroke="#878CCD" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M17.1323 20.3125V18.75" stroke="#878CCD" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+        </iconExit>
+    </div>
+    <div>
+        <iconDelete class="iconDelete">
+            <svg width="35" height="37" viewBox="0 0 35 37" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M7.20209 10.516H9.37349L10.3843 29.3408C10.3945 29.5294 10.4725 29.7068 10.6024 29.8365C10.7323
+                29.9662 10.9042 30.0386 11.0829 30.0386H24.336C24.5148 30.0386 24.6868 29.9661 24.8167 29.8362C24.9466
+                29.7063 25.0246 29.5288 25.0346 29.3401L26.0293 10.516H28.2021C28.3877 10.516 28.5658 10.438 28.6971
+                10.2992C28.8283 10.1604 28.9021 9.97222 28.9021 9.77596C28.9021 9.5797 28.8283 9.39147 28.6971 9.2527C28.5658
+                9.11392 28.3877 9.03596 28.2021 9.03596H25.5834C25.5449 9.03596 25.5113 9.05298 25.4742 9.0589C25.4378
+                9.05298 25.4042 9.03596 25.3671 9.03596H21.6949V7.09938C21.6949 6.90311 21.6211 6.71489 21.4899
+                 6.57612C21.3586 6.43734 21.1805 6.35938 20.9949 6.35938H14.4086C14.2229 6.35938 14.0449 6.43734 13.9136
+                 6.57612C13.7823 6.71489 13.7086 6.90311 13.7086 7.09938V9.03596H10.035C10.0028 9.03596 9.97409 9.0515
+                 9.94259 9.05594C9.91039 9.05076 9.88169 9.03596 9.84809 9.03596H7.20279C7.11087 9.03591 7.01983 9.055
+                 6.93489 9.09214C6.84994 9.12929 6.77275 9.18375 6.70771 9.25243C6.64268 9.32112 6.59108 9.40267 6.55586
+                 9.49243C6.52064 9.58219 6.50249 9.67841 6.50244 9.77559C6.5024 9.87276 6.52046 9.969 6.55559 10.0588C6.59073
+                 10.1486 6.64225 10.2302 6.70722 10.299C6.77219 10.3677 6.84933 10.4223 6.93424 10.4595C7.01915 10.4967 7.11017
+                 10.5159 7.20209 10.516ZM15.1086 7.83938H20.2949V9.03596H15.1086V7.83938ZM24.6272 10.516L23.6738
+                 28.5594H11.7444L10.7756 10.516H24.6272Z" fill="#CD8787"/>
+                <path d="M14.2358 27.1717L14.2764 27.171C14.3681 27.1655 14.458 27.141 14.5407 27.0988C14.6235 27.0565
+                14.6976 26.9975 14.7588 26.925C14.82 26.8525 14.867 26.7679 14.8973 26.6762C14.9275 26.5844 14.9404 26.4873
+                 14.9351 26.3903L14.1987 12.6744C14.186 12.4793 14.1017 12.2971 13.9637 12.1668C13.8257 12.0366 13.645 11.9686
+                 13.4602 11.9773C13.3684 11.9828 13.2786 12.0073 13.1958 12.0496C13.113 12.0918 13.0389 12.1508 12.9777
+                  12.2233C12.9165 12.2958 12.8695 12.3804 12.8392 12.4721C12.809 12.5639 12.7962 12.661 12.8015
+                  12.758L13.5379 26.4739C13.548 26.6624 13.626 26.8396 13.7557 26.9694C13.8854 27.0991 14.0572 27.1715
+                  14.2358 27.1717Z" fill="#CD8787"/>
+                <path d="M21.1027 27.171L21.1433 27.1718C21.3219 27.1715 21.4936 27.0991 21.6233 26.9694C21.7531 26.8397
+                 21.831 26.6624 21.8412 26.4739L22.5776 12.758C22.5881 12.5622 22.5246 12.3699 22.4011 12.2236C22.2776
+                 12.0772 22.1042 11.9886 21.9189 11.9773C21.734 11.9684 21.5532 12.0363 21.4151 12.1666C21.2771 12.2969
+                 21.1928 12.4792 21.1804 12.6744L20.444 26.3903C20.4335 26.5862 20.497 26.7784 20.6205 26.9248C20.744
+                 27.0712 20.9174 27.1598 21.1027 27.171Z" fill="#CD8787"/>
+                <path d="M17.7024 27.1725C17.8881 27.1725 18.0661 27.0945 18.1974 26.9557C18.3287 26.8169 18.4024 26.6287
+                18.4024 26.4325V12.7166C18.4024 12.5203 18.3287 12.3321 18.1974 12.1933C18.0661 12.0545 17.8881 11.9766
+                17.7024 11.9766C17.5168 11.9766 17.3387 12.0545 17.2075 12.1933C17.0762 12.3321 17.0024 12.5203 17.0024
+                12.7166V26.4325C17.0024 26.6287 17.0762 26.8169 17.2075 26.9557C17.3387 27.0945 17.5168
+                27.1725 17.7024 27.1725Z" fill="#CD8787"/>
+            </svg>
+        </iconDelete>
+    </div>
     <div class="deleteProfile">Удаление профиля</div>
+<script>
+    const photoElement = document.getElementById('profilePhoto');
+    const loginUser = document.querySelector('.loginUser');
+    const icon = document.querySelector('.icon');
+    const iconExit = document.querySelector('.iconExit');
+    const exitText = document.querySelector('.exitText');
+    const iconSecurity = document.querySelector('.iconNext1');
+    const securityText = document.querySelector('.securityText');
+    const deleteText = document.querySelector('.deleteProfile');
+    const deleteIcon = document.querySelector('.iconDelete');
+    loginUser.textContent = localStorage.getItem('login');
+    const iconNext2 = document.querySelector('.iconNext2');
+    const notificationText = document.querySelector('.notificationText');
+    const notificationCountText = document.querySelector('.textCountNotification');
+    const countBackground = document.querySelector('.circleNotification');
+    const phoneNumber = localStorage.getItem('numberPhone');
+    const notificationContainer = document.getElementById('notificationContainer');
+    const iconNext3 = document.querySelector('.iconNext3');
+    const achievementsText = document.querySelector('.achievementsText');
+    document.addEventListener('DOMContentLoaded', function() {
+        if (phoneNumber !== null) {
+            function editProfile()
+            { window.location.href = "{% url 'userInformation' %}"; }
+            icon.addEventListener('click', editProfile);
 
-    <script>
-        const photoElement = document.getElementById('profilePhoto');
-        const loginUser = document.querySelector('.loginUser');
-        const icon = document.querySelector('.icon');
-        const iconExit = document.querySelector('.iconExit');
-        const exitText = document.querySelector('.exitText');
-        const iconSecurity = document.querySelector('.iconNext1');
-        const securityText = document.querySelector('.securityText');
-        const deleteText = document.querySelector('.deleteProfile');
-        const deleteIcon = document.querySelector('.iconDelete');
-        loginUser.textContent = localStorage.getItem('login');
-        const iconNext2 = document.querySelector('.iconNext2');
-        const notificationText = document.querySelector('.notificationText');
-        const notificationCountText = document.querySelector('.textCountNotification');
-        const countBackground = document.querySelector('.circleNotification');
-        const phoneNumber = localStorage.getItem('numberPhone');
-        const notificationContainer = document.getElementById('notificationContainer');
+            function myAchievement()
+            { window.location.href = "{% url 'myAchievement' %}"; }
+            iconNext3.addEventListener('click', myAchievement);
+            achievementsText.addEventListener('click', myAchievement);
 
-        document.addEventListener('DOMContentLoaded', function() {
-            if (phoneNumber !== null) {
-                function editProfile()
-                {
-                    window.location.href = "{% url 'userInformation' %}";
-                }
-                icon.addEventListener('click', editProfile);
-                function deleteProfile()
-                {
-                    window.location.href = "{% url 'confirmation' %}";
-                }
-                deleteIcon.addEventListener('click', deleteProfile);
-                deleteText.addEventListener('click', deleteProfile);
-                function exitProfile()
-                {
-                    window.location.href = "{% url 'mainPage' %}";
-                }
-                iconExit.addEventListener('click', exitProfile);
-                exitText.addEventListener('click', exitProfile);
-                 fetch('{% url "photoUser" %}', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'X-CSRFToken': '{{ csrf_token }}'
-                    },
-                    body: JSON.stringify({
-                        phone: localStorage.getItem('numberPhone')
-                    })
+            function deleteProfile()
+            { window.location.href = "{% url 'confirmation' %}"; }
+            deleteIcon.addEventListener('click', deleteProfile);
+            deleteText.addEventListener('click', deleteProfile);
+
+            function exitProfile()
+            { window.location.href = "{% url 'mainPage' %}"; }
+            iconExit.addEventListener('click', exitProfile);
+            exitText.addEventListener('click', exitProfile);
+             fetch('{% url "photoUser" %}', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': '{{ csrf_token }}'
+                },
+                body: JSON.stringify({
+                    phone: localStorage.getItem('numberPhone')
                 })
-                .then(response => response.json())
-                    .then(data => {
-                        if (data.photo) {
-                            photoElement.src = data.photo;
-                            photoElement.style.backgroundImage = `url(${data.photo})`;
-                        }
-                    })
-                    .catch(error => {
-                        console.error('Error:', error);
-                    });
-
-                    fetch('{% url "check_isActiveNotification" %}', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'X-CSRFToken': '{{ csrf_token }}'
-                    },
-                    body: JSON.stringify({
-                        phone: localStorage.getItem('numberPhone')
-                    })
-                })
-                .then(response => response.json())
+            })
+            .then(response => response.json())
                 .then(data => {
-                    if (data.notification == true)
-                    {
-                         fetch('{% url "countNotification" %}', {
-                            method: 'POST',
-                            headers: {
-                                'Content-Type': 'application/json',
-                                'X-CSRFToken': '{{ csrf_token }}'
-                            },
-                            body: JSON.stringify({
-                                phone: localStorage.getItem('numberPhone')
-                            })
-                        })
-                        .then(response => response.json())
-                        .then(data => {
-                            if (data.count > 0) {
-                                notificationCountText.textContent = data.count;
-                                notificationContainer.style.display = 'block';
-                            }
-                            else
-                            {
-                                notificationContainer.style.display = 'none';
-                            }
-                        })
-                        .catch(error => {
-                            console.error('Error:', error);
-                        });
-                    }
-                    if (data.notification == false)
-                    {
-                         notificationContainer.style.display = 'none';
+                    if (data.photo) {
+                        photoElement.src = data.photo;
+                        photoElement.style.backgroundImage = `url(${data.photo})`;
                     }
                 })
                 .catch(error => {
                     console.error('Error:', error);
                 });
 
-
-            }
-            else
-            {
-                console.log('Номер телефона не найден в localStorage');
-            }
-        });
-
-    </script>
+                fetch('{% url "check_isActiveNotification" %}', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': '{{ csrf_token }}'
+                },
+                body: JSON.stringify({
+                    phone: localStorage.getItem('numberPhone')
+                })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.notification == true)
+                {
+                     fetch('{% url "countNotification" %}', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'X-CSRFToken': '{{ csrf_token }}'
+                        },
+                        body: JSON.stringify({
+                            phone: localStorage.getItem('numberPhone')
+                        })
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.count > 0) {
+                            notificationCountText.textContent = data.count;
+                            notificationContainer.style.display = 'block';
+                        }
+                        else
+                        {
+                            notificationContainer.style.display = 'none';
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error:', error);
+                    });
+                }
+                if (data.notification == false)
+                {  notificationContainer.style.display = 'none'; }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+        }
+        else
+        {   console.log('Номер телефона не найден в localStorage'); }
+    });
+</script>
 </body>
 </html>
