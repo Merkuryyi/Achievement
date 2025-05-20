@@ -669,7 +669,7 @@ def returnComments(request):
                     'comment_id': row[0],
                     'user_id': row[1],
                     'login': row[2],
-                    'photo_comment': row[3],  # Добавлено поле photo
+                    'photo_comment': row[3],
                     'parent_login': row[4],
                     'achievement_id': row[5],
                     'text': row[6],
@@ -854,7 +854,7 @@ def addComment(request):
         phone = data.get('phone')
         user_id = get_user_id_by_phone(phone)
 
-        parent_id = int(data.get('parent_id'))
+        parent_id = data.get('parent_id')
 
         is_main = parent_id is None
         with connection.cursor() as cursor:
@@ -877,7 +877,7 @@ def updateComment(request):
         text = data.get('text')
         with connection.cursor() as cursor:
 
-            cursor.execute("update comment set text = %s and updated_at = now() where comment_id;",
+            cursor.execute("update comment set text = %s, updated_at = now() where comment_id = %s;",
                            [text, comment_id])
 
     return JsonResponse({'success': True})
@@ -890,8 +890,15 @@ def deleteComment(request):
         text = data.get('text')
         with connection.cursor() as cursor:
 
-            cursor.execute("update comment set text = %s and updated_at = now() where comment_id;",
-                           [text, comment_id])
+            cursor.execute("WITH RECURSIVE CommentHierarchy AS ( "
+                            "SELECT c.comment_id, a.answers_comment_id From comment c "
+                            "LEFT JOIN answers a ON c.comment_id = a.Comment_id "
+                            "WHERE  c.comment_id = %s UNION ALL "
+                            "SELECT c.comment_id, a.answers_comment_id FROM answers a "
+                            "INNER JOIN CommentHierarchy ch ON a.Comment_id = ch.answers_comment_id "
+                            "INNER JOIN  comment c ON a.answers_comment_id = c.comment_id) "
+                            "DELETE FROM comment WHERE comment_id IN (SELECT comment_id FROM CommentHierarchy);",
+                           [comment_id])
 
     return JsonResponse({'success': True})
 

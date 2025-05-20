@@ -64,8 +64,6 @@
                 console.error('Comment container not found');
                 return;
             }
-
-
             const parentId = commentContainer.dataset.parentId;
             const parentLogin = commentContainer.dataset.parentLogin;
 
@@ -99,14 +97,18 @@
             card.appendChild(newCommentsSection);
         }
 
+
         document.addEventListener('DOMContentLoaded', () => {
             document.body.addEventListener('click', function(e) {
                 const sendBtn = e.target.closest('.send-button');
+                const iconEditComment = e.target.closest('.iconEditComment');
 
                 if (sendBtn) {
                     sendComment(sendBtn);
                     return;
                 }
+
+
 
                 const answerLabel = e.target.closest('.answerComment-label');
                 if (answerLabel) {
@@ -211,8 +213,14 @@
             commentsList.addEventListener('click', function(e) {
                 if(e.target.closest('.iconEditComment')) {
                     const commentBlock = e.target.closest('.comment, .comment-reply');
-                    toggleEditMode(commentBlock);
+                    const answerLabel = commentBlock.querySelector('.answerComment-label');
+                    const parentId = answerLabel.dataset.parentId;
+                    toggleEditMode(commentBlock, parentId);
+
+
+
                 }
+
             });
             const hasReplies = filteredComments.some(comment => comment.is_main);
 
@@ -551,12 +559,26 @@
             return data.exists;
         }
 
-        function toggleEditMode(commentBlock) {
+        async function toggleEditMode(commentBlock, comment_id) {
             const textElement = commentBlock.querySelector('.comment-text');
             const editIcon = commentBlock.querySelector('.iconEditComment');
             const newText = textElement.textContent.trim();
+
             if (textElement.isContentEditable && newText) {
                 textElement.contentEditable = false;
+                console.log('ki');
+                const response = await fetch('{% url "updateComment" %}',{
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': '{{ csrf_token }}'
+                },
+                body: JSON.stringify({
+                    comment_id: comment_id,
+                    text: newText
+                })
+            })
+
 
                 editIcon.innerHTML = `<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <path d="M11 4H4C3.46957 4 2.96086 4.21071 2.58579 4.58579C2.21071 4.96086 2 5.46957 2 6V20C2
