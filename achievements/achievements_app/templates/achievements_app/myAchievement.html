@@ -12,6 +12,11 @@
     <div class="titleContainerMyAchievements">
         <div class="titleAchievement">Мои достижения:</div>
         <div class="countAchievement">0</div>
+        <iconPlus class="iconPlus">
+            <svg width="20" height="21" viewBox="0 0 20 21" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M17.9297 9.0332H10.957V1.44531C10.957 0.650391 10.3594 0 9.62891 0C8.89844 0 8.30078 0.650391 8.30078 1.44531V9.0332H1.32812C0.597656 9.0332 0 9.68359 0 10.4785C0 11.2734 0.597656 11.9238 1.32812 11.9238H8.30078V19.5117C8.30078 20.3066 8.89844 20.957 9.62891 20.957C10.3594 20.957 10.957 20.3066 10.957 19.5117V11.9238H17.9297C18.6602 11.9238 19.2578 11.2734 19.2578 10.4785C19.2578 9.68359 18.6602 9.0332 17.9297 9.0332Z" fill="#878CCD"/>
+            </svg>
+        </iconPlus>
     </div>
     <div class="achievements-container" id="achievementsContainer"></div>
     <div class="comment-container" id="commentsContainer"></div>
@@ -152,6 +157,10 @@
             10.672 21.483 9.87151C21.8268 8.91366 22 7.9721 22 7.06853C22.0025 6.11068 21.8217 5.17997
             21.4677 4.30353Z" fill="#9483B5"/>
         </svg>`;
+        const plus = document.querySelector('.iconPlus');
+        function createAchievement()
+            { window.location.href = "{% url 'createAchievement' %}"; }
+            plus.addEventListener('click', createAchievement);
     async function renderCommentsSection(achievementId, comments) {
         const commentsSection = document.createElement('div');
         commentsSection.className = 'comments-section';

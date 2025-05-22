@@ -88,6 +88,11 @@ def myAchievement(request):
     return render(request, 'achievements_app/myAchievement.html',
                  {'achievements': achievements})
 
+def createAchievement(request):
+    achievements = Achievement.objects.all()
+    return render(request, 'achievements_app/createAchievement.html',
+                 {'achievements': achievements})
+
 def check_user(request):
     if request.method == 'POST':
         data = json.loads(request.body)
@@ -900,7 +905,16 @@ def deleteComment(request):
             [comment_id])
 
     return JsonResponse({'success': True})
+def deleteAchievement(request):
+    if request.method == 'POST':
+        data = json.loads(request.body)
+        achievement_id = data.get('achievement_id')
+        with connection.cursor() as cursor:
 
+            cursor.execute("delete from achievement where achievement_id = %s",
+            [achievement_id])
+
+    return JsonResponse({'success': True})
 def returnMyAchievement(request):
     try:
         data = json.loads(request.body)
@@ -1031,4 +1045,76 @@ def editAchievement(request):
     except Exception as e:
         return JsonResponse({'error': str(e)}, status=500)
 
+def check_isVisible(request):
+    if request.method == 'POST':
+        data = json.loads(request.body)
+        achievement_id = data.get('achievement_id')
 
+        with connection.cursor() as cursor:
+            cursor.execute(
+                "select isVisible from achievement where achievement_id = %s",
+                [achievement_id]
+            )
+            row = cursor.fetchone()
+
+        if row:
+            return JsonResponse({'exists': True})
+        else:
+            return JsonResponse({'exists': False})
+
+    return JsonResponse({'exists': False})
+
+def countAchievement(request):
+    if request.method == 'POST':
+        data = json.loads(request.body)
+        achievement_id = data.get('achievement_id')
+
+        with connection.cursor() as cursor:
+            cursor.execute(
+                "select count(*) from achievement where achievement_id = %s",
+                [achievement_id]
+            )
+            row = cursor.fetchone()
+
+
+            return JsonResponse({'exists': row})
+
+    return JsonResponse({'exists': False})
+
+def addAchievement(request):
+    if request.method != 'POST':
+        return JsonResponse({'error': 'Invalid method'}, status=405)
+
+    try:
+        data = json.loads(request.body)
+        date = data.get('date')
+        place_competition = data.get('place_competition')
+        document_name = data.get('document_name')
+        photo = data.get('photo')
+        contest = data.get('contest')
+        date_obj = datetime.strptime(date, '%Y-%m-%d').date()
+        print('g', date_obj)
+        phone = data.get('phone')
+        user_id = get_user_id(phone)
+
+
+
+        if place_competition and contest:
+            title = f"{place_competition} {contest}"
+
+
+        print(user_id)
+
+        with connection.cursor() as cursor:
+
+            cursor.execute(
+                "insert into achievement "
+                "(user_id, title, date, place_competition, document_name, photo, isVisible, name_contest) "
+                "values (%s, %s, %s, %s, %s, %s, %s, true, %s)",
+                [user_id, title, date_obj, place_competition, document_name, photo, contest]
+            )
+
+        return JsonResponse({'success': True})
+
+    except Exception as e:
+        return JsonResponse({'error': str(e)}, status=500)

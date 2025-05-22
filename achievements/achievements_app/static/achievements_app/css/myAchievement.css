@@ -553,6 +553,10 @@ body {
     position: relative;
     left: 136px;
     top: 182px;
+    flex-grow: 1;
+    display: flex;
+    align-items: center;
+    gap: 30px;
 }
 
 .countAchievement
@@ -568,7 +572,7 @@ body {
 }
 .titleAchievement
 {
-    position: absolute;
+
     width: 313px;
     height: 33px;
     font-family: 'Inter';
@@ -577,4 +581,9 @@ body {
     font-size: 36px;
     line-height: 44px;
     color: #878CCD;
+}
+.iconPlus
+{
+    cursor: pointer;
+    transform: translateY(7px)
 }

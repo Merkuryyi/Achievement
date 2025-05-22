@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Achievements</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'achievements_app/css/createAchievement.css' %}">
+    <link href="https://fonts.googleapis.com/css2?family=Inter&display=swap" rel="stylesheet">
+</head>
+<body>
+    {% include 'achievements_app/panel.html' %}
+    <div class="backgroundLeft"></div>
+    <div class="backgroundRight"></div>
+    <div class="titleCreateAchievement">Достижение</div>
+    <div class="miniTitleLeftHigh">Введите название конкурса</div>
+    <div class="miniTitleRightHigh">Введите название документа</div>
+    <div class="miniTitleRightLow">Введите место в конкурсе</div>
+    <div class="miniTitleLeftLow">Введите дату получения </div>
+    <div class="eror1" style="display: none;">*ошибка</div>
+    <div class="eror2" style="display: none;">*ошибка</div>
+    <div class="eror3" style="display: none;">*ошибка</div>
+    <div class="eror4" style="display: none;">*ошибка</div>
+    <div class="eror5" style="display: none;">*ошибка</div>
+    <div class="containerContext container-toggle">
+        <input type="text" class="input-field" maxlength="30" placeholder="Конкурс">
+    </div>
+    <div class="containerNameDocument container-toggle">
+        <input type="text" class="input-field" maxlength="30" placeholder="Диплом, сертификат">
+    </div>
+    <div class="containerPlaceContest container-toggle">
+        <input type="text" class="input-field" maxlength="30" placeholder="Место">
+    </div>
+    <div class="containerDate container-toggle">
+        <input type="text" class="input-field" maxlength="10" placeholder="дд.мм.гггг">
+    </div>
+    <div class="containerURL container-toggle">
+        <input type="text" class="input-field" maxlength="200" placeholder="URL">
+    </div>
+    <div class="button"></div>
+    <div class="buttonText">Сохранить</div>
+    <div class="titlePhoto">Фото достижения</div>
+    <div class="photoAchievement"></div>
+    <script>
+
+        document.addEventListener('DOMContentLoaded', function() {
+            const contestInput = document.querySelector('.containerContext input');
+            const nameDocumentInput = document.querySelector('.containerNameDocument input');
+            const placeContestInput = document.querySelector('.containerPlaceContest input');
+            const dateInput = document.querySelector('.containerDate input');
+            const button = document.querySelector('.button');
+            const error1 = document.querySelector('.eror1');
+            const error2 = document.querySelector('.eror2');
+            const error3 = document.querySelector('.eror3');
+            const error4 = document.querySelector('.eror4');
+            const error5 = document.querySelector('.eror5');
+            const link = document.querySelector('.containerURL input');
+
+            dateInput.addEventListener('input', function(e) {
+                let value = e.target.value.replace(/\D/g, '');
+                let formatted = '';
+                if (value.length > 0) {
+                    formatted += value.substring(0, 2);
+                }
+                if (value.length >= 3) {
+                    formatted += '.' + value.substring(2, 4);
+                }
+                if (value.length >= 5) {
+                    formatted += '.' + value.substring(4, 8);
+                }
+                e.target.value = formatted;
+            });
+
+            dateInput.addEventListener('blur', function(e) {
+                const value = e.target.value;
+                const pattern = /^(0[1-9]|[12][0-9]|3[01])\.(0[1-9]|1[0-2])\.\d{4}$/;
+
+                if (!pattern.test(value)) {
+                    e.target.classList.add('invalid');
+                    return;
+                }
+                const [day, month, year] = value.split('.').map(Number);
+                const date = new Date(year, month - 1, day);
+
+                if (date.getFullYear() !== year ||
+                    date.getMonth() + 1 !== month ||
+                    date.getDate() !== day) {
+                    e.target.classList.add('invalid');
+                } else {
+                    e.target.classList.remove('invalid');
+                }
+            });
+
+            let phone = localStorage.getItem('numberPhone');
+            button.addEventListener('click', function () {
+                hasError = false;
+                    if (!link.value.trim() && !dateInput.value.trim() &&
+                        !placeContestInput.value.trim() && !nameDocumentInput.value.trim() &&
+                        !contestInput.value.trim()) {
+                        error1.textContent = '*обязательно';
+                        error1.style.display = 'block';
+                        error1.style.opacity = '1';
+                        hasError = true;
+
+                    }
+                    if (!contestInput.value.trim()) {
+                        error1.textContent = '*обязательно';
+                        error1.style.display = 'block';
+                        error1.style.opacity = '1';
+                        hasError = true;
+                    }
+                    else
+                    {
+                        error1.style.display = 'none';
+                        error1.style.opacity = '0';
+                    }
+
+                    if (!nameDocumentInput.value.trim()) {
+                        error2.textContent = '*обязательно';
+                        error2.style.display = 'block';
+                        error2.style.opacity = '1';
+                        hasError = true;
+                    }
+                    else
+                    {
+                        error2.style.display = 'none';
+                        error2.style.opacity = '0';
+
+                    }
+
+                    if (!placeContestInput.value.trim()) {
+                        error3.textContent = '*обязательно';
+                        error3.style.display = 'block';
+                        error3.style.opacity = '1';
+                        hasError = true;
+                    }
+                    else
+                    {
+                        error3.style.display = 'none';
+                        error3.style.opacity = '0';
+                    }
+
+
+                    if (!dateInput.value.trim()) {
+                        error4.textContent = '*обязательно';
+                        error4.style.display = 'block';
+                        error4.style.opacity = '1';
+                        hasError = true;
+                    }
+                    else
+                    {
+                        error4.style.display = 'none';
+                        error4.style.opacity = '0';
+                    }
+                    if (!link.value.trim()) {
+                        error5.textContent = '*обязательно';
+                        error5.style.display = 'block';
+                        error5.style.opacity = '1';
+                        hasError = true;
+                    }
+                    else
+                    {
+                        error5.style.display = 'none';
+                        error5.style.opacity = '0';
+                    }
+                     console.log(hasError);
+                    if (hasError) return;
+
+
+                        const userData = {
+                            contest: contestInput.value.trim(),
+                            document_name: nameDocumentInput.value.trim() ,
+                            place_competition: placeContestInput.value.trim() ,
+                            date: dateInput.value.trim(),
+                            photo: link.value.trim(),
+                            phone: phone
+                        };
+
+                        fetch('{% url "addAchievement" %}', {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json',
+                                'X-CSRFToken': '{{ csrf_token }}'
+                            },
+                            body: JSON.stringify(userData)
+                        })
+                        .then(response => response.json())
+                        .then(data => {
+                            if (data.success) {
+                                window.location.href = "{% url 'myAchievement' %}";
+                            }
+                        })
+                    .catch(error => console.error('Error:', error));
+
+            });
+        });
+
+    </script>
+</body>
+</html>

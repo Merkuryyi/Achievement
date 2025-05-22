@@ -53,4 +53,11 @@ urlpatterns = [
     path('updateComment/', views.updateComment, name = 'updateComment'),
     path('deleteComment/', views.deleteComment, name = 'deleteComment'),
     path('returnMyAchievement/', views.returnMyAchievement, name = 'returnMyAchievement'),
+    path('deleteAchievement/', views.deleteAchievement, name = 'deleteAchievement'),
+    path('updateVisibleAchievement/', views.updateVisibleAchievement, name = 'updateVisibleAchievement'),
+    path('editAchievement/', views.editAchievement, name = 'editAchievement'),
+    path('check_isVisible/', views.check_isVisible, name = 'check_isVisible'),
+    path('countAchievement/', views.countAchievement, name = 'countAchievement'),
+    path('addAchievement/', views.addAchievement, name = 'addAchievement'),
+path('createAchievement/', views.createAchievement, name = 'createAchievement'),
 ]
