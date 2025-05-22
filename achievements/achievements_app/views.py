@@ -8,26 +8,32 @@ def autorization(request):
     achievements = Achievement.objects.all()
     return render(request, 'achievements_app/autorization.html',
                  {'achievements': achievements})
+
 def recovery(request):
     achievements = Achievement.objects.all()
     return render(request, 'achievements_app/recovery.html',
                  {'achievements': achievements})
+
 def registration(request):
     achievements = Achievement.objects.all()
     return render(request, 'achievements_app/registration.html',
                  {'achievements': achievements})
+
 def information(request):
     achievements = Achievement.objects.all()
     return render(request, 'achievements_app/information.html',
                  {'achievements': achievements})
+
 def mainPage(request):
     achievements = Achievement.objects.all()
     return render(request, 'achievements_app/mainPage.html',
                  {'achievements': achievements})
+
 def userInformation(request):
     achievements = Achievement.objects.all()
     return render(request, 'achievements_app/userInformation.html',
                  {'achievements': achievements})
+
 def editPassword(request):
     achievements = Achievement.objects.all()
     return render(request, 'achievements_app/editPassword.html',
@@ -36,42 +42,52 @@ def panel(request):
     achievements = Achievement.objects.all()
     return render(request, 'achievements_app/panel.html',
                  {'achievements': achievements})
+
 def mainPageProfile(request):
     achievements = Achievement.objects.all()
     return render(request, 'achievements_app/mainPageProfile.html',
                  {'achievements': achievements})
+
 def noProfile(request):
     achievements = Achievement.objects.all()
     return render(request, 'achievements_app/noProfile.html',
                  {'achievements': achievements})
+
 def myAchievement(request):
     achievements = Achievement.objects.all()
     return render(request, 'achievements_app/myAchievement.html',
                  {'achievements': achievements})
+
 def securityProfile(request):
     achievements = Achievement.objects.all()
     return render(request, 'achievements_app/securityProfile.html',
                  {'achievements': achievements})
+
 def editEmail(request):
     achievements = Achievement.objects.all()
     return render(request, 'achievements_app/editEmail.html',
                  {'achievements': achievements})
+
 def editPhone(request):
     achievements = Achievement.objects.all()
     return render(request, 'achievements_app/editPhone.html',
                  {'achievements': achievements})
+
 def confirmation(request):
     achievements = Achievement.objects.all()
     return render(request, 'achievements_app/confirmation.html',
                  {'achievements': achievements})
+
 def notification(request):
     achievements = Achievement.objects.all()
     return render(request, 'achievements_app/notification.html',
                  {'achievements': achievements})
+
 def myAchievement(request):
     achievements = Achievement.objects.all()
     return render(request, 'achievements_app/myAchievement.html',
                  {'achievements': achievements})
+
 def check_user(request):
     if request.method == 'POST':
         data = json.loads(request.body)
@@ -187,12 +203,9 @@ def get_user_id_by_phone(phone):
         result = cursor.fetchone()
         return result[0] if result else None
 
-
-
 def editUserInformation(request):
     if request.method != 'POST':
         return JsonResponse({'error': 'Invalid method'}, status=405)
-
     try:
         data = json.loads(request.body)
         login = (data.get('login') or '').strip()
@@ -258,9 +271,6 @@ def editLogin(request):
 
     except Exception as e:
         return JsonResponse({'error': str(e)}, status=500)
-
-
-
 
 def scoreUser(request):
     try:
@@ -330,6 +340,7 @@ def loginUser(request):
         return JsonResponse({'error': 'Invalid JSON'}, status=400)
     except Exception as e:
         return JsonResponse({'error': str(e)}, status=500)
+
 def emailReset(request):
     if request.method == 'POST':
             data = json.loads(request.body)
@@ -342,6 +353,7 @@ def emailReset(request):
                     [email, phone]
                 )
     return JsonResponse({'success': True})
+
 def phoneReset(request):
     if request.method == 'POST':
             data = json.loads(request.body)
@@ -354,7 +366,6 @@ def phoneReset(request):
                     [phone, login]
                 )
     return JsonResponse({'success': True})
-
 
 def statusReset(request):
     if request.method == 'POST':
@@ -596,7 +607,6 @@ def returnAchievement(request):
     except Exception as e:
         return JsonResponse({'error': str(e)}, status=500)
 
-
 def returnComments(request):
     try:
         data = json.loads(request.body)
@@ -692,9 +702,6 @@ def returnComments(request):
     except Exception as e:
         return JsonResponse({'error': str(e)}, status=500)
 
-
-
-
 def newLike(request):
     try:
         data = json.loads(request.body)
@@ -737,8 +744,6 @@ def deleteLike(request):
 
     except Exception as e:
         return JsonResponse({'error': str(e)}, status=500)
-
-
 
 def check_Like(request):
     if request.method == 'POST':
@@ -822,7 +827,6 @@ def deleteLikeComment(request):
 
     except Exception as e:
         return JsonResponse({'error': str(e)}, status=500)
-
 
 def check_LikeComment(request):
     if request.method == 'POST':
@@ -964,3 +968,67 @@ def returnMyAchievement(request):
 
     except Exception as e:
         return JsonResponse({'error': str(e)}, status=500)
+
+def updateVisibleAchievement(request):
+    if request.method == 'POST':
+        data = json.loads(request.body)
+        achievement_id = data.get('achievement_id')
+        visible = data.get('visible')
+        with connection.cursor() as cursor:
+            cursor.execute("update achievement set isVisible = %s where achievement_id = %s;",
+                           [visible, achievement_id])
+    return JsonResponse({'success': True})
+
+def editAchievement(request):
+    if request.method != 'POST':
+        return JsonResponse({'error': 'Invalid method'}, status=405)
+
+    try:
+        data = json.loads(request.body)
+        achievement_id = data.get('achievement_id')
+        data = json.loads(request.body)
+        date = (data.get('date') or '').strip()
+        place_competition = (data.get('place_competition') or '').strip()
+        document_name = (data.get('document_name') or '').strip()
+        photo = (data.get('photo') or '').strip()
+        contest = (data.get('contest') or '').strip()
+        if place_competition and contest:
+            title = f"{place_competition} {contest}"
+
+        with connection.cursor() as cursor:
+            if contest:
+                cursor.execute(
+                    "update achievement set name_contest = %s where achievement_id = %s;",
+                    [contest, achievement_id]
+                )
+                cursor.execute(
+                    "update achievement set title = '' where achievement_id = %s;",
+                    [title, achievement_id]
+                )
+            if date:
+                cursor.execute(
+                    "update achievement set date = %s where achievement_id = %s;",
+                    [photo, achievement_id]
+                )
+            if place_competition:
+                cursor.execute(
+                    "update achievement set place_competition = %s where achievement_id = %s;",
+                    [place_competition, achievement_id]
+                )
+            if document_name:
+                cursor.execute(
+                    "update achievement set document_name = %s where achievement_id = %s;",
+                    [document_name, achievement_id]
+                )
+            if photo:
+                cursor.execute(
+                    "update achievement set photo = %s where achievement_id = %s;",
+                    [photo, achievement_id]
+                )
+
+        return JsonResponse({'success': True})
+
+    except Exception as e:
+        return JsonResponse({'error': str(e)}, status=500)
+
+
