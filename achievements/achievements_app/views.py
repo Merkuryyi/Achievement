@@ -910,7 +910,6 @@ def deleteAchievement(request):
         data = json.loads(request.body)
         achievement_id = data.get('achievement_id')
         with connection.cursor() as cursor:
-
             cursor.execute("delete from achievement where achievement_id = %s",
             [achievement_id])
 

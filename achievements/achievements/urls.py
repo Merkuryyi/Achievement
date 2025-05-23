@@ -59,5 +59,5 @@ urlpatterns = [
     path('check_isVisible/', views.check_isVisible, name = 'check_isVisible'),
     path('countAchievement/', views.countAchievement, name = 'countAchievement'),
     path('addAchievement/', views.addAchievement, name = 'addAchievement'),
-path('createAchievement/', views.createAchievement, name = 'createAchievement'),
+    path('createAchievement/', views.createAchievement, name = 'createAchievement'),
 ]

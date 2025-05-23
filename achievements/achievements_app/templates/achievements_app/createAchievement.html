@@ -88,10 +88,11 @@
                     e.target.classList.remove('invalid');
                 }
             });
+            const editingId = localStorage.getItem('editingAchievementId');
 
             let phone = localStorage.getItem('numberPhone');
             button.addEventListener('click', function () {
-                hasError = false;
+                if (editingId && editingId.trim() !== '') {
                     if (!link.value.trim() && !dateInput.value.trim() &&
                         !placeContestInput.value.trim() && !nameDocumentInput.value.trim() &&
                         !contestInput.value.trim()) {
@@ -101,6 +102,12 @@
                         hasError = true;
 
                     }
+
+                }
+                else
+                {
+                     hasError = false;
+
                     if (!contestInput.value.trim()) {
                         error1.textContent = '*обязательно';
                         error1.style.display = 'block';
@@ -189,6 +196,9 @@
                             }
                         })
                     .catch(error => console.error('Error:', error));
+
+
+                }
 
             });
         });
