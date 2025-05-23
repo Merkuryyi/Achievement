@@ -91,6 +91,7 @@
             const editingId = localStorage.getItem('editingAchievementId');
 
             let phone = localStorage.getItem('numberPhone');
+            let hasError = false;
             button.addEventListener('click', function () {
                 if (editingId && editingId.trim() !== '') {
                     if (!link.value.trim() && !dateInput.value.trim() &&
@@ -102,11 +103,37 @@
                         hasError = true;
 
                     }
+                     if (hasError) return;
+                    const userData = {
+                            contest: contestInput.value.trim() || null,
+                            document_name: nameDocumentInput.value.trim() || null,
+                            place_competition: placeContestInput.value.trim() || null,
+                            date: dateInput.value.trim() || null,
+                            photo: link.value.trim() || null,
+                            phone: phone
+                        };
+
+                        fetch('{% url "editAchievement" %}', {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json',
+                                'X-CSRFToken': '{{ csrf_token }}'
+                            },
+                            body: JSON.stringify(userData)
+                        })
+                        .then(response => response.json())
+                        .then(data => {
+                            if (data.success) {
+                                window.location.href = "{% url 'myAchievement' %}";
+                                localStorage.removeItem('editingAchievementId')
+                            }
+                        })
+                    .catch(error => console.error('Error:', error));
 
                 }
                 else
                 {
-                     hasError = false;
+
 
                     if (!contestInput.value.trim()) {
                         error1.textContent = '*обязательно';
