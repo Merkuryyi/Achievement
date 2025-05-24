@@ -60,4 +60,5 @@ urlpatterns = [
     path('countAchievement/', views.countAchievement, name = 'countAchievement'),
     path('addAchievement/', views.addAchievement, name = 'addAchievement'),
     path('createAchievement/', views.createAchievement, name = 'createAchievement'),
+    path('addNotification/', views.addNotification, name = 'addNotification')
 ]

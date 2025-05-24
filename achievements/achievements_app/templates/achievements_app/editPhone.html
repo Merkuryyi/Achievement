@@ -183,7 +183,20 @@
 
                 if (resetData.success) {
                     localStorage.setItem('numberPhone', newPhoneInput.value.trim());
+                    fetch('{% url "addNotification" %}', {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json',
+                                'X-CSRFToken': '{{ csrf_token }}'
+                            },
+                            body: JSON.stringify({
+                                title: 'Изменен номер телефона',
+                                phone: newPhoneInput.value.trim()
+                            })
+                        })
+                    .catch(error => console.error('Error:', error));
                     window.location.href = "{% url 'mainPage' %}";
+
                 } else {
                     showGlobalError(resetData.message || 'Ошибка смены Phone');
                 }

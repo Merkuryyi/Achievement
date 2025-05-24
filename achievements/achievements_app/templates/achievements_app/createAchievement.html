@@ -40,7 +40,6 @@
     <div class="titlePhoto">Фото достижения</div>
     <div class="photoAchievement"></div>
     <script>
-
         document.addEventListener('DOMContentLoaded', function() {
             const contestInput = document.querySelector('.containerContext input');
             const nameDocumentInput = document.querySelector('.containerNameDocument input');
@@ -53,7 +52,6 @@
             const error4 = document.querySelector('.eror4');
             const error5 = document.querySelector('.eror5');
             const link = document.querySelector('.containerURL input');
-
             dateInput.addEventListener('input', function(e) {
                 let value = e.target.value.replace(/\D/g, '');
                 let formatted = '';
@@ -89,7 +87,6 @@
                 }
             });
             const editingId = localStorage.getItem('editingAchievementId');
-
             let phone = localStorage.getItem('numberPhone');
             let hasError = false;
             button.addEventListener('click', function () {
@@ -101,10 +98,10 @@
                         error1.style.display = 'block';
                         error1.style.opacity = '1';
                         hasError = true;
-
                     }
-                     if (hasError) return;
+                    if (hasError) return;
                     const userData = {
+                            achievement_id: localStorage.getItem('editingAchievementId'),
                             contest: contestInput.value.trim() || null,
                             document_name: nameDocumentInput.value.trim() || null,
                             place_competition: placeContestInput.value.trim() || null,
@@ -133,8 +130,6 @@
                 }
                 else
                 {
-
-
                     if (!contestInput.value.trim()) {
                         error1.textContent = '*обязательно';
                         error1.style.display = 'block';

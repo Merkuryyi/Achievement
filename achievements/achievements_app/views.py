@@ -905,6 +905,7 @@ def deleteComment(request):
             [comment_id])
 
     return JsonResponse({'success': True})
+
 def deleteAchievement(request):
     if request.method == 'POST':
         data = json.loads(request.body)
@@ -914,6 +915,7 @@ def deleteAchievement(request):
             [achievement_id])
 
     return JsonResponse({'success': True})
+
 def returnMyAchievement(request):
     try:
         data = json.loads(request.body)
@@ -992,50 +994,60 @@ def updateVisibleAchievement(request):
                            [visible, achievement_id])
     return JsonResponse({'success': True})
 
+def addNotification(request):
+    if request.method == 'POST':
+        data = json.loads(request.body)
+        phone = data.get('phone')
+        user_id = get_user_id(phone)
+        title = data.get('title')
+        with connection.cursor() as cursor:
+            cursor.execute("insert into (user_id, created_at, is_read, title) values (%s, now(), false, %s);",
+                           [user_id, title])
+    return JsonResponse({'success': True})
+
 def editAchievement(request):
     if request.method != 'POST':
         return JsonResponse({'error': 'Invalid method'}, status=405)
-
     try:
         data = json.loads(request.body)
         achievement_id = data.get('achievement_id')
-        data = json.loads(request.body)
         date = (data.get('date') or '').strip()
         place_competition = (data.get('place_competition') or '').strip()
         document_name = (data.get('document_name') or '').strip()
         photo = (data.get('photo') or '').strip()
         contest = (data.get('contest') or '').strip()
+        title = None
         if place_competition and contest:
             title = f"{place_competition} {contest}"
-
         with connection.cursor() as cursor:
             if contest:
                 cursor.execute(
-                    "update achievement set name_contest = %s where achievement_id = %s;",
+                    "UPDATE achievement SET name_contest = %s WHERE achievement_id = %s;",
                     [contest, achievement_id]
                 )
+            if title:
                 cursor.execute(
-                    "update achievement set title = '' where achievement_id = %s;",
+                    "UPDATE achievement SET title = %s WHERE achievement_id = %s;",
                     [title, achievement_id]
                 )
             if date:
                 cursor.execute(
-                    "update achievement set date = %s where achievement_id = %s;",
-                    [photo, achievement_id]
+                    "UPDATE achievement SET date = %s WHERE achievement_id = %s;",
+                    [date, achievement_id]
                 )
             if place_competition:
                 cursor.execute(
-                    "update achievement set place_competition = %s where achievement_id = %s;",
+                    "UPDATE achievement SET place_competition = %s WHERE achievement_id = %s;",
                     [place_competition, achievement_id]
                 )
             if document_name:
                 cursor.execute(
-                    "update achievement set document_name = %s where achievement_id = %s;",
+                    "UPDATE achievement SET document_name = %s WHERE achievement_id = %s;",
                     [document_name, achievement_id]
                 )
             if photo:
                 cursor.execute(
-                    "update achievement set photo = %s where achievement_id = %s;",
+                    "UPDATE achievement SET photo = %s WHERE achievement_id = %s;",
                     [photo, achievement_id]
                 )
 
@@ -1091,10 +1103,9 @@ def addAchievement(request):
         document_name = data.get('document_name')
         photo = data.get('photo')
         contest = data.get('contest')
-        date_obj = datetime.strptime(date, '%Y-%m-%d').date()
-        print('g', date_obj)
+
         phone = data.get('phone')
-        user_id = get_user_id(phone)
+        user_id = get_user_id_by_phone(phone)
 
 
 
@@ -1110,10 +1121,11 @@ def addAchievement(request):
                 "insert into achievement "
                 "(user_id, title, date, place_competition, document_name, photo, isVisible, name_contest) "
                 "values (%s, %s, %s, %s, %s, %s, %s, true, %s)",
-                [user_id, title, date_obj, place_competition, document_name, photo, contest]
+                [user_id, title, date, place_competition, document_name, photo, contest]
             )
 
         return JsonResponse({'success': True})
 
     except Exception as e:
+        print(f"Error in editAchievement: {e}")
         return JsonResponse({'error': str(e)}, status=500)

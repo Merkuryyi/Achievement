@@ -166,6 +166,20 @@
                 const resetData = await resetResponse.json();
 
                 if (resetData.success) {
+                    fetch('{% url "addNotification" %}', {
+                            method: 'POST',
+                                headers: {
+                                    'Content-Type': 'application/json',
+                                    'X-CSRFToken': '{{ csrf_token }}'
+                                },
+                                body: JSON.stringify({
+                                    title: 'Изменен email',
+                                    phone: phone
+                                })
+                            })
+                            .catch(error => console.error('Error:', error));
+                                    window.location.href = "{% url 'mainPage' %}";
+                            }
                     window.location.href = "{% url 'mainPage' %}";
                 } else {
                     showGlobalError(resetData.message || 'Ошибка смены email');

@@ -629,6 +629,8 @@
                     countLike: achievements.countLike,
                     isVisible: achievements.isVisible
                 }));
+                const countAchievement = document.querySelector('.countAchievement');
+                countAchievement.textContent = achievements.length;
                 return achievements;
             }
             catch (error) {
