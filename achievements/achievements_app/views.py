@@ -317,7 +317,6 @@ def check_password(request):
             else:
                 return JsonResponse({'valid': False})
 
-
         finally:
             cursor.close()
 
@@ -517,10 +516,8 @@ def editStatusNotification(request):
             )
             return JsonResponse({'success': True})
 
-
     except json.JSONDecodeError:
         return JsonResponse({'error': 'Invalid JSON'}, status=400)
-
 
     except Exception as e:
         return JsonResponse({'error': str(e)}, status=500)
@@ -541,7 +538,6 @@ def createNotification(request):
 
     except json.JSONDecodeError:
         return JsonResponse({'error': 'Invalid JSON'}, status=400)
-
 
     except Exception as e:
         return JsonResponse({'error': str(e)}, status=500)
@@ -589,7 +585,6 @@ def returnAchievement(request):
                 "WHERE now() > achievement.date - interval '1 month' and isVisible = true "
                 "ORDER BY achievement.date DESC; ",
             )
-
 
             achievements = cursor.fetchall()
             result = [
@@ -724,7 +719,6 @@ def newLike(request):
 
     except json.JSONDecodeError:
         return JsonResponse({'error': 'Invalid JSON'}, status=400)
-
 
     except Exception as e:
         return JsonResponse({'error': str(e)}, status=500)
@@ -1087,7 +1081,6 @@ def countAchievement(request):
             )
             row = cursor.fetchone()
 
-
             return JsonResponse({'exists': row})
 
     return JsonResponse({'exists': False})
@@ -1103,16 +1096,11 @@ def addAchievement(request):
         document_name = data.get('document_name')
         photo = data.get('photo')
         contest = data.get('contest')
-
         phone = data.get('phone')
         user_id = get_user_id_by_phone(phone)
 
-
-
         if place_competition and contest:
             title = f"{place_competition} {contest}"
-
-
         print(user_id)
 
         with connection.cursor() as cursor:
