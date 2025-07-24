@@ -177,14 +177,13 @@
                                     phone: phone
                                 })
                             })
-                            .catch(error => console.error('Error:', error));
-                                    window.location.href = "{% url 'mainPage' %}";
-                            }
                     window.location.href = "{% url 'mainPage' %}";
-                } else {
+                }
+                else {
                     showGlobalError(resetData.message || 'Ошибка смены email');
                 }
-            } catch (error) {
+            }
+            catch (error) {
                 console.error('Error:', error);
                 showGlobalError('Ошибка соединения с сервером');
             }

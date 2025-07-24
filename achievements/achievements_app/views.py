@@ -101,7 +101,8 @@ def check_user(request):
 
         with connection.cursor() as cursor:
             cursor.execute(
-                "SELECT phone FROM users WHERE login = %s AND password = %s",
+                "SELECT phone FROM users INNER JOIN status_users on "
+                "users.user_id = status_users.user_id WHERE login = %s AND password = %s AND status = 'active' ",
                 [login, password]
             )
             row = cursor.fetchone()
@@ -180,7 +181,7 @@ def registerUser(request):
             email = data.get('email')
             phone = data.get('phone')
             login = data.get('login')
-            status = "active"
+            status = "not confirmed"
             lastname = data.get('lastName')
             firstname = data.get('firstName')
             patronymic = data.get('patronymic')
